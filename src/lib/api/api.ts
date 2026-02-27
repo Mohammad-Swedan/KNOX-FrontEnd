@@ -1,6 +1,7 @@
 import type { PaginatedResponse } from "./types";
 
-const BASE = "https://knox.premiumasp.net/api";
+//const BASE = "https://knox.premiumasp.net/api";
+const BASE = "https://localhost:6001/api";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers: Record<string, string> = {

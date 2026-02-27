@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Plus } from "lucide-react";
 import { Button } from "@/shared/ui/button";
+import { Checkbox } from "@/shared/ui/checkbox";
+import { Label } from "@/shared/ui/label";
 import { createQuiz, getUserIdFromToken } from "../api";
+import { addLesson } from "@/features/product-courses/api";
 import { validateQuiz } from "../utils";
 import { useQuizForm } from "../hooks/useQuizForm";
 import { useImageUpload } from "../hooks/useImageUpload";
@@ -14,8 +17,22 @@ import { QuizSubmitSection } from "../components/QuizSubmitSection";
 
 const AddQuizPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Product course integration
+  const productCourseIdParam = searchParams.get("productCourseId");
+  const topicIdParam = searchParams.get("topicId");
+  const lessonTitle = searchParams.get("lessonTitle");
+  const lessonOrder = searchParams.get("lessonOrder");
+  const lessonIsFree = searchParams.get("lessonIsFree") === "true";
+  const returnTo = searchParams.get("returnTo");
+  const [isFree, setIsFree] = useState(lessonIsFree);
+  const productCourseId = productCourseIdParam
+    ? parseInt(productCourseIdParam)
+    : undefined;
+  const topicId = topicIdParam ? parseInt(topicIdParam) : undefined;
 
   const {
     title,
@@ -73,12 +90,25 @@ const AddQuizPage = () => {
             isCorrect: c.isCorrect,
           })),
         })),
+        ...(productCourseId ? { productCourseId, isFree } : {}),
       };
 
-      await createQuiz(payload);
+      const quizId = await createQuiz(payload);
 
-      // Navigate back to quizzes page
-      navigate(`/courses/${courseId}/quizzes`);
+      // If opened from product course manage-lessons, auto-link as a lesson
+      if (productCourseId && topicId && lessonTitle) {
+        await addLesson(productCourseId, topicId, {
+          title: lessonTitle,
+          order: lessonOrder ? parseInt(lessonOrder) : 1,
+          type: 1, // Quiz
+          isFreePreview: isFree,
+          referenceId: quizId,
+        });
+        navigate(returnTo ?? `/dashboard/product-courses/${productCourseId}/lessons`);
+      } else {
+        // Default: navigate back to quizzes page
+        navigate(`/courses/${courseId}/quizzes`);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create quiz");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -119,6 +149,31 @@ const AddQuizPage = () => {
           onTitleChange={setTitle}
           onDescriptionChange={setDescription}
         />
+
+        {/* Product Course Fields */}
+        {productCourseId && (
+          <div className="mb-6 p-4 rounded-xl border bg-blue-500/5 border-blue-200 dark:border-blue-900 space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-blue-500" />
+              <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">Product Course Quiz</p>
+            </div>
+            {lessonTitle && (
+              <p className="text-xs text-muted-foreground">
+                Will be saved as lesson: <span className="font-medium text-foreground">"{lessonTitle}"</span>
+              </p>
+            )}
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="isFreeQuiz"
+                checked={isFree}
+                onCheckedChange={(c) => setIsFree(c === true)}
+              />
+              <Label htmlFor="isFreeQuiz" className="cursor-pointer text-sm">
+                Free preview (accessible without enrollment)
+              </Label>
+            </div>
+          </div>
+        )}
 
         {/* Questions */}
         <div className="space-y-6 mb-6">

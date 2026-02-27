@@ -2,7 +2,8 @@ import axios from "axios";
 import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { getStoredToken, clearSession } from "@/hooks/authStorage";
 
-export const BASE_URL = "https://knox.premiumasp.net/api";
+//export const BASE_URL = "https://knox.premiumasp.net/api";
+export const BASE_URL = "https://localhost:6001/api";
 //local host 5001 (http://localhost:5001/api)
 
 /**

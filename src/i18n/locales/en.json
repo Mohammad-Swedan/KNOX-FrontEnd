@@ -566,5 +566,51 @@
     "previousPage": "Previous page",
     "nextPage": "Next page",
     "lastPage": "Last page"
+  },
+  "productCourses": {
+    "title": "Product Courses",
+    "manageProductCourses": "Manage Product Courses",
+    "addNew": "Add New Product Course",
+    "create": "Create Product Course",
+    "edit": "Edit Product Course",
+    "publish": "Publish",
+    "publishConfirm": "This will make the course visible to students. Are you sure?",
+    "published": "Course published successfully!",
+    "lessons": "Lessons",
+    "manageLessons": "Manage Lessons",
+    "addVideoLesson": "Add Video Lesson",
+    "addQuizLesson": "Add Quiz Lesson",
+    "addMaterialLesson": "Add Material Lesson",
+    "videoUpload": "Upload Video",
+    "uploading": "Uploading...",
+    "uploadComplete": "Upload Complete!",
+    "enroll": "Enroll",
+    "enrollFree": "Enroll for Free",
+    "continueLearning": "Continue Learning",
+    "myLearning": "My Learning",
+    "browseCourses": "Browse Product Courses",
+    "noCourses": "No product courses yet",
+    "noCoursesDesc": "Create your first product course to get started.",
+    "prepaidCodes": "Prepaid Codes",
+    "generateCode": "Generate Prepaid Code",
+    "verifyCertificate": "Verify Certificate",
+    "certificateNumber": "Certificate Number",
+    "status": {
+      "draft": "Draft",
+      "inReview": "In Review",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "lessonType": {
+      "video": "Video",
+      "quiz": "Quiz",
+      "document": "Document"
+    },
+    "freePreview": "Free Preview",
+    "price": "Price",
+    "free": "Free",
+    "rating": "Rating",
+    "students": "Students",
+    "enrolled": "Enrolled"
   }
 }

@@ -44,6 +44,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       title: "Courses",
       href: "/courses",
     },
+    {
+      title: "Pro Learning",
+      href: "/browse/product-courses",
+    },
     // {
     //   title: "Supervisor",
     //   href: "/supervisor",

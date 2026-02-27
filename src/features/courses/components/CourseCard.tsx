@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FileText, Trophy, Info, UserPlus, Loader2 } from "lucide-react";
+import {
+  FileText, Trophy, Info, UserPlus, Loader2, Sparkles,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/shared/ui/button";
 import ShareButton from "@/shared/ui/ShareButton";
@@ -184,6 +186,20 @@ export default function CourseCard({
                 Course Info
               </Button>
             )}
+            {course.hasProductCourse && (
+              <Button
+                className="col-span-2 relative overflow-hidden text-xs h-10 cursor-pointer bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white border-0 hover:shadow-lg hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/browse/product-courses`);
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+                Pro Learning
+              </Button>
+            )}
           </div>
         </CardContent>
 
@@ -362,6 +378,20 @@ export default function CourseCard({
               Course Info
             </Button>
           )}
+
+          {course.hasProductCourse && (
+            <Button
+              size="sm"
+              className="relative overflow-hidden cursor-pointer bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white border-0 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.stopPropagation();
+                navigate(`/browse/product-courses`);
+              }}
+            >
+              <Sparkles className="mr-1.5 h-4 w-4" />
+              Pro Learning
+            </Button>
+          )}
         </div>
       </div>
 
@@ -412,6 +442,7 @@ export default function CourseCard({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
     </Card>
   );
 }

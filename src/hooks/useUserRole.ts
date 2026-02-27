@@ -23,9 +23,22 @@ export const useUserRole = () => {
   };
 
   /**
+   * Check if user can manage product courses (Admin, SuperAdmin, or Instructor)
+   * @returns true if user has product course management permissions
+   */
+  const canManageProductCourses = (): boolean => {
+    return hasRole(["Admin", "SuperAdmin", "Instructor"]);
+  };
+
+  /**
    * Check if user is a Writer
    */
   const isWriter = hasRole("Writer");
+
+  /**
+   * Check if user is an Instructor
+   */
+  const isInstructor = hasRole("Instructor");
 
   /**
    * Check if user is an Admin or SuperAdmin
@@ -76,7 +89,9 @@ export const useUserRole = () => {
     user,
     hasRole,
     canManageContent,
+    canManageProductCourses,
     isWriter,
+    isInstructor,
     isAdmin,
     isSuperAdmin,
     getDisplayName,

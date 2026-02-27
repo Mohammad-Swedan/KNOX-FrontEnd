@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { BookOpen, FileText, Loader2, Trophy, Link2 } from "lucide-react";
+import { BookOpen, FileText, Loader2, Trophy, Link2, GraduationCap } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -19,6 +19,7 @@ import {
 } from "@/shared/ui/table";
 import { PageSizeSelector } from "@/shared/components/pagination/PageSizeSelector";
 import type { CourseApiResponse } from "@/features/courses/types";
+import { useUserRole } from "@/hooks/useUserRole";
 
 interface CoursesTableProps {
   courses: CourseApiResponse[];
@@ -59,6 +60,8 @@ export const CoursesTable = ({
   hasActiveFilters,
 }: CoursesTableProps) => {
   const navigate = useNavigate();
+  const { hasRole } = useUserRole();
+  const canManageProductCourses = hasRole(["SuperAdmin", "Admin", "Instructor"]);
 
   return (
     <Card>
@@ -228,6 +231,21 @@ export const CoursesTable = ({
                           <Link2 className="mr-2 size-4" />
                           Resources
                         </Button>
+                        {canManageProductCourses && (
+                          <Button
+                            variant="outline"
+                            className="hover:cursor-pointer"
+                            size="sm"
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/courses/${course.id}/product-courses`
+                              )
+                            }
+                          >
+                            <GraduationCap className="mr-2 size-4" />
+                            Product Courses
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getCourseContents,
   GetMyCourseContent,
@@ -25,6 +25,7 @@ interface UseFolderContentsReturn {
   handleDeleteMaterial: (materialId: number) => Promise<void>;
   handleEditFolder: (folder: FolderItem) => void;
   handleEditMaterial: (material: MaterialItem) => void;
+  refetch: () => void;
 }
 
 export function useFolderContents({
@@ -35,6 +36,11 @@ export function useFolderContents({
   const [loading, setLoading] = useState(true);
   const [contents, setContents] = useState<FolderContentsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  const refetch = useCallback(() => {
+    setRefetchTrigger((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     async function loadFolderContents() {
@@ -57,7 +63,7 @@ export function useFolderContents({
     }
 
     loadFolderContents();
-  }, [courseId, folderId, isManagementMode]);
+  }, [courseId, folderId, isManagementMode, refetchTrigger]);
 
   const handleDeleteFolder = async (folderIdToDelete: number) => {
     if (!confirm("Are you sure you want to delete this folder?")) return;
@@ -109,5 +115,6 @@ export function useFolderContents({
     handleDeleteMaterial,
     handleEditFolder,
     handleEditMaterial,
+    refetch,
   };
 }

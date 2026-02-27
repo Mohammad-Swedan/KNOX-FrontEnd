@@ -566,5 +566,51 @@
     "previousPage": "الصفحة السابقة",
     "nextPage": "الصفحة التالية",
     "lastPage": "الصفحة الأخيرة"
+  },
+  "productCourses": {
+    "title": "الدورات المنتجة",
+    "manageProductCourses": "إدارة الدورات المنتجة",
+    "addNew": "إضافة دورة منتجة جديدة",
+    "create": "إنشاء دورة منتجة",
+    "edit": "تعديل الدورة المنتجة",
+    "publish": "نشر",
+    "publishConfirm": "سيؤدي هذا إلى جعل الدورة مرئية للطلاب. هل أنت متأكد؟",
+    "published": "تم نشر الدورة بنجاح!",
+    "lessons": "الدروس",
+    "manageLessons": "إدارة الدروس",
+    "addVideoLesson": "إضافة درس فيديو",
+    "addQuizLesson": "إضافة درس اختبار",
+    "addMaterialLesson": "إضافة درس مادة تعليمية",
+    "videoUpload": "رفع فيديو",
+    "uploading": "جاري الرفع...",
+    "uploadComplete": "اكتمل الرفع!",
+    "enroll": "التسجيل",
+    "enrollFree": "التسجيل مجاناً",
+    "continueLearning": "متابعة التعلم",
+    "myLearning": "تعلّمي",
+    "browseCourses": "تصفح الدورات المنتجة",
+    "noCourses": "لا توجد دورات منتجة بعد",
+    "noCoursesDesc": "أنشئ أول دورة منتجة للبدء.",
+    "prepaidCodes": "أكواد مسبقة الدفع",
+    "generateCode": "إنشاء كود مسبق الدفع",
+    "verifyCertificate": "التحقق من الشهادة",
+    "certificateNumber": "رقم الشهادة",
+    "status": {
+      "draft": "مسودة",
+      "inReview": "قيد المراجعة",
+      "published": "منشورة",
+      "archived": "مؤرشفة"
+    },
+    "lessonType": {
+      "video": "فيديو",
+      "quiz": "اختبار",
+      "document": "مستند"
+    },
+    "freePreview": "معاينة مجانية",
+    "price": "السعر",
+    "free": "مجاني",
+    "rating": "التقييم",
+    "students": "الطلاب",
+    "enrolled": "مسجّل"
   }
 }

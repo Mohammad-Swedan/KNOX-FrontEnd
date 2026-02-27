@@ -52,3 +52,14 @@ export async function deleteFolder(folderId: number): Promise<void> {
 export async function deleteMaterial(materialId: number): Promise<void> {
   await apiClient.delete(`/materials/${materialId}`);
 }
+
+/**
+ * Create a new folder for a course
+ */
+export async function createFolder(payload: {
+  name: string;
+  courseId: number;
+  description?: string | null;
+}): Promise<void> {
+  await apiClient.post(`/folders`, payload);
+}
