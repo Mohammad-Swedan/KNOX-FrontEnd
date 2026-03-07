@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
+import SEO from "@/shared/components/seo/SEO";
 import { CRUDPageLayout } from "@/shared/components/crud";
 import type { University } from "../types";
 import { useUniversities } from "../hooks/useUniversities";
@@ -13,13 +15,14 @@ import {
 
 const ManageUniversitiesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Dialog states
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   // const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingUniversity, setEditingUniversity] = useState<University | null>(
-    null
+    null,
   );
   // const [deletingUniversity, setDeletingUniversity] =
   //   useState<University | null>(null);
@@ -57,14 +60,18 @@ const ManageUniversitiesPage = () => {
 
   return (
     <>
+      <SEO
+        title={t("universities.page.title")}
+        description={t("universities.page.description")}
+      />
       <CRUDPageLayout
-        title="Universities"
-        description="Manage platform universities"
+        title={t("universities.page.title")}
+        description={t("universities.page.description")}
         onAdd={() => setIsAddDialogOpen(true)}
-        addButtonLabel="Add University"
+        addButtonLabel={t("universities.page.addUniversity")}
         searchValue={searchTerm}
         onSearchChange={setSearchTerm}
-        searchPlaceholder="Search by name or ID..."
+        searchPlaceholder={t("universities.page.searchPlaceholder")}
       >
         <UniversityTable
           universities={universities}

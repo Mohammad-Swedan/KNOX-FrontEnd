@@ -1,4 +1,36 @@
 {
+  "seo": {
+    "home": {
+      "title": "Uni-Hub | Your Complete University Learning Platform",
+      "description": "A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance. Join thousands of successful students.",
+      "keywords": "university education, study materials, quizzes, notes, university, students, learning, educational platform, interactive quizzes, academic resources"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "Learn about Uni-Hub's mission to revolutionize university education. Discover how we help students succeed with organized learning resources, interactive quizzes, and community support.",
+      "keywords": "about uni-hub, university learning platform, educational mission, student success, academic resources, learning community"
+    },
+    "courses": {
+      "title": "Courses",
+      "description": "Explore our comprehensive course catalog. Find study materials, quizzes, and resources organized by university, faculty, and major.",
+      "keywords": "university courses, course materials, study resources, academic courses, course catalog, university subjects"
+    },
+    "login": {
+      "title": "Login",
+      "description": "Sign in to your Uni-Hub account to access personalized study materials, track your progress, and connect with fellow students.",
+      "keywords": "login, sign in, student portal, access account"
+    },
+    "register": {
+      "title": "Create Account",
+      "description": "Join Uni-Hub today and get free access to thousands of study materials, interactive quizzes, and AI-powered academic guidance.",
+      "keywords": "register, sign up, create account, join uni-hub, student registration"
+    },
+    "profile": {
+      "title": "My Profile",
+      "description": "Manage your Uni-Hub profile, track your learning progress, and customize your study preferences.",
+      "keywords": "user profile, student profile, account settings, learning progress"
+    }
+  },
   "common": {
     "appName": "Uni-Hub",
     "buttons": {
@@ -22,7 +54,8 @@
       "clearFilters": "Clear Filters",
       "apply": "Apply",
       "next": "Next",
-      "previous": "Previous"
+      "previous": "Previous",
+      "tryAgain": "Try Again"
     },
     "actions": {
       "loading": "Loading...",
@@ -139,10 +172,15 @@
       "cta": {
         "getStarted": "Get Started Free",
         "watchDemo": "Watch Demo",
-        "learnMore": "Learn More"
+        "learnMore": "Learn More",
+        "browseMaterials": "Browse Materials"
       }
     },
     "features": {
+      "sectionBadge": "Powerful Features",
+      "sectionTitle": "Everything You Need to",
+      "sectionTitleHighlight": "Excel in Your Studies",
+      "sectionDescription": "Uni-Hub combines all the tools you need for academic success into one seamless platform designed specifically for university students.",
       "studyMaterials": {
         "title": "Study Materials",
         "description": "Access curated study materials, lecture notes, and resources organized by course and topic."
@@ -184,6 +222,235 @@
         "description": "Help when you need it"
       }
     },
+    "howItWorks": {
+      "badge": "Simple Process",
+      "title": "How It",
+      "titleHighlight": "Works",
+      "description": "Get started with Uni-Hub in four simple steps and begin your journey to academic excellence.",
+      "steps": {
+        "createAccount": {
+          "number": "01",
+          "title": "Create Account",
+          "description": "Sign up for free in seconds. No credit card required to get started with Uni-Hub."
+        },
+        "findCourses": {
+          "number": "02",
+          "title": "Find Your Courses",
+          "description": "Search and select your university and courses. We'll personalize your learning experience."
+        },
+        "accessMaterials": {
+          "number": "03",
+          "title": "Access Materials",
+          "description": "Explore comprehensive study materials, notes, and resources curated for your courses."
+        },
+        "succeed": {
+          "number": "04",
+          "title": "Excel & Succeed",
+          "description": "Practice with quizzes, get AI guidance, and track your progress to academic success."
+        }
+      }
+    },
+    "stats": {
+      "studyMaterials": "Study Materials",
+      "quizQuestions": "Quiz Questions",
+      "activeStudents": "Active Students",
+      "universities": "Universities"
+    },
+    "testimonials": {
+      "badge": "Student Stories",
+      "title": "Loved by Students",
+      "titleHighlight": "Worldwide",
+      "description": "Join thousands of students who have transformed their academic journey with Uni-Hub.",
+      "items": {
+        "sarah": {
+          "name": "Sarah Chen",
+          "role": "Medical Student",
+          "university": "Stanford University",
+          "content": "Uni-Hub completely transformed how I study. The AI supervisor helped me understand complex anatomy concepts that I was struggling with for months. My grades improved significantly!"
+        },
+        "michael": {
+          "name": "Michael Roberts",
+          "role": "Engineering Student",
+          "university": "MIT",
+          "content": "The quiz bank is incredible! I practiced with thousands of questions and felt fully prepared for my exams. The instant feedback feature is a game-changer."
+        },
+        "emma": {
+          "name": "Emma Thompson",
+          "role": "Law Student",
+          "university": "Harvard Law School",
+          "content": "Having all my study materials organized in one place saved me countless hours. The platform is intuitive and the content quality is exceptional."
+        },
+        "david": {
+          "name": "David Park",
+          "role": "Computer Science Student",
+          "university": "UC Berkeley",
+          "content": "The community feature helped me connect with other CS students. We share resources and help each other out. It's like having a study group available 24/7."
+        },
+        "lisa": {
+          "name": "Lisa Anderson",
+          "role": "Psychology Major",
+          "university": "Oxford University",
+          "content": "I was skeptical at first, but the AI Academic Supervisor genuinely understands my questions and provides detailed, accurate explanations. Worth every penny!"
+        },
+        "james": {
+          "name": "James Wilson",
+          "role": "Business Student",
+          "university": "Wharton School",
+          "content": "Uni-Hub helped me prepare for my MBA exams efficiently. The structured learning paths and progress tracking kept me motivated throughout my journey."
+        }
+      }
+    },
+    "cta": {
+      "badge": "Start for free today",
+      "title": "Ready to Transform Your",
+      "titleHighlight": "Academic Journey?",
+      "description": "Join thousands of students who are already achieving their academic goals with Uni-Hub. Get started in seconds — no credit card required.",
+      "benefits": {
+        "materials": "Comprehensive study materials library",
+        "quizzes": "Smart quiz bank with instant feedback",
+        "ai": "AI-powered academic guidance",
+        "community": "Connect with student community"
+      },
+      "getStarted": "Get Started Free",
+      "browseMaterials": "Browse Materials"
+    },
+    "about": {
+      "hero": {
+        "title": "Welcome to Uni-Hub",
+        "description": "Your all-in-one university learning management platform. Centralize your studies, collaborate with peers, and excel academically.",
+        "getStarted": "Get Started",
+        "learnMore": "Learn More"
+      },
+      "valueCards": {
+        "allInOne": {
+          "title": "All in One Place",
+          "description": "No more switching between multiple platforms. Everything you need for your studies is centralized here."
+        },
+        "saveTime": {
+          "title": "Save Time",
+          "description": "Quick access to organized materials means less time searching and more time learning."
+        },
+        "studySmarter": {
+          "title": "Study Smarter",
+          "description": "Interactive quizzes and organized resources help you prepare effectively for exams."
+        }
+      },
+      "mission": {
+        "title": "Our Mission",
+        "description": "We're on a mission to eliminate the chaos of scattered educational resources. Uni-Hub provides students with a single, reliable destination for all their academic needs while empowering educators with powerful content management tools.",
+        "highlight": "single, reliable destination"
+      },
+      "features": {
+        "title": "Why Choose Uni-Hub?",
+        "centralizedLearning": {
+          "title": "Centralized Learning",
+          "description": "Access all your courses, materials, and resources in one unified platform"
+        },
+        "collaborative": {
+          "title": "Collaborative Community",
+          "description": "Connect with students, educators, and content creators across universities"
+        },
+        "assessments": {
+          "title": "Interactive Assessments",
+          "description": "Test your knowledge with quizzes and track your progress in real-time"
+        },
+        "accessible": {
+          "title": "Accessible Anywhere",
+          "description": "Study on any device with our mobile-responsive platform design"
+        },
+        "efficient": {
+          "title": "Efficient Content Management",
+          "description": "Organized folders and categories make finding resources effortless"
+        },
+        "secure": {
+          "title": "Secure & Reliable",
+          "description": "Your data and academic progress are protected with industry-standard security"
+        }
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "step1": {
+          "title": "Create Your Account",
+          "description": "Sign up in seconds and get instant access to our platform"
+        },
+        "step2": {
+          "title": "Browse & Enroll",
+          "description": "Explore courses and materials relevant to your studies"
+        },
+        "step3": {
+          "title": "Learn & Practice",
+          "description": "Access materials, take quizzes, and track your progress"
+        },
+        "step4": {
+          "title": "Succeed & Grow",
+          "description": "Achieve your academic goals with organized learning"
+        }
+      },
+      "whatYouCanDo": {
+        "title": "What You Can Do on Uni-Hub",
+        "access": {
+          "title": "Access & Learn",
+          "items": {
+            "browse": "Browse and access course materials organized by subject",
+            "download": "Download PDFs, notes, and study guides for offline use",
+            "quizzes": "Take quizzes to test your knowledge and track your scores",
+            "search": "Search and filter resources to find exactly what you need"
+          }
+        },
+        "contribute": {
+          "title": "Contribute & Share",
+          "items": {
+            "upload": "Upload your own study materials to help fellow students",
+            "create": "Create and publish quizzes for practice and revision",
+            "organize": "Organize content in folders for easy navigation",
+            "build": "Build a library of resources for your courses"
+          }
+        }
+      },
+      "keyFeatures": {
+        "title": "Everything You Need to Succeed",
+        "selfPaced": {
+          "title": "Self-Paced Learning",
+          "description": "Study at your own pace, anytime and anywhere. Access materials 24/7 and learn on your schedule."
+        },
+        "progress": {
+          "title": "Progress Tracking",
+          "description": "Monitor your performance with detailed analytics and insights on quiz scores and course completion."
+        },
+        "library": {
+          "title": "Rich Content Library",
+          "description": "Access thousands of study materials, lecture notes, PDFs, and resources organized by course and topic."
+        },
+        "community": {
+          "title": "Active Community",
+          "description": "Connect with fellow students and educators. Share knowledge and collaborate on learning."
+        }
+      },
+      "contribute": {
+        "title": "Become a Content Creator",
+        "description": "Share your expertise and help thousands of students succeed. Join our community of educators and content creators today!",
+        "phoneLabel": "Phone Number",
+        "phonePlaceholder": "Enter your phone number",
+        "phoneNote": "We'll contact you within 24-48 hours to discuss your application and provide creator access.",
+        "submitButton": "Apply to Become a Creator",
+        "submitting": "Submitting...",
+        "loginNote": "Note: You need to be logged in to submit your application",
+        "benefits": {
+          "title": "As a Creator, You'll Get:",
+          "dashboard": "Full content management dashboard",
+          "analytics": "Analytics on content performance",
+          "recognition": "Recognition in creator community",
+          "support": "Priority support and training"
+        }
+      },
+      "finalCta": {
+        "title": "Ready to Transform Your Learning?",
+        "description": "Join thousands of students already benefiting from organized, accessible, and comprehensive learning resources.",
+        "createAccount": "Create Free Account",
+        "signIn": "Sign In",
+        "browseCourses": "Browse Courses"
+      }
+    },
     "notFound": {
       "whoops": "Whoops!",
       "title": "Something went wrong",
@@ -192,6 +459,90 @@
     }
   },
   "courses": {
+    "page": {
+      "title": "Courses",
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "courses": "courses",
+      "noCoursesToDisplay": "No courses to display",
+      "selectFilters": "Select filters to view courses",
+      "selectFiltersDescription": "Please select at least a university, college, and major to see available courses",
+      "noCoursesFound": "No courses found",
+      "noCoursesFoundDescription": "Try adjusting your filters to find the courses you're looking for",
+      "failedToLoad": "Failed to load courses",
+      "loadingCourses": "Loading courses...",
+      "tryAgain": "Try Again"
+    },
+    "filter": {
+      "title": "Filter Courses",
+      "university": "University",
+      "selectUniversity": "Select a university",
+      "faculty": "Faculty",
+      "selectFaculty": "Select a faculty",
+      "major": "Major",
+      "selectMajor": "Select a major",
+      "semester": "Semester",
+      "allSemesters": "All Semesters",
+      "courseType": "Course Type",
+      "allTypes": "All Types",
+      "obligatory": "Obligatory",
+      "elective": "Elective",
+      "applyFilters": "Apply Filters",
+      "resetFilters": "Reset Filters",
+      "filters": "Filters",
+      "clearAll": "Clear All"
+    },
+    "card": {
+      "materials": "Materials",
+      "quizzes": "Quizzes",
+      "viewMaterials": "View Materials",
+      "viewQuizzes": "View Quizzes",
+      "viewDetails": "View Details",
+      "enroll": "Enroll",
+      "enrolled": "Enrolled",
+      "enrollInCourse": "Enroll in Course",
+      "enrollConfirmation": "Would you like to enroll in this course?",
+      "enrollSuccess": "Successfully enrolled in the course!",
+      "enrollSuccessDescription": "You can now access this course from your profile.",
+      "enrollFailed": "Failed to enroll",
+      "enrollFailedDescription": "Maybe you are already enrolled.",
+      "share": "Share Course"
+    },
+    "info": {
+      "title": "Course Information",
+      "backToCourses": "Back to Courses",
+      "overview": "Overview",
+      "resources": "Resources",
+      "description": "Description",
+      "noDescription": "No description available for this course.",
+      "courseCode": "Course Code",
+      "major": "Major",
+      "difficulty": "Difficulty",
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "hard": "Hard",
+      "statistics": "Statistics",
+      "totalMaterials": "Total Materials",
+      "totalQuizzes": "Total Quizzes",
+      "externalResources": "External Resources",
+      "noResources": "No external resources available",
+      "watchVideo": "Watch Video",
+      "viewResource": "View Resource",
+      "loading": "Loading course information...",
+      "error": "Failed to load course",
+      "errorTitle": "Failed to load course information",
+      "notFound": "Course not found",
+      "notFoundDescription": "The course you're looking for doesn't exist or has been removed.",
+      "credits": "Credits",
+      "overviewVideo": "Course Overview Video",
+      "learningResources": "Learning Resources",
+      "noResourcesTitle": "No additional resources yet",
+      "noResourcesDescription": "Check back later for learning resources and helpful links for this course.",
+      "demoPreview": "Demo Preview",
+      "openECampus": "Open in ECampus",
+      "visitResource": "Visit Resource"
+    },
     "list": {
       "title": "Courses",
       "description": "Browse and manage your courses",
@@ -253,24 +604,51 @@
     }
   },
   "materials": {
+    "page": {
+      "title": "Course Materials",
+      "loading": "Loading course materials…",
+      "error": "Error loading materials",
+      "backToCourse": "Back to Course"
+    },
     "explorer": {
       "title": "Course Materials",
-      "description": "Browse and manage course materials",
+      "description": "Access all course materials, organized by folders and files.",
+      "courseLabel": "Course #{{courseId}} · Materials Vault",
       "totalItems": "Total Items",
+      "item": "item",
+      "items": "items",
       "folders": "Folders",
       "files": "Files",
       "addFolder": "Add Folder",
       "addMaterial": "Add Material",
       "noMaterials": "No materials available",
+      "noMaterialsDescription": "There are no materials in this course yet.",
       "loading": "Loading course materials…",
       "uploadFile": "Upload File",
-      "createFolder": "Create Folder"
+      "createFolder": "Create Folder",
+      "manageMaterials": "Manage Materials",
+      "empty": "No materials available yet. Check back later!"
     },
     "folder": {
-      "title": "Folder",
+      "title": "Folders",
       "back": "Back to Materials",
+      "backToRoot": "Back to Root",
       "empty": "This folder is empty",
-      "addItem": "Add Item"
+      "emptyDescription": "No files or subfolders in this folder.",
+      "addItem": "Add Item",
+      "openFolder": "Open Folder",
+      "items": "items"
+    },
+    "card": {
+      "download": "Download",
+      "preview": "Preview",
+      "view": "View",
+      "delete": "Delete",
+      "edit": "Edit",
+      "size": "Size",
+      "uploadedOn": "Uploaded on",
+      "uploadedBy": "Uploaded by",
+      "files": "Files"
     },
     "form": {
       "folderName": "Folder Name",
@@ -279,7 +657,8 @@
       "materialNamePlaceholder": "Enter material name",
       "materialType": "Material Type",
       "selectFile": "Select File",
-      "dragDrop": "Drag and drop or click to upload"
+      "dragDrop": "Drag and drop or click to upload",
+      "maxSize": "Maximum file size: 50MB"
     },
     "types": {
       "pdf": "PDF Document",
@@ -295,15 +674,37 @@
       "deleteSuccess": "Material deleted successfully",
       "deleteError": "Failed to delete material",
       "folderCreated": "Folder created successfully",
-      "folderDeleted": "Folder deleted successfully"
+      "folderDeleted": "Folder deleted successfully",
+      "downloadStarted": "Download started"
     }
   },
   "quizzes": {
+    "page": {
+      "title": "Quizzes",
+      "showing": "Showing",
+      "of": "of",
+      "quizzes": "quizzes",
+      "noQuizzesToDisplay": "No quizzes to display",
+      "loading": "Loading quizzes...",
+      "backToCourse": "Back to Course"
+    },
+    "header": {
+      "title": "Course Quizzes",
+      "subtitle": "Test your knowledge",
+      "totalQuizzes": "Total Quizzes",
+      "addQuiz": "Add Quiz",
+      "back": "Back"
+    },
+    "toolbar": {
+      "gridView": "Grid View",
+      "listView": "List View"
+    },
     "list": {
       "title": "Quizzes",
       "description": "Browse and take quizzes",
       "addQuiz": "Add Quiz",
       "noQuizzes": "No quizzes available",
+      "noQuizzesDescription": "There are no quizzes for this course yet.",
       "totalQuizzes": "Total Quizzes",
       "viewMode": {
         "grid": "Grid View",
@@ -313,6 +714,7 @@
     },
     "card": {
       "questions": "Questions",
+      "question": "Question",
       "duration": "Duration",
       "minutes": "min",
       "difficulty": "Difficulty",
@@ -320,7 +722,59 @@
       "startQuiz": "Start Quiz",
       "continueQuiz": "Continue Quiz",
       "viewResults": "View Results",
-      "retakeQuiz": "Retake Quiz"
+      "retakeQuiz": "Retake Quiz",
+      "viewQuiz": "View Quiz",
+      "edit": "Edit",
+      "delete": "Delete",
+      "share": "Share Quiz",
+      "createdBy": "Created by",
+      "createdOn": "Created on"
+    },
+    "empty": {
+      "title": "No Quizzes Found",
+      "description": "There are no quizzes available for this course yet.",
+      "addFirst": "Add the first quiz"
+    },
+    "error": {
+      "title": "Failed to Load Quizzes",
+      "description": "Something went wrong while loading quizzes.",
+      "retry": "Try Again"
+    },
+    "loading": {
+      "title": "Loading Quizzes",
+      "description": "Please wait while we load the quizzes..."
+    },
+    "question": {
+      "title": "Quiz Questions",
+      "questionNumber": "Question",
+      "of": "of",
+      "selectAnswer": "Select an answer",
+      "multipleChoice": "Multiple Choice",
+      "trueFalse": "True/False",
+      "fillBlank": "Fill in the Blank",
+      "submitAnswer": "Submit Answer",
+      "nextQuestion": "Next Question",
+      "previousQuestion": "Previous Question",
+      "review": "Review Answers",
+      "submit": "Submit Quiz",
+      "confirmSubmit": "Are you sure you want to submit this quiz?",
+      "confirmSubmitDescription": "You have answered all questions. Once submitted, you cannot change your answers.",
+      "unansweredWarning": "You have unanswered questions. Are you sure you want to submit?"
+    },
+    "results": {
+      "title": "Quiz Results",
+      "score": "Your Score",
+      "passed": "Passed",
+      "failed": "Failed",
+      "correctAnswers": "Correct Answers",
+      "incorrectAnswers": "Incorrect Answers",
+      "totalQuestions": "Total Questions",
+      "timeTaken": "Time Taken",
+      "reviewAnswers": "Review Answers",
+      "retake": "Retake Quiz",
+      "backToQuizzes": "Back to Quizzes",
+      "congratulations": "Congratulations!",
+      "tryAgain": "Try again to improve your score"
     },
     "details": {
       "title": "Quiz",
@@ -336,6 +790,8 @@
       "incorrectAnswers": "Incorrect Answers"
     },
     "form": {
+      "title": "Add New Quiz",
+      "editTitle": "Edit Quiz",
       "quizTitle": "Quiz Title",
       "quizTitlePlaceholder": "Enter quiz title",
       "description": "Description",
@@ -348,56 +804,104 @@
       "answerOption": "Answer Option",
       "correctAnswer": "Correct Answer",
       "addOption": "Add Option",
-      "removeOption": "Remove Option"
+      "removeOption": "Remove Option",
+      "saveQuiz": "Save Quiz",
+      "saving": "Saving...",
+      "cancel": "Cancel"
     },
     "difficulty": {
       "easy": "Easy",
       "medium": "Medium",
-      "hard": "Hard"
+      "hard": "Hard",
+      "all": "All Levels"
     },
     "messages": {
       "quizStarted": "Quiz started",
       "quizSubmitted": "Quiz submitted successfully",
-      "quizSaved": "Quiz saved",
+      "quizSaved": "Quiz saved successfully",
+      "quizDeleted": "Quiz deleted successfully",
       "errorLoading": "Error loading quiz",
       "errorSubmitting": "Error submitting quiz",
+      "errorSaving": "Error saving quiz",
       "retry": "Retry"
     }
   },
   "universities": {
+    "page": {
+      "title": "Manage Universities",
+      "description": "Manage platform universities",
+      "searchPlaceholder": "Search by name or ID...",
+      "addUniversity": "Add University"
+    },
     "list": {
       "title": "Universities",
       "description": "Browse and manage universities",
       "addUniversity": "Add University",
       "noUniversities": "No universities available",
+      "noUniversitiesDescription": "There are no universities registered yet.",
       "searchPlaceholder": "Search universities..."
     },
+    "table": {
+      "headers": {
+        "id": "ID",
+        "name": "University Name",
+        "location": "Location",
+        "faculties": "Faculties",
+        "majors": "Majors",
+        "actions": "Actions"
+      },
+      "noData": "No universities found",
+      "loading": "Loading universities..."
+    },
     "details": {
+      "title": "University Details",
       "faculties": "Faculties",
       "majors": "Majors",
       "students": "Students",
+      "courses": "Courses",
+      "totalFaculties": "Total Faculties",
+      "totalMajors": "Total Majors",
       "addFaculty": "Add Faculty",
       "facultyName": "Faculty Name",
-      "noFaculties": "No faculties available"
+      "noFaculties": "No faculties available",
+      "noFacultiesDescription": "This university has no faculties yet.",
+      "manageFaculties": "Manage Faculties",
+      "back": "Back to Universities"
     },
     "faculty": {
-      "title": "Faculty",
+      "title": "Faculty Details",
       "majors": "Majors",
       "addMajor": "Add Major",
       "majorName": "Major Name",
-      "noMajors": "No majors available"
+      "noMajors": "No majors available",
+      "noMajorsDescription": "This faculty has no majors yet.",
+      "totalMajors": "Total Majors",
+      "totalCourses": "Total Courses",
+      "back": "Back to University"
     },
     "form": {
       "universityName": "University Name",
       "universityNamePlaceholder": "Enter university name",
+      "addUniversityTitle": "Add New University",
+      "editUniversityTitle": "Edit University",
       "location": "Location",
       "locationPlaceholder": "Enter location",
       "website": "Website",
       "websitePlaceholder": "Enter website URL",
       "facultyName": "Faculty Name",
       "facultyNamePlaceholder": "Enter faculty name",
+      "addFacultyTitle": "Add New Faculty",
+      "editFacultyTitle": "Edit Faculty",
       "majorName": "Major Name",
-      "majorNamePlaceholder": "Enter major name"
+      "majorNamePlaceholder": "Enter major name",
+      "addMajorTitle": "Add New Major",
+      "editMajorTitle": "Edit Major"
+    },
+    "actions": {
+      "manage": "Manage",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add"
     },
     "messages": {
       "universityAdded": "University added successfully",
@@ -408,37 +912,98 @@
       "facultyDeleted": "Faculty deleted successfully",
       "majorAdded": "Major added successfully",
       "majorUpdated": "Major updated successfully",
-      "majorDeleted": "Major deleted successfully"
+      "majorDeleted": "Major deleted successfully",
+      "error": "An error occurred"
     }
   },
   "users": {
+    "page": {
+      "title": "Manage Users",
+      "description": "View and manage platform users"
+    },
+    "search": {
+      "placeholder": "Search users...",
+      "searchBy": "Search by",
+      "name": "Name",
+      "email": "Email",
+      "id": "ID",
+      "search": "Search",
+      "filters": "Filters",
+      "applyFilters": "Apply Filters",
+      "resetFilters": "Reset Filters"
+    },
+    "filter": {
+      "role": "Role",
+      "allRoles": "All Roles",
+      "status": "Status",
+      "allStatuses": "All Statuses",
+      "university": "University",
+      "allUniversities": "All Universities"
+    },
     "list": {
       "title": "Users",
       "description": "Manage system users",
       "addUser": "Add User",
       "noUsers": "No users found",
+      "noUsersDescription": "No users match your search criteria.",
       "searchPlaceholder": "Search users..."
     },
     "table": {
       "headers": {
+        "id": "ID",
+        "avatar": "Avatar",
         "name": "Name",
         "email": "Email",
         "role": "Role",
         "status": "Status",
+        "university": "University",
         "joinedDate": "Joined Date",
+        "lastActive": "Last Active",
         "actions": "Actions"
-      }
+      },
+      "noData": "No users found",
+      "loading": "Loading users..."
     },
     "roles": {
       "admin": "Admin",
+      "superAdmin": "Super Admin",
       "writer": "Writer",
       "student": "Student",
-      "instructor": "Instructor"
+      "instructor": "Instructor",
+      "user": "User"
     },
     "status": {
       "active": "Active",
       "inactive": "Inactive",
-      "suspended": "Suspended"
+      "suspended": "Suspended",
+      "blocked": "Blocked",
+      "pending": "Pending"
+    },
+    "actions": {
+      "assignRole": "Assign Role",
+      "changeStatus": "Change Status",
+      "block": "Block User",
+      "unblock": "Unblock User",
+      "delete": "Delete User",
+      "viewProfile": "View Profile",
+      "sendMessage": "Send Message"
+    },
+    "dialogs": {
+      "assignRole": {
+        "title": "Assign Role",
+        "description": "Select a role to assign to this user",
+        "selectRole": "Select Role",
+        "confirm": "Assign Role",
+        "cancel": "Cancel"
+      },
+      "toggleStatus": {
+        "blockTitle": "Block User",
+        "unblockTitle": "Unblock User",
+        "blockDescription": "Are you sure you want to block this user? They will not be able to access the platform.",
+        "unblockDescription": "Are you sure you want to unblock this user? They will regain access to the platform.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
     },
     "form": {
       "fullName": "Full Name",
@@ -454,11 +1019,87 @@
       "userAdded": "User added successfully",
       "userUpdated": "User updated successfully",
       "userDeleted": "User deleted successfully",
+      "roleAssigned": "Role assigned successfully",
+      "statusChanged": "User status changed successfully",
+      "userBlocked": "User blocked successfully",
+      "userUnblocked": "User unblocked successfully",
       "errorLoading": "Error loading users",
       "errorSaving": "Error saving user"
     }
   },
   "profile": {
+    "page": {
+      "title": "My Profile",
+      "description": "View and manage your profile"
+    },
+    "header": {
+      "title": "Profile",
+      "editProfile": "Edit Profile",
+      "viewProfile": "View Profile",
+      "memberSince": "Member since",
+      "lastActive": "Last active",
+      "logout": "Logout"
+    },
+    "sections": {
+      "personalInfo": "Personal Information",
+      "academicInfo": "Academic Information",
+      "accountDetails": "Account Details",
+      "security": "Security Settings"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "bio": "Bio",
+      "avatar": "Profile Picture",
+      "university": "University",
+      "faculty": "Faculty",
+      "major": "Major",
+      "studentId": "Student ID",
+      "enrollmentYear": "Enrollment Year",
+      "expectedGraduation": "Expected Graduation"
+    },
+    "edit": {
+      "title": "Edit Profile",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "changePhoto": "Change Photo",
+      "removePhoto": "Remove Photo",
+      "uploadPhoto": "Upload Photo"
+    },
+    "password": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password",
+      "changing": "Changing..."
+    },
+    "enrolledCourses": {
+      "title": "Enrolled Courses",
+      "viewAll": "View All",
+      "noCourses": "No enrolled courses",
+      "noCoursesDescription": "You haven't enrolled in any courses yet."
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "quizzesTaken": "Quizzes Taken",
+      "materialsViewed": "Materials Viewed",
+      "coursesCompleted": "Courses Completed"
+    },
+    "roles": {
+      "student": "Student",
+      "admin": "Admin",
+      "moderator": "Moderator",
+      "contentCreator": "Content Creator"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "verified": "Verified",
+      "unverified": "Unverified"
+    },
     "title": "Profile",
     "editProfile": "Edit Profile",
     "personalInfo": "Personal Information",
@@ -481,7 +1122,13 @@
       "updateSuccess": "Profile updated successfully",
       "updateError": "Failed to update profile",
       "passwordChanged": "Password changed successfully",
-      "passwordError": "Failed to change password"
+      "passwordError": "Failed to change password",
+      "photoUpdated": "Profile photo updated",
+      "photoRemoved": "Profile photo removed",
+      "pictureUpdated": "Profile picture updated successfully!",
+      "pictureUpdateFailed": "Failed to upload profile picture",
+      "pictureRemoved": "Profile picture removed successfully!",
+      "pictureRemoveFailed": "Failed to remove profile picture"
     }
   },
   "dashboard": {
@@ -498,13 +1145,148 @@
     "newUsers": "New Users",
     "courseEnrollments": "Course Enrollments",
     "quizAttempts": "Quiz Attempts",
+    "platformAnalytics": {
+      "title": "Platform Analytics",
+      "liveData": "Live Data",
+      "description": "Comprehensive insights into platform growth and performance"
+    },
+    "heroMetrics": {
+      "totalUsers": {
+        "title": "Total Users",
+        "subtitle": "Active learners on the platform"
+      },
+      "totalQuizzes": {
+        "title": "Total Quizzes",
+        "subtitle": "Assessments created"
+      },
+      "totalMaterials": {
+        "title": "Total Materials",
+        "subtitle": "Learning resources available"
+      },
+      "quizAttempts": {
+        "title": "Quiz Attempts",
+        "subtitle": "In the last 30 days"
+      }
+    },
+    "platformOverview": {
+      "title": "Platform Overview",
+      "subtitle": "Institution & academic structure",
+      "keyMetrics": "Key metrics across the platform",
+      "universities": {
+        "label": "Universities",
+        "description": "Partner institutions"
+      },
+      "faculties": {
+        "label": "Faculties",
+        "description": "Academic departments"
+      },
+      "majors": {
+        "label": "Majors",
+        "description": "Study programs"
+      },
+      "courses": {
+        "label": "Courses",
+        "description": "Available courses"
+      }
+    },
+    "engagement": {
+      "title": "Engagement",
+      "subtitle": "Platform activity metrics",
+      "quizCompletion": "Quiz Completion",
+      "resourceUsage": "Resource Usage",
+      "avgQuizzesPerCourse": "Avg. Quizzes per Course",
+      "avgMaterialsPerCourse": "Avg. Materials per Course"
+    },
+    "growthAnalytics": {
+      "title": "Growth Analytics",
+      "subtitle": "6-month performance trends",
+      "all": "All",
+      "quizzes": "Quizzes",
+      "materials": "Materials",
+      "users": "Users",
+      "growthTrends": "Growth Trends",
+      "showingGrowth": "Showing growth metrics for the last 6 months",
+      "trendingUp": "Trending up by",
+      "trendingDown": "Trending down by",
+      "thisMonth": "this month",
+      "total": "Total"
+    },
+    "quickInsights": {
+      "totalMajors": {
+        "title": "Total Majors",
+        "subtext": "Across all partner universities"
+      },
+      "quizToCourseRatio": {
+        "title": "Quiz to Course Ratio",
+        "subtext": "Average quizzes per course"
+      },
+      "monthlyActiveAttempts": {
+        "title": "Monthly Active Attempts",
+        "subtext": "Quiz submissions this month"
+      }
+    },
+    "footerStats": {
+      "totalLearningResources": "Total Learning Resources",
+      "partnerUniversities": "Partner Universities",
+      "courseQuizCoverage": "Course Quiz Coverage"
+    },
     "writer": {
       "title": "Writer Statistics",
+      "subtitle": "Track your content performance and activity",
+      "lastUpdated": "Last updated",
+      "justNow": "Just now",
       "myMaterials": "My Materials",
       "myQuizzes": "My Quizzes",
       "totalViews": "Total Views",
       "totalDownloads": "Total Downloads",
-      "recentUploads": "Recent Uploads"
+      "recentUploads": "Recent Uploads",
+      "stats": {
+        "totalMaterials": {
+          "title": "Total Materials",
+          "change": "+{{count}} from last month"
+        },
+        "totalQuizzes": {
+          "title": "Total Quizzes",
+          "change": "+{{count}} from last month"
+        },
+        "thisMonth": {
+          "title": "This Month",
+          "description": "Content published"
+        },
+        "avgRating": {
+          "title": "Average Rating",
+          "description": "Based on 1,234 ratings"
+        },
+        "totalViewsCard": {
+          "title": "Total Views",
+          "change": "+2,350 from last month"
+        },
+        "activeHours": {
+          "title": "Active Hours",
+          "description": "This month"
+        }
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "description": "Your latest published content",
+        "views": "views",
+        "material": "Material",
+        "quiz": "Quiz"
+      },
+      "topContent": {
+        "title": "Top Performing Content",
+        "description": "Most viewed this month",
+        "views": "views"
+      },
+      "performanceOverview": {
+        "title": "Performance Overview",
+        "description": "Views and engagement over time",
+        "chartComingSoon": "Chart visualization coming soon",
+        "metricsPlaceholder": "Performance metrics will be displayed here"
+      }
+    },
+    "statisticsCard": {
+      "thanLastMonth": "than last month"
     }
   },
   "header": {

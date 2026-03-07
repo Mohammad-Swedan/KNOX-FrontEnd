@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import { Toaster } from "sonner";
 import { I18nProvider } from "./providers/I18nProvider.tsx";
@@ -11,15 +12,17 @@ import { AuthProvider } from "@/app/providers/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <AuthProvider>
-        <I18nProvider>
-          <QueryProvider>
-            <RouterProviderApp />
-            <Toaster richColors position="top-right" />
-          </QueryProvider>
-        </I18nProvider>
-      </AuthProvider>
-    </ThemeProvider>
-  </StrictMode>
+    <HelmetProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <AuthProvider>
+          <I18nProvider>
+            <QueryProvider>
+              <RouterProviderApp />
+              <Toaster richColors position="top-right" />
+            </QueryProvider>
+          </I18nProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </HelmetProvider>
+  </StrictMode>,
 );

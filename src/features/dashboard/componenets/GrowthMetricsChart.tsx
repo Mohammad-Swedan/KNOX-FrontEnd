@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { TrendingUpIcon } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
@@ -51,10 +52,15 @@ const GrowthMetricsChart = ({
   usersGrowth,
   className,
 }: Props) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+
   // Transform data for the chart
   const chartData = quizzesGrowth.map((quiz, index) => {
     const monthDate = new Date(quiz.month);
-    const monthName = monthDate.toLocaleDateString("en-US", { month: "short" });
+    const monthName = monthDate.toLocaleDateString(isRTL ? "ar-SA" : "en-US", {
+      month: "short",
+    });
 
     return {
       month: monthName,
@@ -68,7 +74,7 @@ const GrowthMetricsChart = ({
   const totalQuizzes = quizzesGrowth.reduce((sum, item) => sum + item.count, 0);
   const totalMaterials = materialsGrowth.reduce(
     (sum, item) => sum + item.count,
-    0
+    0,
   );
   const totalUsers = usersGrowth.reduce((sum, item) => sum + item.count, 0);
 
@@ -85,13 +91,15 @@ const GrowthMetricsChart = ({
 
   return (
     <Card className={className}>
-      <CardHeader>
-        <CardTitle>Growth Trends</CardTitle>
-        <CardDescription>
-          Showing growth metrics for the last 6 months
+      <CardHeader className="p-3 md:p-4 lg:p-6">
+        <CardTitle className="text-sm md:text-base lg:text-lg">
+          {t("dashboard.growthAnalytics.growthTrends")}
+        </CardTitle>
+        <CardDescription className="text-xs md:text-sm">
+          {t("dashboard.growthAnalytics.showingGrowth")}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3 md:p-4 lg:p-6">
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
@@ -174,18 +182,25 @@ const GrowthMetricsChart = ({
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending {parseFloat(quizGrowth) >= 0 ? "up" : "down"} by{" "}
-              {Math.abs(parseFloat(quizGrowth))}% this month{" "}
-              <TrendingUpIcon className="h-4 w-4" />
+      <CardFooter className="p-3 md:p-4 lg:p-6">
+        <div className="flex w-full items-start gap-2 text-xs md:text-sm">
+          <div className="grid gap-1.5 md:gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2 font-medium leading-none">
+              {parseFloat(quizGrowth) >= 0
+                ? t("dashboard.growthAnalytics.trendingUp")
+                : t("dashboard.growthAnalytics.trendingDown")}{" "}
+              {Math.abs(parseFloat(quizGrowth))}%{" "}
+              {t("dashboard.growthAnalytics.thisMonth")}{" "}
+              <TrendingUpIcon className="h-3.5 w-3.5 md:h-4 md:w-4" />
             </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              Total: {totalQuizzes.toLocaleString()} quizzes,{" "}
-              {totalMaterials.toLocaleString()} materials,{" "}
-              {totalUsers.toLocaleString()} users
+            <div className="flex flex-wrap items-center gap-1 md:gap-2 leading-none text-muted-foreground text-[10px] md:text-sm">
+              {t("dashboard.growthAnalytics.total")}:{" "}
+              {totalQuizzes.toLocaleString()}{" "}
+              {t("dashboard.growthAnalytics.quizzes")},{" "}
+              {totalMaterials.toLocaleString()}{" "}
+              {t("dashboard.growthAnalytics.materials")},{" "}
+              {totalUsers.toLocaleString()}{" "}
+              {t("dashboard.growthAnalytics.users")}
             </div>
           </div>
         </div>

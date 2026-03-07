@@ -1,4 +1,36 @@
 {
+  "seo": {
+    "home": {
+      "title": "يوني-هاب | منصة التعلم الجامعي الشاملة",
+      "description": "منصة تعليمية شاملة للطلاب الجامعيين. احصل على مواد دراسية، اختبارات تفاعلية، وإرشاد أكاديمي ذكي. انضم لآلاف الطلاب الناجحين.",
+      "keywords": "تعليم جامعي، مواد دراسية، اختبارات، ملخصات، جامعة، طلاب، تعلم، منصة تعليمية، اختبارات تفاعلية، موارد أكاديمية"
+    },
+    "about": {
+      "title": "عن يوني-هاب",
+      "description": "تعرف على مهمة يوني-هاب في تطوير التعليم الجامعي. اكتشف كيف نساعد الطلاب على النجاح من خلال موارد تعليمية منظمة واختبارات تفاعلية ودعم مجتمعي.",
+      "keywords": "عن يوني-هاب، منصة تعلم جامعي، مهمة تعليمية، نجاح الطلاب، موارد أكاديمية، مجتمع تعلم"
+    },
+    "courses": {
+      "title": "المقررات الدراسية",
+      "description": "استكشف كتالوج المقررات الشامل. اعثر على مواد دراسية واختبارات وموارد منظمة حسب الجامعة والكلية والتخصص.",
+      "keywords": "مقررات جامعية، مواد دراسية، موارد تعليمية، مقررات أكاديمية، كتالوج المقررات، مواد جامعية"
+    },
+    "login": {
+      "title": "تسجيل الدخول",
+      "description": "سجل دخولك إلى حسابك في يوني-هاب للوصول إلى مواد دراسية مخصصة، وتتبع تقدمك، والتواصل مع زملائك الطلاب.",
+      "keywords": "تسجيل دخول، دخول، بوابة الطالب، الوصول للحساب"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "description": "انضم إلى يوني-هاب اليوم واحصل على وصول مجاني لآلاف المواد الدراسية والاختبارات التفاعلية والإرشاد الأكاديمي الذكي.",
+      "keywords": "تسجيل، إنشاء حساب، انضمام، تسجيل طالب"
+    },
+    "profile": {
+      "title": "ملفي الشخصي",
+      "description": "إدارة ملفك الشخصي في يوني-هاب، تتبع تقدمك في التعلم، وتخصيص تفضيلاتك الدراسية.",
+      "keywords": "ملف شخصي، ملف الطالب، إعدادات الحساب، تقدم التعلم"
+    }
+  },
   "common": {
     "appName": "يوني-هاب",
     "buttons": {
@@ -22,7 +54,8 @@
       "clearFilters": "مسح الفلاتر",
       "apply": "تطبيق",
       "next": "التالي",
-      "previous": "السابق"
+      "previous": "السابق",
+      "tryAgain": "حاول مرة أخرى"
     },
     "actions": {
       "loading": "جاري التحميل...",
@@ -139,10 +172,15 @@
       "cta": {
         "getStarted": "ابدأ مجانًا",
         "watchDemo": "شاهد العرض التوضيحي",
-        "learnMore": "اعرف المزيد"
+        "learnMore": "اعرف المزيد",
+        "browseMaterials": "تصفح المواد"
       }
     },
     "features": {
+      "sectionBadge": "ميزات قوية",
+      "sectionTitle": "كل ما تحتاجه",
+      "sectionTitleHighlight": "للتفوق في دراستك",
+      "sectionDescription": "يجمع يوني-هاب جميع الأدوات التي تحتاجها للنجاح الأكاديمي في منصة واحدة مصممة خصيصًا لطلاب الجامعات.",
       "studyMaterials": {
         "title": "المواد الدراسية",
         "description": "الوصول إلى المواد الدراسية المنسقة، وملاحظات المحاضرات، والموارد المنظمة حسب المادة والموضوع."
@@ -184,6 +222,235 @@
         "description": "المساعدة عندما تحتاجها"
       }
     },
+    "howItWorks": {
+      "badge": "عملية بسيطة",
+      "title": "كيف",
+      "titleHighlight": "يعمل",
+      "description": "ابدأ مع يوني-هاب في أربع خطوات بسيطة وابدأ رحلتك نحو التميز الأكاديمي.",
+      "steps": {
+        "createAccount": {
+          "number": "٠١",
+          "title": "إنشاء حساب",
+          "description": "سجل مجانًا في ثوانٍ. لا تحتاج بطاقة ائتمان للبدء مع يوني-هاب."
+        },
+        "findCourses": {
+          "number": "٠٢",
+          "title": "ابحث عن مقرراتك",
+          "description": "ابحث واختر جامعتك ومقرراتك. سنخصص تجربة التعلم لك."
+        },
+        "accessMaterials": {
+          "number": "٠٣",
+          "title": "الوصول للمواد",
+          "description": "استكشف المواد الدراسية الشاملة والملاحظات والموارد المنسقة لمقرراتك."
+        },
+        "succeed": {
+          "number": "٠٤",
+          "title": "تفوق وانجح",
+          "description": "تدرب مع الاختبارات، واحصل على إرشاد الذكاء الاصطناعي، وتتبع تقدمك نحو النجاح الأكاديمي."
+        }
+      }
+    },
+    "stats": {
+      "studyMaterials": "مادة دراسية",
+      "quizQuestions": "سؤال اختبار",
+      "activeStudents": "طالب نشط",
+      "universities": "جامعة"
+    },
+    "testimonials": {
+      "badge": "قصص الطلاب",
+      "title": "محبوب من الطلاب",
+      "titleHighlight": "حول العالم",
+      "description": "انضم لآلاف الطلاب الذين غيروا رحلتهم الأكاديمية مع يوني-هاب.",
+      "items": {
+        "sarah": {
+          "name": "سارة أحمد",
+          "role": "طالبة طب",
+          "university": "جامعة القاهرة",
+          "content": "يوني-هاب غيّر تمامًا طريقة دراستي. ساعدني المشرف بالذكاء الاصطناعي في فهم مفاهيم التشريح المعقدة التي كنت أعاني منها لأشهر. تحسنت درجاتي بشكل ملحوظ!"
+        },
+        "michael": {
+          "name": "محمد خالد",
+          "role": "طالب هندسة",
+          "university": "جامعة الملك عبدالعزيز",
+          "content": "بنك الاختبارات رائع! تدربت على آلاف الأسئلة وشعرت بالاستعداد التام لامتحاناتي. ميزة التغذية الراجعة الفورية غيرت قواعد اللعبة."
+        },
+        "emma": {
+          "name": "نور الهدى",
+          "role": "طالبة قانون",
+          "university": "جامعة الأزهر",
+          "content": "وجود جميع موادي الدراسية منظمة في مكان واحد وفر لي ساعات لا تحصى. المنصة بديهية وجودة المحتوى استثنائية."
+        },
+        "david": {
+          "name": "أحمد يوسف",
+          "role": "طالب علوم حاسب",
+          "university": "جامعة الملك سعود",
+          "content": "ميزة المجتمع ساعدتني في التواصل مع طلاب علوم الحاسب الآخرين. نتشارك الموارد ونساعد بعضنا البعض. إنه مثل وجود مجموعة دراسية متاحة على مدار الساعة."
+        },
+        "lisa": {
+          "name": "ليلى عمر",
+          "role": "طالبة علم نفس",
+          "university": "الجامعة الأمريكية",
+          "content": "كنت متشككة في البداية، لكن المشرف الأكاديمي بالذكاء الاصطناعي يفهم أسئلتي حقًا ويقدم شروحات مفصلة ودقيقة. تستحق كل قرش!"
+        },
+        "james": {
+          "name": "عمر حسن",
+          "role": "طالب إدارة أعمال",
+          "university": "جامعة عين شمس",
+          "content": "ساعدني يوني-هاب في التحضير لامتحانات إدارة الأعمال بكفاءة. مسارات التعلم المنظمة وتتبع التقدم أبقتني متحمسًا طوال رحلتي."
+        }
+      }
+    },
+    "cta": {
+      "badge": "ابدأ مجانًا اليوم",
+      "title": "مستعد لتغيير",
+      "titleHighlight": "رحلتك الأكاديمية؟",
+      "description": "انضم لآلاف الطلاب الذين يحققون أهدافهم الأكاديمية مع يوني-هاب. ابدأ في ثوانٍ — لا حاجة لبطاقة ائتمان.",
+      "benefits": {
+        "materials": "مكتبة مواد دراسية شاملة",
+        "quizzes": "بنك اختبارات ذكي مع تغذية راجعة فورية",
+        "ai": "إرشاد أكاديمي مدعوم بالذكاء الاصطناعي",
+        "community": "تواصل مع مجتمع الطلاب"
+      },
+      "getStarted": "ابدأ مجانًا",
+      "browseMaterials": "تصفح المواد"
+    },
+    "about": {
+      "hero": {
+        "title": "مرحبًا بك في يوني-هاب",
+        "description": "منصتك الشاملة لإدارة التعلم الجامعي. وحّد دراستك، وتعاون مع زملائك، وتفوق أكاديميًا.",
+        "getStarted": "ابدأ الآن",
+        "learnMore": "اعرف المزيد"
+      },
+      "valueCards": {
+        "allInOne": {
+          "title": "الكل في مكان واحد",
+          "description": "لا مزيد من التنقل بين منصات متعددة. كل ما تحتاجه لدراستك موحد هنا."
+        },
+        "saveTime": {
+          "title": "وفر الوقت",
+          "description": "الوصول السريع للمواد المنظمة يعني وقتًا أقل في البحث ووقتًا أكثر في التعلم."
+        },
+        "studySmarter": {
+          "title": "ادرس بذكاء",
+          "description": "الاختبارات التفاعلية والموارد المنظمة تساعدك في التحضير الفعال للامتحانات."
+        }
+      },
+      "mission": {
+        "title": "رسالتنا",
+        "description": "نحن في مهمة للقضاء على فوضى الموارد التعليمية المتناثرة. يوني-هاب يوفر للطلاب وجهة واحدة موثوقة لجميع احتياجاتهم الأكاديمية مع تمكين المعلمين بأدوات إدارة محتوى قوية.",
+        "highlight": "وجهة واحدة موثوقة"
+      },
+      "features": {
+        "title": "لماذا تختار يوني-هاب؟",
+        "centralizedLearning": {
+          "title": "تعلم موحد",
+          "description": "الوصول إلى جميع مقرراتك وموادك ومواردك في منصة واحدة موحدة"
+        },
+        "collaborative": {
+          "title": "مجتمع تعاوني",
+          "description": "تواصل مع الطلاب والمعلمين ومنشئي المحتوى عبر الجامعات"
+        },
+        "assessments": {
+          "title": "تقييمات تفاعلية",
+          "description": "اختبر معرفتك بالاختبارات وتتبع تقدمك في الوقت الفعلي"
+        },
+        "accessible": {
+          "title": "متاح في أي مكان",
+          "description": "ادرس على أي جهاز مع تصميم منصتنا المتجاوب للجوال"
+        },
+        "efficient": {
+          "title": "إدارة محتوى فعالة",
+          "description": "المجلدات والفئات المنظمة تجعل العثور على الموارد سهلاً"
+        },
+        "secure": {
+          "title": "آمن وموثوق",
+          "description": "بياناتك وتقدمك الأكاديمي محميان بأمان على مستوى الصناعة"
+        }
+      },
+      "howItWorks": {
+        "title": "كيف يعمل",
+        "step1": {
+          "title": "أنشئ حسابك",
+          "description": "سجل في ثوانٍ واحصل على وصول فوري لمنصتنا"
+        },
+        "step2": {
+          "title": "تصفح وسجل",
+          "description": "استكشف المقررات والمواد المتعلقة بدراستك"
+        },
+        "step3": {
+          "title": "تعلم وتدرب",
+          "description": "الوصول للمواد، وأداء الاختبارات، وتتبع تقدمك"
+        },
+        "step4": {
+          "title": "انجح وتطور",
+          "description": "حقق أهدافك الأكاديمية مع التعلم المنظم"
+        }
+      },
+      "whatYouCanDo": {
+        "title": "ماذا يمكنك فعله على يوني-هاب",
+        "access": {
+          "title": "الوصول والتعلم",
+          "items": {
+            "browse": "تصفح والوصول لمواد المقررات منظمة حسب الموضوع",
+            "download": "تحميل ملفات PDF والملاحظات وأدلة الدراسة للاستخدام دون اتصال",
+            "quizzes": "أداء الاختبارات لاختبار معرفتك وتتبع درجاتك",
+            "search": "البحث والتصفية للعثور على ما تحتاجه بالضبط"
+          }
+        },
+        "contribute": {
+          "title": "المساهمة والمشاركة",
+          "items": {
+            "upload": "رفع موادك الدراسية لمساعدة زملائك الطلاب",
+            "create": "إنشاء ونشر اختبارات للتدريب والمراجعة",
+            "organize": "تنظيم المحتوى في مجلدات لسهولة التنقل",
+            "build": "بناء مكتبة موارد لمقرراتك"
+          }
+        }
+      },
+      "keyFeatures": {
+        "title": "كل ما تحتاجه للنجاح",
+        "selfPaced": {
+          "title": "تعلم بالسرعة التي تناسبك",
+          "description": "ادرس بالسرعة التي تناسبك، في أي وقت وأي مكان. الوصول للمواد على مدار الساعة وتعلم وفق جدولك."
+        },
+        "progress": {
+          "title": "تتبع التقدم",
+          "description": "راقب أداءك بتحليلات مفصلة ورؤى حول درجات الاختبارات وإتمام المقررات."
+        },
+        "library": {
+          "title": "مكتبة محتوى غنية",
+          "description": "الوصول لآلاف المواد الدراسية وملاحظات المحاضرات وملفات PDF والموارد المنظمة حسب المقرر والموضوع."
+        },
+        "community": {
+          "title": "مجتمع نشط",
+          "description": "تواصل مع زملائك الطلاب والمعلمين. شارك المعرفة وتعاون في التعلم."
+        }
+      },
+      "contribute": {
+        "title": "كن منشئ محتوى",
+        "description": "شارك خبرتك وساعد آلاف الطلاب على النجاح. انضم لمجتمعنا من المعلمين ومنشئي المحتوى اليوم!",
+        "phoneLabel": "رقم الهاتف",
+        "phonePlaceholder": "أدخل رقم هاتفك",
+        "phoneNote": "سنتواصل معك خلال 24-48 ساعة لمناقشة طلبك وتوفير صلاحيات المنشئ.",
+        "submitButton": "تقدم لتصبح منشئ",
+        "submitting": "جاري الإرسال...",
+        "loginNote": "ملاحظة: تحتاج لتسجيل الدخول لتقديم طلبك",
+        "benefits": {
+          "title": "كمنشئ، ستحصل على:",
+          "dashboard": "لوحة تحكم كاملة لإدارة المحتوى",
+          "analytics": "تحليلات أداء المحتوى",
+          "recognition": "تقدير في مجتمع المنشئين",
+          "support": "دعم وتدريب ذو أولوية"
+        }
+      },
+      "finalCta": {
+        "title": "مستعد لتغيير تعلمك؟",
+        "description": "انضم لآلاف الطلاب المستفيدين بالفعل من موارد التعلم المنظمة والمتاحة والشاملة.",
+        "createAccount": "أنشئ حسابًا مجانيًا",
+        "signIn": "تسجيل الدخول",
+        "browseCourses": "تصفح المقررات"
+      }
+    },
     "notFound": {
       "whoops": "عذرًا!",
       "title": "حدث خطأ ما",
@@ -192,6 +459,90 @@
     }
   },
   "courses": {
+    "page": {
+      "title": "المقررات",
+      "showing": "عرض",
+      "to": "إلى",
+      "of": "من",
+      "courses": "مقررات",
+      "noCoursesToDisplay": "لا توجد مقررات لعرضها",
+      "selectFilters": "اختر الفلاتر لعرض المقررات",
+      "selectFiltersDescription": "يرجى اختيار الجامعة والكلية والتخصص على الأقل لعرض المقررات المتاحة",
+      "noCoursesFound": "لم يتم العثور على مقررات",
+      "noCoursesFoundDescription": "حاول تعديل الفلاتر للعثور على المقررات التي تبحث عنها",
+      "failedToLoad": "فشل تحميل المقررات",
+      "loadingCourses": "جاري تحميل المقررات...",
+      "tryAgain": "حاول مرة أخرى"
+    },
+    "filter": {
+      "title": "تصفية المقررات",
+      "university": "الجامعة",
+      "selectUniversity": "اختر الجامعة",
+      "faculty": "الكلية",
+      "selectFaculty": "اختر الكلية",
+      "major": "التخصص",
+      "selectMajor": "اختر التخصص",
+      "semester": "الفصل الدراسي",
+      "allSemesters": "جميع الفصول",
+      "courseType": "نوع المقرر",
+      "allTypes": "جميع الأنواع",
+      "obligatory": "إجباري",
+      "elective": "اختياري",
+      "applyFilters": "تطبيق الفلاتر",
+      "resetFilters": "إعادة تعيين الفلاتر",
+      "filters": "الفلاتر",
+      "clearAll": "مسح الكل"
+    },
+    "card": {
+      "materials": "المواد",
+      "quizzes": "الاختبارات",
+      "viewMaterials": "عرض المواد",
+      "viewQuizzes": "عرض الاختبارات",
+      "viewDetails": "عرض التفاصيل",
+      "enroll": "تسجيل",
+      "enrolled": "مسجّل",
+      "enrollInCourse": "التسجيل في المقرر",
+      "enrollConfirmation": "هل تريد التسجيل في هذا المقرر؟",
+      "enrollSuccess": "تم التسجيل في المقرر بنجاح!",
+      "enrollSuccessDescription": "يمكنك الآن الوصول إلى هذا المقرر من ملفك الشخصي.",
+      "enrollFailed": "فشل التسجيل",
+      "enrollFailedDescription": "ربما أنت مسجّل بالفعل.",
+      "share": "مشاركة المقرر"
+    },
+    "info": {
+      "title": "معلومات المقرر",
+      "backToCourses": "العودة إلى المقررات",
+      "overview": "نظرة عامة",
+      "resources": "الموارد",
+      "description": "الوصف",
+      "noDescription": "لا يوجد وصف متاح لهذا المقرر.",
+      "courseCode": "كود المقرر",
+      "major": "التخصص",
+      "difficulty": "مستوى الصعوبة",
+      "easy": "سهل",
+      "moderate": "متوسط",
+      "hard": "صعب",
+      "statistics": "الإحصائيات",
+      "totalMaterials": "إجمالي المواد",
+      "totalQuizzes": "إجمالي الاختبارات",
+      "externalResources": "الموارد الخارجية",
+      "noResources": "لا توجد موارد خارجية متاحة",
+      "watchVideo": "مشاهدة الفيديو",
+      "viewResource": "عرض المورد",
+      "loading": "جاري تحميل معلومات المقرر...",
+      "error": "فشل تحميل المقرر",
+      "errorTitle": "فشل تحميل معلومات المقرر",
+      "notFound": "المقرر غير موجود",
+      "notFoundDescription": "المقرر الذي تبحث عنه غير موجود أو تم حذفه.",
+      "credits": "الساعات المعتمدة",
+      "overviewVideo": "فيديو نظرة عامة على المقرر",
+      "learningResources": "مصادر التعلم",
+      "noResourcesTitle": "لا توجد موارد إضافية بعد",
+      "noResourcesDescription": "تحقق لاحقاً لمصادر التعلم والروابط المفيدة لهذا المقرر.",
+      "demoPreview": "معاينة توضيحية",
+      "openECampus": "فتح في المنصة التعليمية",
+      "visitResource": "زيارة المورد"
+    },
     "list": {
       "title": "المقررات",
       "description": "تصفح وإدارة مقرراتك",
@@ -253,24 +604,51 @@
     }
   },
   "materials": {
+    "page": {
+      "title": "مواد المقرر",
+      "loading": "جاري تحميل مواد المقرر…",
+      "error": "خطأ في تحميل المواد",
+      "backToCourse": "العودة إلى المقرر"
+    },
     "explorer": {
       "title": "مواد المقرر",
-      "description": "تصفح وإدارة مواد المقرر",
+      "description": "الوصول إلى جميع مواد المقرر، منظمة حسب المجلدات والملفات.",
+      "courseLabel": "مقرر #{{courseId}} · مخزن المواد",
       "totalItems": "إجمالي العناصر",
+      "item": "عنصر",
+      "items": "عناصر",
       "folders": "المجلدات",
       "files": "الملفات",
       "addFolder": "إضافة مجلد",
       "addMaterial": "إضافة مادة",
       "noMaterials": "لا توجد مواد متاحة",
+      "noMaterialsDescription": "لا توجد مواد في هذا المقرر حتى الآن.",
       "loading": "جاري تحميل مواد المقرر…",
       "uploadFile": "رفع ملف",
-      "createFolder": "إنشاء مجلد"
+      "createFolder": "إنشاء مجلد",
+      "manageMaterials": "إدارة المواد",
+      "empty": "لا توجد مواد متاحة بعد. تحقق لاحقاً!"
     },
     "folder": {
-      "title": "مجلد",
+      "title": "المجلدات",
       "back": "العودة إلى المواد",
+      "backToRoot": "العودة إلى الجذر",
       "empty": "هذا المجلد فارغ",
-      "addItem": "إضافة عنصر"
+      "emptyDescription": "لا توجد ملفات أو مجلدات فرعية في هذا المجلد.",
+      "addItem": "إضافة عنصر",
+      "openFolder": "فتح المجلد",
+      "items": "عناصر"
+    },
+    "card": {
+      "download": "تحميل",
+      "preview": "معاينة",
+      "view": "عرض",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "size": "الحجم",
+      "uploadedOn": "تم الرفع في",
+      "uploadedBy": "تم الرفع بواسطة",
+      "files": "الملفات"
     },
     "form": {
       "folderName": "اسم المجلد",
@@ -279,7 +657,8 @@
       "materialNamePlaceholder": "أدخل اسم المادة",
       "materialType": "نوع المادة",
       "selectFile": "اختر ملف",
-      "dragDrop": "اسحب وأفلت أو انقر للرفع"
+      "dragDrop": "اسحب وأفلت أو انقر للرفع",
+      "maxSize": "الحد الأقصى لحجم الملف: 50 ميجابايت"
     },
     "types": {
       "pdf": "مستند PDF",
@@ -295,15 +674,37 @@
       "deleteSuccess": "تم حذف المادة بنجاح",
       "deleteError": "فشل حذف المادة",
       "folderCreated": "تم إنشاء المجلد بنجاح",
-      "folderDeleted": "تم حذف المجلد بنجاح"
+      "folderDeleted": "تم حذف المجلد بنجاح",
+      "downloadStarted": "بدأ التحميل"
     }
   },
   "quizzes": {
+    "page": {
+      "title": "الاختبارات",
+      "showing": "عرض",
+      "of": "من",
+      "quizzes": "اختبارات",
+      "noQuizzesToDisplay": "لا توجد اختبارات لعرضها",
+      "loading": "جاري تحميل الاختبارات...",
+      "backToCourse": "العودة إلى المقرر"
+    },
+    "header": {
+      "title": "اختبارات المقرر",
+      "subtitle": "اختبر معرفتك",
+      "totalQuizzes": "إجمالي الاختبارات",
+      "addQuiz": "إضافة اختبار",
+      "back": "رجوع"
+    },
+    "toolbar": {
+      "gridView": "عرض الشبكة",
+      "listView": "عرض القائمة"
+    },
     "list": {
       "title": "الاختبارات",
       "description": "تصفح وقم بحل الاختبارات",
       "addQuiz": "إضافة اختبار",
       "noQuizzes": "لا توجد اختبارات متاحة",
+      "noQuizzesDescription": "لا توجد اختبارات لهذا المقرر حتى الآن.",
       "totalQuizzes": "إجمالي الاختبارات",
       "viewMode": {
         "grid": "عرض الشبكة",
@@ -312,15 +713,68 @@
       "back": "رجوع"
     },
     "card": {
-      "questions": "أسئلة",
+      "questions": "الأسئلة",
+      "question": "سؤال",
       "duration": "المدة",
       "minutes": "دقيقة",
       "difficulty": "الصعوبة",
       "attempts": "المحاولات",
-      "startQuiz": "بدء الاختبار",
-      "continueQuiz": "متابعة الاختبار",
+      "startQuiz": "ابدأ الاختبار",
+      "continueQuiz": "استمر في الاختبار",
       "viewResults": "عرض النتائج",
-      "retakeQuiz": "إعادة الاختبار"
+      "retakeQuiz": "إعادة الاختبار",
+      "viewQuiz": "عرض الاختبار",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "share": "مشاركة الاختبار",
+      "createdBy": "أنشأه",
+      "createdOn": "أنشئ في"
+    },
+    "empty": {
+      "title": "لم يتم العثور على اختبارات",
+      "description": "لا توجد اختبارات متاحة لهذا المقرر حتى الآن.",
+      "addFirst": "أضف أول اختبار"
+    },
+    "error": {
+      "title": "فشل تحميل الاختبارات",
+      "description": "حدث خطأ أثناء تحميل الاختبارات.",
+      "retry": "حاول مرة أخرى"
+    },
+    "loading": {
+      "title": "جاري تحميل الاختبارات",
+      "description": "يرجى الانتظار أثناء تحميل الاختبارات..."
+    },
+    "question": {
+      "title": "أسئلة الاختبار",
+      "questionNumber": "سؤال",
+      "of": "من",
+      "selectAnswer": "اختر إجابة",
+      "multipleChoice": "اختيار من متعدد",
+      "trueFalse": "صح/خطأ",
+      "fillBlank": "املأ الفراغ",
+      "submitAnswer": "إرسال الإجابة",
+      "nextQuestion": "السؤال التالي",
+      "previousQuestion": "السؤال السابق",
+      "review": "مراجعة الإجابات",
+      "submit": "إرسال الاختبار",
+      "confirmSubmit": "هل أنت متأكد من إرسال هذا الاختبار؟",
+      "confirmSubmitDescription": "لقد أجبت على جميع الأسئلة. بمجرد الإرسال، لا يمكنك تغيير إجاباتك.",
+      "unansweredWarning": "لديك أسئلة لم تتم الإجابة عليها. هل أنت متأكد من الإرسال؟"
+    },
+    "results": {
+      "title": "نتائج الاختبار",
+      "score": "درجتك",
+      "passed": "ناجح",
+      "failed": "راسب",
+      "correctAnswers": "الإجابات الصحيحة",
+      "incorrectAnswers": "الإجابات الخاطئة",
+      "totalQuestions": "إجمالي الأسئلة",
+      "timeTaken": "الوقت المستغرق",
+      "reviewAnswers": "مراجعة الإجابات",
+      "retake": "إعادة الاختبار",
+      "backToQuizzes": "العودة إلى الاختبارات",
+      "congratulations": "تهانينا!",
+      "tryAgain": "حاول مرة أخرى لتحسين درجتك"
     },
     "details": {
       "title": "اختبار",
@@ -331,16 +785,18 @@
       "previousQuestion": "السؤال السابق",
       "submitQuiz": "إرسال الاختبار",
       "timeRemaining": "الوقت المتبقي",
-      "score": "النتيجة",
+      "score": "الدرجة",
       "correctAnswers": "الإجابات الصحيحة",
       "incorrectAnswers": "الإجابات الخاطئة"
     },
     "form": {
+      "title": "إضافة اختبار جديد",
+      "editTitle": "تعديل الاختبار",
       "quizTitle": "عنوان الاختبار",
       "quizTitlePlaceholder": "أدخل عنوان الاختبار",
       "description": "الوصف",
       "descriptionPlaceholder": "أدخل وصف الاختبار",
-      "duration": "المدة (دقائق)",
+      "duration": "المدة (بالدقائق)",
       "difficulty": "مستوى الصعوبة",
       "addQuestion": "إضافة سؤال",
       "questionText": "نص السؤال",
@@ -348,56 +804,104 @@
       "answerOption": "خيار الإجابة",
       "correctAnswer": "الإجابة الصحيحة",
       "addOption": "إضافة خيار",
-      "removeOption": "إزالة خيار"
+      "removeOption": "إزالة الخيار",
+      "saveQuiz": "حفظ الاختبار",
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء"
     },
     "difficulty": {
       "easy": "سهل",
       "medium": "متوسط",
-      "hard": "صعب"
+      "hard": "صعب",
+      "all": "جميع المستويات"
     },
     "messages": {
       "quizStarted": "بدأ الاختبار",
       "quizSubmitted": "تم إرسال الاختبار بنجاح",
-      "quizSaved": "تم حفظ الاختبار",
+      "quizSaved": "تم حفظ الاختبار بنجاح",
+      "quizDeleted": "تم حذف الاختبار بنجاح",
       "errorLoading": "خطأ في تحميل الاختبار",
       "errorSubmitting": "خطأ في إرسال الاختبار",
+      "errorSaving": "خطأ في حفظ الاختبار",
       "retry": "إعادة المحاولة"
     }
   },
   "universities": {
+    "page": {
+      "title": "إدارة الجامعات",
+      "description": "إدارة جامعات المنصة",
+      "searchPlaceholder": "البحث بالاسم أو المعرف...",
+      "addUniversity": "إضافة جامعة"
+    },
     "list": {
       "title": "الجامعات",
       "description": "تصفح وإدارة الجامعات",
       "addUniversity": "إضافة جامعة",
       "noUniversities": "لا توجد جامعات متاحة",
+      "noUniversitiesDescription": "لم يتم تسجيل أي جامعات حتى الآن.",
       "searchPlaceholder": "البحث عن جامعات..."
     },
+    "table": {
+      "headers": {
+        "id": "المعرف",
+        "name": "اسم الجامعة",
+        "location": "الموقع",
+        "faculties": "الكليات",
+        "majors": "التخصصات",
+        "actions": "الإجراءات"
+      },
+      "noData": "لم يتم العثور على جامعات",
+      "loading": "جاري تحميل الجامعات..."
+    },
     "details": {
+      "title": "تفاصيل الجامعة",
       "faculties": "الكليات",
       "majors": "التخصصات",
       "students": "الطلاب",
+      "courses": "المقررات",
+      "totalFaculties": "إجمالي الكليات",
+      "totalMajors": "إجمالي التخصصات",
       "addFaculty": "إضافة كلية",
       "facultyName": "اسم الكلية",
-      "noFaculties": "لا توجد كليات متاحة"
+      "noFaculties": "لا توجد كليات متاحة",
+      "noFacultiesDescription": "هذه الجامعة ليس لديها كليات حتى الآن.",
+      "manageFaculties": "إدارة الكليات",
+      "back": "العودة إلى الجامعات"
     },
     "faculty": {
-      "title": "كلية",
+      "title": "تفاصيل الكلية",
       "majors": "التخصصات",
       "addMajor": "إضافة تخصص",
       "majorName": "اسم التخصص",
-      "noMajors": "لا توجد تخصصات متاحة"
+      "noMajors": "لا توجد تخصصات متاحة",
+      "noMajorsDescription": "هذه الكلية ليس لديها تخصصات حتى الآن.",
+      "totalMajors": "إجمالي التخصصات",
+      "totalCourses": "إجمالي المقررات",
+      "back": "العودة إلى الجامعة"
     },
     "form": {
       "universityName": "اسم الجامعة",
       "universityNamePlaceholder": "أدخل اسم الجامعة",
+      "addUniversityTitle": "إضافة جامعة جديدة",
+      "editUniversityTitle": "تعديل الجامعة",
       "location": "الموقع",
       "locationPlaceholder": "أدخل الموقع",
       "website": "الموقع الإلكتروني",
       "websitePlaceholder": "أدخل رابط الموقع",
       "facultyName": "اسم الكلية",
       "facultyNamePlaceholder": "أدخل اسم الكلية",
+      "addFacultyTitle": "إضافة كلية جديدة",
+      "editFacultyTitle": "تعديل الكلية",
       "majorName": "اسم التخصص",
-      "majorNamePlaceholder": "أدخل اسم التخصص"
+      "majorNamePlaceholder": "أدخل اسم التخصص",
+      "addMajorTitle": "إضافة تخصص جديد",
+      "editMajorTitle": "تعديل التخصص"
+    },
+    "actions": {
+      "manage": "إدارة",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "add": "إضافة"
     },
     "messages": {
       "universityAdded": "تمت إضافة الجامعة بنجاح",
@@ -408,37 +912,98 @@
       "facultyDeleted": "تم حذف الكلية بنجاح",
       "majorAdded": "تمت إضافة التخصص بنجاح",
       "majorUpdated": "تم تحديث التخصص بنجاح",
-      "majorDeleted": "تم حذف التخصص بنجاح"
+      "majorDeleted": "تم حذف التخصص بنجاح",
+      "error": "حدث خطأ"
     }
   },
   "users": {
+    "page": {
+      "title": "إدارة المستخدمين",
+      "description": "عرض وإدارة مستخدمي المنصة"
+    },
+    "search": {
+      "placeholder": "البحث عن مستخدمين...",
+      "searchBy": "البحث بـ",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "id": "المعرف",
+      "search": "بحث",
+      "filters": "الفلاتر",
+      "applyFilters": "تطبيق الفلاتر",
+      "resetFilters": "إعادة تعيين الفلاتر"
+    },
+    "filter": {
+      "role": "الدور",
+      "allRoles": "جميع الأدوار",
+      "status": "الحالة",
+      "allStatuses": "جميع الحالات",
+      "university": "الجامعة",
+      "allUniversities": "جميع الجامعات"
+    },
     "list": {
       "title": "المستخدمون",
       "description": "إدارة مستخدمي النظام",
       "addUser": "إضافة مستخدم",
       "noUsers": "لم يتم العثور على مستخدمين",
+      "noUsersDescription": "لا يوجد مستخدمون يطابقون معايير البحث.",
       "searchPlaceholder": "البحث عن مستخدمين..."
     },
     "table": {
       "headers": {
+        "id": "المعرف",
+        "avatar": "الصورة",
         "name": "الاسم",
         "email": "البريد الإلكتروني",
         "role": "الدور",
         "status": "الحالة",
+        "university": "الجامعة",
         "joinedDate": "تاريخ الانضمام",
+        "lastActive": "آخر نشاط",
         "actions": "الإجراءات"
-      }
+      },
+      "noData": "لم يتم العثور على مستخدمين",
+      "loading": "جاري تحميل المستخدمين..."
     },
     "roles": {
       "admin": "مسؤول",
+      "superAdmin": "مسؤول أعلى",
       "writer": "كاتب",
       "student": "طالب",
-      "instructor": "محاضر"
+      "instructor": "محاضر",
+      "user": "مستخدم"
     },
     "status": {
       "active": "نشط",
       "inactive": "غير نشط",
-      "suspended": "معلق"
+      "suspended": "موقوف",
+      "blocked": "محظور",
+      "pending": "قيد الانتظار"
+    },
+    "actions": {
+      "assignRole": "تعيين دور",
+      "changeStatus": "تغيير الحالة",
+      "block": "حظر المستخدم",
+      "unblock": "إلغاء حظر المستخدم",
+      "delete": "حذف المستخدم",
+      "viewProfile": "عرض الملف الشخصي",
+      "sendMessage": "إرسال رسالة"
+    },
+    "dialogs": {
+      "assignRole": {
+        "title": "تعيين دور",
+        "description": "اختر الدور المراد تعيينه لهذا المستخدم",
+        "selectRole": "اختر الدور",
+        "confirm": "تعيين الدور",
+        "cancel": "إلغاء"
+      },
+      "toggleStatus": {
+        "blockTitle": "حظر المستخدم",
+        "unblockTitle": "إلغاء حظر المستخدم",
+        "blockDescription": "هل أنت متأكد من حظر هذا المستخدم؟ لن يتمكن من الوصول إلى المنصة.",
+        "unblockDescription": "هل أنت متأكد من إلغاء حظر هذا المستخدم؟ سيستعيد الوصول إلى المنصة.",
+        "confirm": "تأكيد",
+        "cancel": "إلغاء"
+      }
     },
     "form": {
       "fullName": "الاسم الكامل",
@@ -454,19 +1019,95 @@
       "userAdded": "تمت إضافة المستخدم بنجاح",
       "userUpdated": "تم تحديث المستخدم بنجاح",
       "userDeleted": "تم حذف المستخدم بنجاح",
+      "roleAssigned": "تم تعيين الدور بنجاح",
+      "statusChanged": "تم تغيير حالة المستخدم بنجاح",
+      "userBlocked": "تم حظر المستخدم بنجاح",
+      "userUnblocked": "تم إلغاء حظر المستخدم بنجاح",
       "errorLoading": "خطأ في تحميل المستخدمين",
       "errorSaving": "خطأ في حفظ المستخدم"
     }
   },
   "profile": {
+    "page": {
+      "title": "ملفي الشخصي",
+      "description": "عرض وإدارة ملفك الشخصي"
+    },
+    "header": {
+      "title": "الملف الشخصي",
+      "editProfile": "تعديل الملف الشخصي",
+      "viewProfile": "عرض الملف الشخصي",
+      "memberSince": "عضو منذ",
+      "lastActive": "آخر نشاط",
+      "logout": "تسجيل الخروج"
+    },
+    "sections": {
+      "personalInfo": "المعلومات الشخصية",
+      "academicInfo": "المعلومات الأكاديمية",
+      "accountDetails": "تفاصيل الحساب",
+      "security": "إعدادات الأمان"
+    },
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "bio": "النبذة التعريفية",
+      "avatar": "صورة الملف الشخصي",
+      "university": "الجامعة",
+      "faculty": "الكلية",
+      "major": "التخصص",
+      "studentId": "الرقم الجامعي",
+      "enrollmentYear": "سنة الالتحاق",
+      "expectedGraduation": "التخرج المتوقع"
+    },
+    "edit": {
+      "title": "تعديل الملف الشخصي",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء",
+      "changePhoto": "تغيير الصورة",
+      "removePhoto": "إزالة الصورة",
+      "uploadPhoto": "رفع صورة"
+    },
+    "password": {
+      "title": "تغيير كلمة المرور",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "changePassword": "تغيير كلمة المرور",
+      "changing": "جاري التغيير..."
+    },
+    "enrolledCourses": {
+      "title": "المقررات المسجّلة",
+      "viewAll": "عرض الكل",
+      "noCourses": "لا توجد مقررات مسجّلة",
+      "noCoursesDescription": "لم تسجّل في أي مقررات حتى الآن."
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "quizzesTaken": "الاختبارات المحلولة",
+      "materialsViewed": "المواد المعروضة",
+      "coursesCompleted": "المقررات المكتملة"
+    },
+    "roles": {
+      "student": "طالب",
+      "admin": "مدير",
+      "moderator": "مشرف",
+      "contentCreator": "منشئ محتوى"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "verified": "موثّق",
+      "unverified": "غير موثّق"
+    },
     "title": "الملف الشخصي",
     "editProfile": "تعديل الملف الشخصي",
     "personalInfo": "المعلومات الشخصية",
     "accountSettings": "إعدادات الحساب",
     "fullName": "الاسم الكامل",
     "email": "البريد الإلكتروني",
-    "phone": "الهاتف",
-    "bio": "نبذة",
+    "phone": "رقم الهاتف",
+    "bio": "النبذة التعريفية",
     "university": "الجامعة",
     "faculty": "الكلية",
     "major": "التخصص",
@@ -481,7 +1122,13 @@
       "updateSuccess": "تم تحديث الملف الشخصي بنجاح",
       "updateError": "فشل تحديث الملف الشخصي",
       "passwordChanged": "تم تغيير كلمة المرور بنجاح",
-      "passwordError": "فشل تغيير كلمة المرور"
+      "passwordError": "فشل تغيير كلمة المرور",
+      "photoUpdated": "تم تحديث صورة الملف الشخصي",
+      "photoRemoved": "تم إزالة صورة الملف الشخصي",
+      "pictureUpdated": "تم تحديث صورة الملف الشخصي بنجاح!",
+      "pictureUpdateFailed": "فشل رفع صورة الملف الشخصي",
+      "pictureRemoved": "تم إزالة صورة الملف الشخصي بنجاح!",
+      "pictureRemoveFailed": "فشل إزالة صورة الملف الشخصي"
     }
   },
   "dashboard": {
@@ -498,13 +1145,148 @@
     "newUsers": "مستخدمون جدد",
     "courseEnrollments": "تسجيلات المقررات",
     "quizAttempts": "محاولات الاختبارات",
+    "platformAnalytics": {
+      "title": "تحليلات المنصة",
+      "liveData": "بيانات حية",
+      "description": "رؤى شاملة حول نمو المنصة وأدائها"
+    },
+    "heroMetrics": {
+      "totalUsers": {
+        "title": "إجمالي المستخدمين",
+        "subtitle": "المتعلمون النشطون على المنصة"
+      },
+      "totalQuizzes": {
+        "title": "إجمالي الاختبارات",
+        "subtitle": "التقييمات المُنشأة"
+      },
+      "totalMaterials": {
+        "title": "إجمالي المواد",
+        "subtitle": "الموارد التعليمية المتاحة"
+      },
+      "quizAttempts": {
+        "title": "محاولات الاختبارات",
+        "subtitle": "في آخر 30 يومًا"
+      }
+    },
+    "platformOverview": {
+      "title": "نظرة عامة على المنصة",
+      "subtitle": "الهيكل المؤسسي والأكاديمي",
+      "keyMetrics": "المقاييس الرئيسية عبر المنصة",
+      "universities": {
+        "label": "الجامعات",
+        "description": "المؤسسات الشريكة"
+      },
+      "faculties": {
+        "label": "الكليات",
+        "description": "الأقسام الأكاديمية"
+      },
+      "majors": {
+        "label": "التخصصات",
+        "description": "البرامج الدراسية"
+      },
+      "courses": {
+        "label": "المقررات",
+        "description": "المقررات المتاحة"
+      }
+    },
+    "engagement": {
+      "title": "التفاعل",
+      "subtitle": "مقاييس نشاط المنصة",
+      "quizCompletion": "إتمام الاختبارات",
+      "resourceUsage": "استخدام الموارد",
+      "avgQuizzesPerCourse": "متوسط الاختبارات لكل مقرر",
+      "avgMaterialsPerCourse": "متوسط المواد لكل مقرر"
+    },
+    "growthAnalytics": {
+      "title": "تحليلات النمو",
+      "subtitle": "اتجاهات الأداء لستة أشهر",
+      "all": "الكل",
+      "quizzes": "الاختبارات",
+      "materials": "المواد",
+      "users": "المستخدمون",
+      "growthTrends": "اتجاهات النمو",
+      "showingGrowth": "عرض مقاييس النمو لآخر 6 أشهر",
+      "trendingUp": "ارتفاع بنسبة",
+      "trendingDown": "انخفاض بنسبة",
+      "thisMonth": "هذا الشهر",
+      "total": "الإجمالي"
+    },
+    "quickInsights": {
+      "totalMajors": {
+        "title": "إجمالي التخصصات",
+        "subtext": "عبر جميع الجامعات الشريكة"
+      },
+      "quizToCourseRatio": {
+        "title": "نسبة الاختبارات للمقررات",
+        "subtext": "متوسط الاختبارات لكل مقرر"
+      },
+      "monthlyActiveAttempts": {
+        "title": "المحاولات النشطة الشهرية",
+        "subtext": "تقديمات الاختبارات هذا الشهر"
+      }
+    },
+    "footerStats": {
+      "totalLearningResources": "إجمالي الموارد التعليمية",
+      "partnerUniversities": "الجامعات الشريكة",
+      "courseQuizCoverage": "تغطية اختبارات المقررات"
+    },
     "writer": {
       "title": "إحصائيات الكاتب",
+      "subtitle": "تتبع أداء محتواك ونشاطك",
+      "lastUpdated": "آخر تحديث",
+      "justNow": "الآن",
       "myMaterials": "موادي",
       "myQuizzes": "اختباراتي",
       "totalViews": "إجمالي المشاهدات",
       "totalDownloads": "إجمالي التحميلات",
-      "recentUploads": "الرفوعات الأخيرة"
+      "recentUploads": "الرفوعات الأخيرة",
+      "stats": {
+        "totalMaterials": {
+          "title": "إجمالي المواد",
+          "change": "+{{count}} من الشهر الماضي"
+        },
+        "totalQuizzes": {
+          "title": "إجمالي الاختبارات",
+          "change": "+{{count}} من الشهر الماضي"
+        },
+        "thisMonth": {
+          "title": "هذا الشهر",
+          "description": "المحتوى المنشور"
+        },
+        "avgRating": {
+          "title": "متوسط التقييم",
+          "description": "بناءً على 1,234 تقييم"
+        },
+        "totalViewsCard": {
+          "title": "إجمالي المشاهدات",
+          "change": "+2,350 من الشهر الماضي"
+        },
+        "activeHours": {
+          "title": "ساعات النشاط",
+          "description": "هذا الشهر"
+        }
+      },
+      "recentActivity": {
+        "title": "النشاط الأخير",
+        "description": "أحدث محتواك المنشور",
+        "views": "مشاهدات",
+        "material": "مادة",
+        "quiz": "اختبار"
+      },
+      "topContent": {
+        "title": "المحتوى الأكثر أداءً",
+        "description": "الأكثر مشاهدة هذا الشهر",
+        "views": "مشاهدات"
+      },
+      "performanceOverview": {
+        "title": "نظرة عامة على الأداء",
+        "description": "المشاهدات والتفاعل عبر الوقت",
+        "chartComingSoon": "تصور الرسم البياني قريبًا",
+        "metricsPlaceholder": "سيتم عرض مقاييس الأداء هنا"
+      }
+    },
+    "statisticsCard": {
+      "thanLastMonth": "من الشهر الماضي"
     }
   },
   "header": {

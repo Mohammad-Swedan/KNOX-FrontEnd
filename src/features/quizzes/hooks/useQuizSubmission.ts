@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { calculateQuizScore, isQuestionCorrect } from "../utils";
+import { useState, useCallback, useRef } from "react";
+import {
+  calculateQuizScore,
+  isQuestionCorrect as isQuestionCorrectUtil,
+} from "../utils";
 import { submitQuizScore, isUserLoggedIn } from "../api";
 import type { QuizQuestion, UserAnswer } from "../types";
 
@@ -13,13 +16,10 @@ interface UseQuizSubmissionReturn {
   handleConfirmSubmit: (
     questions: QuizQuestion[],
     userAnswers: Map<number, UserAnswer>,
-    quizId?: string
+    quizId?: string,
   ) => void;
   handleCancelSubmit: () => void;
-  isQuestionCorrect: (
-    question: QuizQuestion,
-    userAnswer?: UserAnswer
-  ) => boolean;
+  isQuestionCorrect: (question: QuizQuestion) => boolean;
   resetResults: () => void;
 }
 
@@ -30,6 +30,9 @@ export const useQuizSubmission = (): UseQuizSubmissionReturn => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
+  // Store the submitted answers for review
+  const submittedAnswersRef = useRef<Map<number, UserAnswer>>(new Map());
+
   const handleSubmitClick = () => {
     setShowConfirmDialog(true);
   };
@@ -37,10 +40,13 @@ export const useQuizSubmission = (): UseQuizSubmissionReturn => {
   const handleConfirmSubmit = async (
     questions: QuizQuestion[],
     userAnswers: Map<number, UserAnswer>,
-    quizId?: string
+    quizId?: string,
   ) => {
     setShowConfirmDialog(false);
     setIsSubmitting(true);
+
+    // Store the submitted answers for later review
+    submittedAnswersRef.current = new Map(userAnswers);
 
     try {
       // Calculate the score
@@ -75,7 +81,14 @@ export const useQuizSubmission = (): UseQuizSubmissionReturn => {
     setShowResults(false);
     setScore(0);
     setPercentage(0);
+    submittedAnswersRef.current = new Map();
   };
+
+  // Wrapper function that uses the stored submitted answers
+  const isQuestionCorrect = useCallback((question: QuizQuestion): boolean => {
+    const userAnswer = submittedAnswersRef.current.get(question.id);
+    return isQuestionCorrectUtil(question, userAnswer);
+  }, []);
 
   return {
     showResults,

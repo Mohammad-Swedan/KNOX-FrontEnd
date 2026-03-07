@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useUserRole } from "@/hooks/useUserRole";
+import SEO from "@/shared/components/seo/SEO";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
 import { useQuizzesList } from "../hooks/useQuizzesList";
 import { QuizzesHeader } from "../components/QuizzesHeader";
@@ -18,6 +20,7 @@ interface QuizzesPageProps {
 const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { canManageContent } = useUserRole();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
@@ -65,7 +68,11 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <SEO
+        title={t("quizzes.page.title")}
+        description={t("quizzes.header.subtitle")}
+      />
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
         {/* Header */}
         <QuizzesHeader
           isManagementMode={isManagementMode}
@@ -100,7 +107,7 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
           !error &&
           viewMode === "grid" &&
           currentQuizzes.length > 0 && (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 md:gap-5 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {currentQuizzes.map((quiz) => (
                 <QuizCardGrid
                   key={quiz.id}
@@ -120,7 +127,7 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
           !error &&
           viewMode === "list" &&
           currentQuizzes.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {currentQuizzes.map((quiz) => (
                 <QuizCardList
                   key={quiz.id}
@@ -142,7 +149,7 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
 
         {/* Pagination */}
         {!loading && !error && totalPages > 1 && (
-          <div className="mt-8 flex justify-center">
+          <div className="mt-6 sm:mt-8 flex justify-center">
             <SmartPagination
               pageNumber={currentPage}
               totalPages={totalPages}

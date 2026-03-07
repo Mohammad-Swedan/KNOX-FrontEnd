@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { User } from "@/app/providers/AuthContext";
 import { getInitials, getRoleBadgeVariant } from "../utils/profileUtils";
 import { ProfilePictureMenu } from "./ProfilePictureMenu";
@@ -33,6 +34,7 @@ export const ProfileHeader = ({
   onDeletePhoto,
   isDeletingPhoto = false,
 }: ProfileHeaderProps) => {
+  const { t } = useTranslation();
   const displayName = user.fullName || user.name;
   const [copied, setCopied] = useState(false);
   const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
@@ -62,7 +64,7 @@ export const ProfileHeader = ({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 border border-slate-200/50 dark:border-slate-800/50 shadow-xl">
+    <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-linear-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 border border-slate-200/50 dark:border-slate-800/50 shadow-xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
         <div
@@ -73,19 +75,21 @@ export const ProfileHeader = ({
         />
       </div>
 
-      <div className="relative p-8">
+      <div className="relative p-4 sm:p-6 md:p-8">
         {/* Top Section: User ID Badge */}
-        <div className="flex justify-between items-start mb-6">
+        <div className="flex justify-between items-start mb-4 sm:mb-6">
           <button
             onClick={copyUserId}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-xs font-mono text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-[10px] sm:text-xs font-mono text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
-            <Hash className="h-3 w-3" />
-            <span className="max-w-[120px] truncate">{user.id}</span>
+            <Hash className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+            <span className="max-w-[80px] sm:max-w-[120px] truncate">
+              {user.id}
+            </span>
             {copied ? (
-              <Check className="h-3 w-3 text-green-500" />
+              <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-green-500" />
             ) : (
-              <Copy className="h-3 w-3" />
+              <Copy className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             )}
           </button>
 
@@ -95,27 +99,27 @@ export const ProfileHeader = ({
               variant="outline"
               size="sm"
               asChild
-              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm"
+              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-xs sm:text-sm h-8 sm:h-9"
             >
               <Link to="/profile/edit">
-                <Edit3 className="h-4 w-4 mr-2" />
-                Edit Profile
+                <Edit3 className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+                {t("profile.header.editProfile")}
               </Link>
             </Button>
             <Button
               onClick={onLogout}
               variant="outline"
               size="sm"
-              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50"
+              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50 text-xs sm:text-sm h-8 sm:h-9"
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
+              <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+              {t("profile.header.logout")}
             </Button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
           {/* Avatar with Dropdown Menu */}
           <div className="relative">
             <ProfilePictureMenu
@@ -132,49 +136,51 @@ export const ProfileHeader = ({
 
             {/* Status indicator */}
             {user.isActive && (
-              <div className="absolute -bottom-1 -right-1 h-6 w-6 bg-green-500 rounded-full border-4 border-white dark:border-slate-900 flex items-center justify-center">
-                <Check className="h-3 w-3 text-white" />
+              <div className="absolute -bottom-1 -right-1 h-5 w-5 sm:h-6 sm:w-6 bg-green-500 rounded-full border-3 sm:border-4 border-white dark:border-slate-900 flex items-center justify-center">
+                <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-white" />
               </div>
             )}
           </div>
 
           {/* User Info */}
-          <div className="flex-1 text-center sm:text-left min-w-0">
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
+          <div className="flex-1 text-center sm:text-start min-w-0">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-1.5 sm:mb-2 tracking-tight">
               {displayName}
             </h1>
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-600 dark:text-slate-400 mb-4">
-              <Mail className="h-4 w-4 shrink-0" />
-              <span className="text-sm truncate">{user.email}</span>
+            <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-400 mb-3 sm:mb-4">
+              <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+              <span className="text-xs sm:text-sm truncate">{user.email}</span>
             </div>
 
             {/* Badges */}
-            <div className="flex flex-wrap justify-center sm:justify-start gap-2">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 sm:gap-2">
               {user.role && (
                 <Badge
                   variant="outline"
-                  className={`${getRoleBadgeVariant(user.role)} px-3 py-1`}
+                  className={`${getRoleBadgeVariant(user.role)} px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs`}
                 >
-                  <Shield className="h-3.5 w-3.5 mr-1.5" />
-                  {user.role === "User" ? "Student" : user.role}
+                  <Shield className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
+                  {user.role === "User"
+                    ? t("profile.roles.student")
+                    : user.role}
                 </Badge>
               )}
               {user.isActive && (
                 <Badge
                   variant="outline"
-                  className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800 px-3 py-1"
+                  className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
                 >
-                  <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
-                  Active
+                  <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
+                  {t("profile.status.active")}
                 </Badge>
               )}
               {user.isVerfied && (
                 <Badge
                   variant="outline"
-                  className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 px-3 py-1"
+                  className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 mr-1.5" />
-                  Verified
+                  <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
+                  {t("profile.status.verified")}
                 </Badge>
               )}
             </div>
@@ -182,26 +188,26 @@ export const ProfileHeader = ({
         </div>
 
         {/* Mobile Action Buttons */}
-        <div className="flex sm:hidden gap-2 mt-6">
+        <div className="flex sm:hidden gap-2 mt-4 sm:mt-6">
           <Button
             variant="outline"
             size="sm"
             asChild
-            className="flex-1 bg-white/80 dark:bg-slate-900/80"
+            className="flex-1 bg-white/80 dark:bg-slate-900/80 text-xs h-8"
           >
             <Link to="/profile/edit">
-              <Edit3 className="h-4 w-4 mr-2" />
-              Edit Profile
+              <Edit3 className="h-3.5 w-3.5 me-1.5" />
+              {t("profile.header.editProfile")}
             </Link>
           </Button>
           <Button
             onClick={onLogout}
             variant="outline"
             size="sm"
-            className="flex-1 bg-white/80 dark:bg-slate-900/80 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400"
+            className="flex-1 bg-white/80 dark:bg-slate-900/80 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 text-xs h-8"
           >
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
+            <LogOut className="h-3.5 w-3.5 me-1.5" />
+            {t("profile.header.logout")}
           </Button>
         </div>
       </div>

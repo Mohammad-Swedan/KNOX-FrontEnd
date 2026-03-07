@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import SEO from "@/shared/components/seo/SEO";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
 import { PageHeader } from "../components/PageHeader";
 import { UsersSearchSection } from "../components/UsersSearchSection";
@@ -10,6 +12,7 @@ import { useManageUsers } from "../hooks/useManageUsers";
 import { useUserActions } from "../hooks/useUserActions";
 
 const ManageUsersPage = () => {
+  const { t } = useTranslation();
   const {
     users,
     loading,
@@ -43,10 +46,14 @@ const ManageUsersPage = () => {
   } = useUserActions(refreshUsers);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
+      <SEO
+        title={t("users.page.title")}
+        description={t("users.page.description")}
+      />
       <PageHeader
-        title="Manage Users"
-        description="View and manage platform users"
+        title={t("users.page.title")}
+        description={t("users.page.description")}
       />
 
       <UsersSearchSection

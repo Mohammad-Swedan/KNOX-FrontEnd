@@ -86,7 +86,7 @@ export const CourseFilters = ({
                         <SelectItem key={value} value={value}>
                           {label}
                         </SelectItem>
-                      )
+                      ),
                     )}
                   </SelectContent>
                 </Select>
@@ -117,7 +117,7 @@ export const CourseFilters = ({
                         <SelectItem key={value} value={value}>
                           {label}
                         </SelectItem>
-                      )
+                      ),
                     )}
                   </SelectContent>
                 </Select>

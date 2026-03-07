@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   FileText,
   Trophy,
@@ -22,6 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
 import { Separator } from "@/shared/ui/separator";
 import ShareButton from "@/shared/ui/ShareButton";
+import SEO from "@/shared/components/seo/SEO";
 import { fetchCourseInfo, fetchCourseById } from "@/features/courses/api";
 import type {
   CourseInfo,
@@ -50,18 +52,20 @@ const YouTubeEmbed = ({
   url,
   title,
   compact = false,
+  watchButtonText = "Watch Video",
 }: {
   url: string;
   title?: string;
   compact?: boolean;
+  watchButtonText?: string;
 }) => {
   const videoId = getYouTubeVideoId(url);
 
   if (!videoId) {
     return (
       <Button className="w-full" onClick={() => window.open(url, "_blank")}>
-        <Play className="h-4 w-4 mr-2" />
-        Watch Video
+        <Play className="h-4 w-4 me-2" />
+        {watchButtonText}
       </Button>
     );
   }
@@ -154,7 +158,13 @@ const DIFFICULTY_CONFIG = {
 };
 
 // Resource Card Component
-const ResourceCard = ({ resource }: { resource: CourseResource }) => {
+const ResourceCard = ({
+  resource,
+  t,
+}: {
+  resource: CourseResource;
+  t: (key: string) => string;
+}) => {
   const config =
     RESOURCE_TYPE_CONFIG[resource.type] || RESOURCE_TYPE_CONFIG.Other;
   const IconComponent = config.icon;
@@ -171,37 +181,37 @@ const ResourceCard = ({ resource }: { resource: CourseResource }) => {
       <CardContent className="p-0">
         {/* Header section */}
         <div
-          className={`p-4 ${
+          className={`p-3 sm:p-4 ${
             isECampus
               ? "bg-linear-to-r from-blue-500/10 via-blue-500/5 to-transparent"
               : "bg-linear-to-r from-muted/50 to-transparent"
           }`}
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-2 sm:gap-3">
             {/* Icon */}
             <div
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+              className={`flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg ${
                 config.color
               } shadow-md transition-transform duration-300 group-hover:scale-105 ${
                 isECampus ? "ring-2 ring-blue-400/50 ring-offset-2" : ""
               }`}
             >
-              <IconComponent className="h-5 w-5 text-white" />
+              <IconComponent className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
 
             {/* Title & Badge */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h4 className="font-semibold text-sm line-clamp-1 group-hover:text-primary transition-colors">
+                <h4 className="font-semibold text-xs sm:text-sm line-clamp-1 group-hover:text-primary transition-colors">
                   {resource.title}
                 </h4>
                 {isECampus && (
-                  <Sparkles className="h-4 w-4 text-blue-500 shrink-0 animate-pulse" />
+                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 shrink-0 animate-pulse" />
                 )}
               </div>
               <Badge
                 variant="secondary"
-                className={`text-xs ${
+                className={`text-[10px] sm:text-xs ${
                   isECampus ? "bg-blue-500 text-white hover:bg-blue-600" : ""
                 }`}
               >
@@ -212,42 +222,45 @@ const ResourceCard = ({ resource }: { resource: CourseResource }) => {
         </div>
 
         {/* Content section */}
-        <div className="px-4 py-3 space-y-3">
+        <div className="px-3 sm:px-4 py-2 sm:py-3 space-y-2 sm:space-y-3">
           {resource.description && (
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
               {resource.description}
             </p>
           )}
 
           {/* Demo Video Frame - Compact */}
           {resource.hasDemonstrationVideo && resource.demonstrationVideoUrl && (
-            <div className="space-y-1.5">
-              <p className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                <Play className="h-3 w-3" />
-                Demo Preview
+            <div className="space-y-1 sm:space-y-1.5">
+              <p className="text-[10px] sm:text-xs font-medium text-muted-foreground flex items-center gap-1">
+                <Play className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                {t("courses.info.demoPreview")}
               </p>
               <YouTubeEmbed
                 url={resource.demonstrationVideoUrl}
                 title={`${resource.title} - Demo`}
                 compact
+                watchButtonText={t("courses.info.watchVideo")}
               />
             </div>
           )}
         </div>
 
         {/* Action button - Full width at bottom */}
-        <div className={`p-4 pt-0`}>
+        <div className="p-3 sm:p-4 pt-0">
           <Button
             variant={isECampus ? "default" : "outline"}
-            className={`w-full justify-center gap-2 font-medium transition-all ${
+            className={`w-full justify-center gap-2 font-medium transition-all text-xs sm:text-sm h-8 sm:h-9 md:h-10 ${
               isECampus
                 ? "bg-blue-500 hover:bg-blue-600 text-white shadow-lg hover:shadow-xl"
                 : "border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground"
             }`}
             onClick={() => window.open(resource.url, "_blank")}
           >
-            <ExternalLink className="h-4 w-4" />
-            {isECampus ? "Open in ECampus" : "Visit Resource"}
+            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            {isECampus
+              ? t("courses.info.openECampus")
+              : t("courses.info.visitResource")}
           </Button>
         </div>
       </CardContent>
@@ -258,6 +271,7 @@ const ResourceCard = ({ resource }: { resource: CourseResource }) => {
 const CourseInfoPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [courseInfo, setCourseInfo] = useState<CourseInfo | null>(null);
@@ -289,7 +303,7 @@ const CourseInfoPage = () => {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load course information"
+            : "Failed to load course information",
         );
       } finally {
         setLoading(false);
@@ -305,21 +319,29 @@ const CourseInfoPage = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <SEO
+        title={
+          course
+            ? `${course.courseName} - ${t("courses.info.title")}`
+            : t("courses.info.title")
+        }
+        description={courseInfo?.description || t("courses.info.description")}
+      />
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
         {/* Back Button & Share */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <Button
             variant="ghost"
-            className="-ml-2"
+            className="-ms-2 text-xs sm:text-sm h-8 sm:h-9"
             onClick={() => navigate(-1)}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+            {t("common.buttons.back")}
           </Button>
           {course && (
             <ShareButton
               url={window.location.href}
-              title={`${course.courseName} - Course Info`}
+              title={`${course.courseName} - ${t("courses.info.title")}`}
               variant="outline"
               size="sm"
             />
@@ -328,32 +350,33 @@ const CourseInfoPage = () => {
 
         {/* Loading State */}
         {loading && (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">
-              Loading course information...
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16 gap-2 sm:gap-3">
+            <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-primary" />
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("courses.info.loading")}
             </p>
           </div>
         )}
 
         {/* Error State */}
         {error && !loading && (
-          <Card className="p-12 bg-linear-to-br from-destructive/5 to-destructive/10 border-destructive/20">
+          <Card className="p-8 sm:p-12 bg-linear-to-br from-destructive/5 to-destructive/10 border-destructive/20">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-destructive/10 mb-4">
-                <AlertCircle className="h-10 w-10 text-destructive" />
+              <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-destructive/10 mb-3 sm:mb-4">
+                <AlertCircle className="h-8 w-8 sm:h-10 sm:w-10 text-destructive" />
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-destructive">
-                Failed to load course information
+              <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-destructive">
+                {t("courses.info.errorTitle")}
               </h3>
-              <p className="text-sm text-muted-foreground max-w-sm mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground max-w-sm mb-3 sm:mb-4">
                 {error}
               </p>
               <Button
                 onClick={() => window.location.reload()}
                 variant="outline"
+                className="text-xs sm:text-sm h-8 sm:h-9"
               >
-                Try Again
+                {t("common.buttons.tryAgain")}
               </Button>
             </div>
           </Card>
@@ -361,56 +384,72 @@ const CourseInfoPage = () => {
 
         {/* Content */}
         {!loading && !error && courseInfo && course && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Header Card */}
             <Card className="overflow-hidden border-2">
-              <div className="bg-linear-to-r from-primary/10 via-primary/5 to-transparent p-6 sm:p-8">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div className="bg-linear-to-r from-primary/10 via-primary/5 to-transparent p-4 sm:p-6 md:p-8">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
                   {/* Course Title & Info */}
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3 flex-wrap">
-                      <Badge variant="secondary" className="font-mono text-sm">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
+                      <Badge
+                        variant="secondary"
+                        className="font-mono text-xs sm:text-sm"
+                      >
                         {course.courseCode}
                       </Badge>
                       {difficultyConfig && (
-                        <Badge className={difficultyConfig.color}>
-                          <Gauge className="h-3 w-3 mr-1" />
+                        <Badge
+                          className={`${difficultyConfig.color} text-[10px] sm:text-xs`}
+                        >
+                          <Gauge className="h-2.5 w-2.5 sm:h-3 sm:w-3 me-1" />
                           {difficultyConfig.label}
                         </Badge>
                       )}
-                      <Badge variant="outline">{course.credits} Credits</Badge>
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] sm:text-xs"
+                      >
+                        {course.credits} {t("courses.info.credits")}
+                      </Badge>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1.5 sm:mb-2">
                       {course.courseName}
                     </h1>
                     {courseInfo.description && (
-                      <p className="text-muted-foreground max-w-2xl">
+                      <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl">
                         {courseInfo.description}
                       </p>
                     )}
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3 shrink-0">
+                  <div className="flex gap-2 sm:gap-3 shrink-0 flex-wrap lg:flex-nowrap">
                     <Button
                       variant="outline"
-                      className="transition-all hover:shadow-lg"
+                      className="transition-all hover:shadow-lg text-xs sm:text-sm h-8 sm:h-9 md:h-10"
                       onClick={() => navigate(`/courses/${courseId}/materials`)}
                     >
-                      <FileText className="h-4 w-4 mr-2" />
-                      Materials
-                      <Badge variant="secondary" className="ml-2">
+                      <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+                      {t("courses.card.materials")}
+                      <Badge
+                        variant="secondary"
+                        className="ms-1.5 sm:ms-2 text-[10px] sm:text-xs"
+                      >
                         {course.numberOfMaterials}
                       </Badge>
                     </Button>
                     <Button
                       variant="outline"
-                      className="transition-all hover:shadow-lg"
+                      className="transition-all hover:shadow-lg text-xs sm:text-sm h-8 sm:h-9 md:h-10"
                       onClick={() => navigate(`/courses/${courseId}/quizzes`)}
                     >
-                      <Trophy className="h-4 w-4 mr-2" />
-                      Quizzes
-                      <Badge variant="secondary" className="ml-2">
+                      <Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+                      {t("courses.card.quizzes")}
+                      <Badge
+                        variant="secondary"
+                        className="ms-1.5 sm:ms-2 text-[10px] sm:text-xs"
+                      >
                         {course.numberOfQuizzes}
                       </Badge>
                     </Button>
@@ -422,24 +461,26 @@ const CourseInfoPage = () => {
             {/* Demonstration Video */}
             {courseInfo.demonstrationVideoUrl && (
               <Card className="overflow-hidden border-2 border-primary/20">
-                <CardHeader className="bg-linear-to-r from-primary/10 via-primary/5 to-transparent py-4">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Play className="h-5 w-5 text-primary" />
-                    Course Overview Video
+                <CardHeader className="bg-linear-to-r from-primary/10 via-primary/5 to-transparent py-3 sm:py-4">
+                  <CardTitle className="flex items-center gap-2 text-sm sm:text-base md:text-lg">
+                    <Play className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    {t("courses.info.overviewVideo")}
                   </CardTitle>
                   {courseInfo.demonstrationVideoTitle && (
-                    <p className="text-sm text-muted-foreground font-normal mt-1">
+                    <p className="text-xs sm:text-sm text-muted-foreground font-normal mt-0.5 sm:mt-1">
                       {courseInfo.demonstrationVideoTitle}
                     </p>
                   )}
                 </CardHeader>
-                <CardContent className="pt-4 pb-5">
+                <CardContent className="pt-3 sm:pt-4 pb-4 sm:pb-5">
                   <div className="max-w-2xl mx-auto">
                     <YouTubeEmbed
                       url={courseInfo.demonstrationVideoUrl}
                       title={
-                        courseInfo.demonstrationVideoTitle || "Course Overview"
+                        courseInfo.demonstrationVideoTitle ||
+                        t("courses.info.overviewVideo")
                       }
+                      watchButtonText={t("courses.info.watchVideo")}
                     />
                   </div>
                 </CardContent>
@@ -448,12 +489,15 @@ const CourseInfoPage = () => {
 
             {/* Resources Section */}
             {courseInfo.resources && courseInfo.resources.length > 0 && (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                    Learning Resources
-                    <Badge variant="secondary" className="ml-1">
+                  <h2 className="text-base sm:text-lg md:text-xl font-semibold flex items-center gap-1.5 sm:gap-2">
+                    <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    {t("courses.info.learningResources")}
+                    <Badge
+                      variant="secondary"
+                      className="ms-1 text-[10px] sm:text-xs"
+                    >
                       {courseInfo.resourceCount}
                     </Badge>
                   </h2>
@@ -461,9 +505,9 @@ const CourseInfoPage = () => {
 
                 <Separator />
 
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                   {courseInfo.resources.map((resource) => (
-                    <ResourceCard key={resource.id} resource={resource} />
+                    <ResourceCard key={resource.id} resource={resource} t={t} />
                   ))}
                 </div>
               </div>
@@ -471,17 +515,16 @@ const CourseInfoPage = () => {
 
             {/* No Resources State */}
             {(!courseInfo.resources || courseInfo.resources.length === 0) && (
-              <Card className="p-12 bg-linear-to-br from-card to-muted/20">
+              <Card className="p-8 sm:p-12 bg-linear-to-br from-card to-muted/20">
                 <div className="flex flex-col items-center justify-center text-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mb-4">
-                    <BookOpen className="h-10 w-10 text-primary" />
+                  <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-primary/10 mb-3 sm:mb-4">
+                    <BookOpen className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">
-                    No additional resources yet
+                  <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">
+                    {t("courses.info.noResourcesTitle")}
                   </h3>
-                  <p className="text-sm text-muted-foreground max-w-sm">
-                    Check back later for learning resources and helpful links
-                    for this course.
+                  <p className="text-xs sm:text-sm text-muted-foreground max-w-sm">
+                    {t("courses.info.noResourcesDescription")}
                   </p>
                 </div>
               </Card>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BookOpen,
   Users,
@@ -15,12 +16,14 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/app/providers/useAuth";
 import { useNavigate } from "react-router-dom";
+import SEO from "@/shared/components/seo/SEO";
 
 const AboutPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleContributeSubmit = async () => {
     if (!isAuthenticated) {
@@ -43,407 +46,431 @@ const AboutPage = () => {
   const features = [
     {
       icon: BookOpen,
-      title: "Centralized Learning",
-      description:
-        "Access all your courses, materials, and resources in one unified platform",
+      title: t("home.about.features.centralizedLearning.title"),
+      description: t("home.about.features.centralizedLearning.description"),
     },
     {
       icon: Users,
-      title: "Collaborative Community",
-      description:
-        "Connect with students, educators, and content creators across universities",
+      title: t("home.about.features.collaborative.title"),
+      description: t("home.about.features.collaborative.description"),
     },
     {
       icon: Award,
-      title: "Interactive Assessments",
-      description:
-        "Test your knowledge with quizzes and track your progress in real-time",
+      title: t("home.about.features.assessments.title"),
+      description: t("home.about.features.assessments.description"),
     },
     {
       icon: Globe,
-      title: "Accessible Anywhere",
-      description:
-        "Study on any device with our mobile-responsive platform design",
+      title: t("home.about.features.accessible.title"),
+      description: t("home.about.features.accessible.description"),
     },
     {
       icon: Zap,
-      title: "Efficient Content Management",
-      description:
-        "Organized folders and categories make finding resources effortless",
+      title: t("home.about.features.efficient.title"),
+      description: t("home.about.features.efficient.description"),
     },
     {
       icon: Shield,
-      title: "Secure & Reliable",
-      description:
-        "Your data and academic progress are protected with industry-standard security",
+      title: t("home.about.features.secure.title"),
+      description: t("home.about.features.secure.description"),
     },
   ];
 
   const howItWorks = [
     {
       step: "1",
-      title: "Create Your Account",
-      description: "Sign up in seconds and get instant access to our platform",
+      title: t("home.about.howItWorks.step1.title"),
+      description: t("home.about.howItWorks.step1.description"),
     },
     {
       step: "2",
-      title: "Browse & Enroll",
-      description: "Explore courses and materials relevant to your studies",
+      title: t("home.about.howItWorks.step2.title"),
+      description: t("home.about.howItWorks.step2.description"),
     },
     {
       step: "3",
-      title: "Learn & Practice",
-      description: "Access materials, take quizzes, and track your progress",
+      title: t("home.about.howItWorks.step3.title"),
+      description: t("home.about.howItWorks.step3.description"),
     },
     {
       step: "4",
-      title: "Succeed & Grow",
-      description: "Achieve your academic goals with organized learning",
+      title: t("home.about.howItWorks.step4.title"),
+      description: t("home.about.howItWorks.step4.description"),
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="bg-primary py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl text-primary-foreground">
-            Welcome to Uni-Hub
-          </h1>
-          <p className="mx-auto max-w-3xl text-xl md:text-2xl text-primary-foreground/90 mb-8">
-            Your all-in-one university learning management platform. Centralize
-            your studies, collaborate with peers, and excel academically.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-background text-foreground px-8 py-3 rounded-lg font-semibold hover:bg-background/90 transition flex items-center gap-2">
-              Get Started <ArrowRight className="w-5 h-5" />
-            </button>
-            <button className="border-2 border-primary-foreground text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary-foreground/10 transition">
-              Learn More
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Value Proposition Cards */}
-      <div className="container mx-auto px-4 -mt-12">
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-card rounded-xl shadow-lg p-6 border">
-            <BookOpen className="w-10 h-10 text-primary mb-3" />
-            <h3 className="font-bold text-lg mb-2">All in One Place</h3>
-            <p className="text-muted-foreground text-sm">
-              No more switching between multiple platforms. Everything you need
-              for your studies is centralized here.
+    <>
+      <SEO
+        title={t("seo.about.title")}
+        description={t("seo.about.description")}
+        keywords={t("seo.about.keywords")}
+        url="https://uni-hub.com/about"
+      />
+      <div className="min-h-screen bg-background">
+        {/* Hero Section */}
+        <div className="bg-primary py-10 md:py-16 lg:py-20">
+          <div className="container mx-auto px-3 sm:px-4 text-center">
+            <h1 className="mb-4 md:mb-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-primary-foreground">
+              {t("home.about.hero.title")}
+            </h1>
+            <p className="mx-auto max-w-xl md:max-w-3xl text-sm md:text-lg lg:text-xl xl:text-2xl text-primary-foreground/90 mb-5 md:mb-8 px-2">
+              {t("home.about.hero.description")}
             </p>
-          </div>
-          <div className="bg-card rounded-xl shadow-lg p-6 border">
-            <Zap className="w-10 h-10 text-primary mb-3" />
-            <h3 className="font-bold text-lg mb-2">Save Time</h3>
-            <p className="text-muted-foreground text-sm">
-              Quick access to organized materials means less time searching and
-              more time learning.
-            </p>
-          </div>
-          <div className="bg-card rounded-xl shadow-lg p-6 border">
-            <Award className="w-10 h-10 text-primary mb-3" />
-            <h3 className="font-bold text-lg mb-2">Study Smarter</h3>
-            <p className="text-muted-foreground text-sm">
-              Interactive quizzes and organized resources help you prepare
-              effectively for exams.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Mission Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6">Our Mission</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            We're on a mission to eliminate the chaos of scattered educational
-            resources. Uni-Hub provides students with a{" "}
-            <span className="text-primary font-semibold">
-              single, reliable destination
-            </span>{" "}
-            for all their academic needs while empowering educators with
-            powerful content management tools.
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose Uni-Hub?
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="bg-card border p-6 rounded-xl shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
-              >
-                <feature.icon className="w-12 h-12 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* How It Works */}
-      <div className="bg-muted/50 py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            {howItWorks.map((item, index) => (
-              <div key={index} className="text-center relative">
-                <div className="w-16 h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  {item.step}
-                </div>
-                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">
-                  {item.description}
-                </p>
-                {index < howItWorks.length - 1 && (
-                  <ArrowRight className="hidden md:block absolute top-8 -right-4 text-muted-foreground/30 w-8 h-8" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* What You Can Do Section */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          What You Can Do on Uni-Hub
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <div className="bg-card border p-8 rounded-xl shadow-sm hover:shadow-lg transition">
-            <Users className="w-12 h-12 text-primary mb-4" />
-            <h3 className="text-2xl font-bold mb-6">Access & Learn</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Browse and access course materials organized by subject
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Download PDFs, notes, and study guides for offline use
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Take quizzes to test your knowledge and track your scores
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Search and filter resources to find exactly what you need
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-card border p-8 rounded-xl shadow-sm hover:shadow-lg transition">
-            <FileText className="w-12 h-12 text-primary mb-4" />
-            <h3 className="text-2xl font-bold mb-6">Contribute & Share</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Upload your own study materials to help fellow students
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Create and publish quizzes for practice and revision
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Organize content in folders for easy navigation
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Build a library of resources for your courses
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Key Features Highlight */}
-      <div className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Everything You Need to Succeed
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-card border p-6 rounded-lg shadow-sm">
-                <Clock className="w-10 h-10 text-primary mb-3" />
-                <h3 className="font-bold text-lg mb-2">Self-Paced Learning</h3>
-                <p className="text-muted-foreground">
-                  Study at your own pace, anytime and anywhere. Access materials
-                  24/7 and learn on your schedule.
-                </p>
-              </div>
-              <div className="bg-card border p-6 rounded-lg shadow-sm">
-                <TrendingUp className="w-10 h-10 text-primary mb-3" />
-                <h3 className="font-bold text-lg mb-2">Progress Tracking</h3>
-                <p className="text-muted-foreground">
-                  Monitor your performance with detailed analytics and insights
-                  on quiz scores and course completion.
-                </p>
-              </div>
-              <div className="bg-card border p-6 rounded-lg shadow-sm">
-                <FileText className="w-10 h-10 text-primary mb-3" />
-                <h3 className="font-bold text-lg mb-2">Rich Content Library</h3>
-                <p className="text-muted-foreground">
-                  Access thousands of study materials, lecture notes, PDFs, and
-                  resources organized by course and topic.
-                </p>
-              </div>
-              <div className="bg-card border p-6 rounded-lg shadow-sm">
-                <MessageSquare className="w-10 h-10 text-primary mb-3" />
-                <h3 className="font-bold text-lg mb-2">Active Community</h3>
-                <p className="text-muted-foreground">
-                  Connect with fellow students and educators. Share knowledge
-                  and collaborate on learning.
-                </p>
-              </div>
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4 px-4 sm:px-0">
+              <button className="bg-background text-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition flex items-center justify-center gap-2">
+                {t("home.about.hero.getStarted")}{" "}
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rtl:rotate-180" />
+              </button>
+              <button className="border-2 border-primary-foreground text-primary-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-primary-foreground/10 transition">
+                {t("home.about.hero.learnMore")}
+              </button>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Contribute Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-primary p-10 rounded-2xl shadow-2xl">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4 text-primary-foreground">
-                Become a Content Creator
-              </h2>
-              <p className="text-lg text-primary-foreground/90">
-                Share your expertise and help thousands of students succeed.
-                Join our community of educators and content creators today!
+        {/* Value Proposition Cards */}
+        <div className="container mx-auto px-3 sm:px-4 -mt-8 md:-mt-12">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
+            <div className="bg-card rounded-xl shadow-lg p-4 md:p-6 border">
+              <BookOpen className="w-8 h-8 md:w-10 md:h-10 text-primary mb-2 md:mb-3" />
+              <h3 className="font-bold text-sm md:text-lg mb-1 md:mb-2">
+                {t("home.about.valueCards.allInOne.title")}
+              </h3>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {t("home.about.valueCards.allInOne.description")}
               </p>
             </div>
-
-            <div className="space-y-6">
-              <div>
-                <label
-                  className="block text-sm font-medium mb-2 text-primary-foreground"
-                  htmlFor="phone"
-                >
-                  Phone Number
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  placeholder="Enter your phone number"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  disabled={isSubmitting}
-                  className="w-full px-4 py-3 rounded-lg text-foreground bg-background focus:ring-2 focus:ring-primary/50 outline-none"
-                />
-                <p className="text-sm text-primary-foreground/75 mt-2">
-                  We'll contact you within 24-48 hours to discuss your
-                  application and provide creator access.
-                </p>
-              </div>
-
-              <button
-                onClick={handleContributeSubmit}
-                disabled={isSubmitting}
-                className="w-full bg-background text-foreground py-3 rounded-lg font-semibold hover:bg-background/90 transition disabled:opacity-50"
-              >
-                {isSubmitting ? "Submitting..." : "Apply to Become a Creator"}
-              </button>
-
-              {!isAuthenticated && (
-                <p className="text-center text-sm text-primary-foreground/75">
-                  Note: You need to be logged in to submit your application
-                </p>
-              )}
-            </div>
-
-            <div className="mt-8 pt-8 border-t border-primary-foreground/20">
-              <h3 className="font-bold text-lg mb-4 text-primary-foreground">
-                As a Creator, You'll Get:
+            <div className="bg-card rounded-xl shadow-lg p-4 md:p-6 border">
+              <Zap className="w-8 h-8 md:w-10 md:h-10 text-primary mb-2 md:mb-3" />
+              <h3 className="font-bold text-sm md:text-lg mb-1 md:mb-2">
+                {t("home.about.valueCards.saveTime.title")}
               </h3>
-              <div className="grid md:grid-cols-2 gap-4 text-primary-foreground">
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 mt-0.5" />
-                  <span>Full content management dashboard</span>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {t("home.about.valueCards.saveTime.description")}
+              </p>
+            </div>
+            <div className="bg-card rounded-xl shadow-lg p-4 md:p-6 border sm:col-span-2 md:col-span-1">
+              <Award className="w-8 h-8 md:w-10 md:h-10 text-primary mb-2 md:mb-3" />
+              <h3 className="font-bold text-sm md:text-lg mb-1 md:mb-2">
+                {t("home.about.valueCards.studySmarter.title")}
+              </h3>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {t("home.about.valueCards.studySmarter.description")}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Mission Section */}
+        <div className="container mx-auto px-3 sm:px-4 py-10 md:py-16">
+          <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
+              {t("home.about.mission.title")}
+            </h2>
+            <p className="text-sm md:text-lg lg:text-xl text-muted-foreground leading-relaxed px-2">
+              {t("home.about.mission.description")}
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="mb-10 md:mb-16">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center mb-6 md:mb-12">
+              {t("home.about.features.title")}
+            </h2>
+            <div className="grid gap-3 md:gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="bg-card border p-4 md:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
+                >
+                  <feature.icon className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 text-primary mb-3 md:mb-4" />
+                  <h3 className="text-sm md:text-lg lg:text-xl font-bold mb-2 md:mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs md:text-sm lg:text-base text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 mt-0.5" />
-                  <span>Analytics on content performance</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* How It Works */}
+        <div className="bg-muted/50 py-10 md:py-16">
+          <div className="container mx-auto px-3 sm:px-4">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center mb-6 md:mb-12">
+              {t("home.about.howItWorks.title")}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto">
+              {howItWorks.map((item, index) => (
+                <div key={index} className="text-center relative">
+                  <div className="w-10 h-10 md:w-14 lg:w-16 md:h-14 lg:h-16 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-lg md:text-xl lg:text-2xl font-bold mx-auto mb-3 md:mb-4">
+                    {item.step}
+                  </div>
+                  <h3 className="font-bold text-xs md:text-base lg:text-lg mb-1 md:mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-[10px] md:text-xs lg:text-sm">
+                    {item.description}
+                  </p>
+                  {index < howItWorks.length - 1 && (
+                    <ArrowRight className="hidden md:block absolute top-5 md:top-6 lg:top-8 -end-2 md:-end-3 lg:-end-4 text-muted-foreground/30 w-4 h-4 md:w-6 lg:w-8 md:h-6 lg:h-8 rtl:rotate-180" />
+                  )}
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 mt-0.5" />
-                  <span>Recognition in creator community</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* What You Can Do Section */}
+        <div className="container mx-auto px-3 sm:px-4 py-10 md:py-16">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center mb-6 md:mb-12">
+            {t("home.about.whatYouCanDo.title")}
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto">
+            <div className="bg-card border p-5 md:p-6 lg:p-8 rounded-xl shadow-sm hover:shadow-lg transition">
+              <Users className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 text-primary mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-4 md:mb-6">
+                {t("home.about.whatYouCanDo.access.title")}
+              </h3>
+              <ul className="space-y-2 md:space-y-3">
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.access.items.browse")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.access.items.download")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.access.items.quizzes")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.access.items.search")}
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-card border p-5 md:p-6 lg:p-8 rounded-xl shadow-sm hover:shadow-lg transition">
+              <FileText className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 text-primary mb-3 md:mb-4" />
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-4 md:mb-6">
+                {t("home.about.whatYouCanDo.contribute.title")}
+              </h3>
+              <ul className="space-y-2 md:space-y-3">
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.contribute.items.upload")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.contribute.items.create")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.contribute.items.organize")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2 md:gap-3">
+                  <Check className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.whatYouCanDo.contribute.items.build")}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Key Features Highlight */}
+        <div className="bg-muted/30 py-10 md:py-14 lg:py-16">
+          <div className="container mx-auto px-3 sm:px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10 lg:mb-12">
+                {t("home.about.keyFeatures.title")}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-6">
+                <div className="bg-card border p-4 md:p-5 lg:p-6 rounded-lg shadow-sm">
+                  <Clock className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary mb-2 md:mb-3" />
+                  <h3 className="font-bold text-sm md:text-base lg:text-lg mb-1.5 md:mb-2">
+                    {t("home.about.keyFeatures.selfPaced.title")}
+                  </h3>
+                  <p className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.keyFeatures.selfPaced.description")}
+                  </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 mt-0.5" />
-                  <span>Priority support and training</span>
+                <div className="bg-card border p-4 md:p-5 lg:p-6 rounded-lg shadow-sm">
+                  <TrendingUp className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary mb-2 md:mb-3" />
+                  <h3 className="font-bold text-sm md:text-base lg:text-lg mb-1.5 md:mb-2">
+                    {t("home.about.keyFeatures.progress.title")}
+                  </h3>
+                  <p className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.keyFeatures.progress.description")}
+                  </p>
+                </div>
+                <div className="bg-card border p-4 md:p-5 lg:p-6 rounded-lg shadow-sm">
+                  <FileText className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary mb-2 md:mb-3" />
+                  <h3 className="font-bold text-sm md:text-base lg:text-lg mb-1.5 md:mb-2">
+                    {t("home.about.keyFeatures.library.title")}
+                  </h3>
+                  <p className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.keyFeatures.library.description")}
+                  </p>
+                </div>
+                <div className="bg-card border p-4 md:p-5 lg:p-6 rounded-lg shadow-sm">
+                  <MessageSquare className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 text-primary mb-2 md:mb-3" />
+                  <h3 className="font-bold text-sm md:text-base lg:text-lg mb-1.5 md:mb-2">
+                    {t("home.about.keyFeatures.community.title")}
+                  </h3>
+                  <p className="text-muted-foreground text-xs md:text-sm lg:text-base">
+                    {t("home.about.keyFeatures.community.description")}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* CTA Section */}
-      <div className="bg-card border-t py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Transform Your Learning?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of students already benefiting from organized,
-            accessible, and comprehensive learning resources.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {!isAuthenticated && (
-              <>
+        {/* Contribute Section */}
+        <div className="container mx-auto px-3 sm:px-4 py-10 md:py-14 lg:py-16">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-primary p-5 sm:p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl shadow-xl md:shadow-2xl">
+              <div className="text-center mb-5 md:mb-6 lg:mb-8">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 md:mb-3 lg:mb-4 text-primary-foreground">
+                  {t("home.about.contribute.title")}
+                </h2>
+                <p className="text-sm md:text-base lg:text-lg text-primary-foreground/90">
+                  {t("home.about.contribute.description")}
+                </p>
+              </div>
+
+              <div className="space-y-4 md:space-y-5 lg:space-y-6">
+                <div>
+                  <label
+                    className="block text-xs md:text-sm font-medium mb-1.5 md:mb-2 text-primary-foreground"
+                    htmlFor="phone"
+                  >
+                    {t("home.about.contribute.phoneLabel")}
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    placeholder={t("home.about.contribute.phonePlaceholder")}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    disabled={isSubmitting}
+                    className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg text-sm md:text-base text-foreground bg-background focus:ring-2 focus:ring-primary/50 outline-none"
+                  />
+                  <p className="text-xs md:text-sm text-primary-foreground/75 mt-1.5 md:mt-2">
+                    {t("home.about.contribute.phoneNote")}
+                  </p>
+                </div>
+
                 <button
-                  onClick={() => navigate("/auth/register")}
-                  className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition"
+                  onClick={handleContributeSubmit}
+                  disabled={isSubmitting}
+                  className="w-full bg-background text-foreground py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition disabled:opacity-50"
                 >
-                  Create Free Account
+                  {isSubmitting
+                    ? t("home.about.contribute.submitting")
+                    : t("home.about.contribute.submitButton")}
                 </button>
-                <button
-                  onClick={() => navigate("/auth/login")}
-                  className="border-2 border-primary text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary/10 transition"
-                >
-                  Sign In
-                </button>
-              </>
-            )}
-            <button
-              onClick={() => navigate("/courses")}
-              className="bg-secondary text-secondary-foreground px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition"
-            >
-              Browse Courses
-            </button>
+
+                {!isAuthenticated && (
+                  <p className="text-center text-xs md:text-sm text-primary-foreground/75">
+                    {t("home.about.contribute.loginNote")}
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-5 md:mt-6 lg:mt-8 pt-5 md:pt-6 lg:pt-8 border-t border-primary-foreground/20">
+                <h3 className="font-bold text-sm md:text-base lg:text-lg mb-3 md:mb-4 text-primary-foreground">
+                  {t("home.about.contribute.benefits.title")}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-4 text-primary-foreground">
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <Check className="w-4 h-4 md:w-5 md:h-5 shrink-0 mt-0.5" />
+                    <span className="text-xs md:text-sm lg:text-base">
+                      {t("home.about.contribute.benefits.dashboard")}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <Check className="w-4 h-4 md:w-5 md:h-5 shrink-0 mt-0.5" />
+                    <span className="text-xs md:text-sm lg:text-base">
+                      {t("home.about.contribute.benefits.analytics")}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <Check className="w-4 h-4 md:w-5 md:h-5 shrink-0 mt-0.5" />
+                    <span className="text-xs md:text-sm lg:text-base">
+                      {t("home.about.contribute.benefits.recognition")}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <Check className="w-4 h-4 md:w-5 md:h-5 shrink-0 mt-0.5" />
+                    <span className="text-xs md:text-sm lg:text-base">
+                      {t("home.about.contribute.benefits.support")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="bg-card border-t py-10 md:py-14 lg:py-16">
+          <div className="container mx-auto px-3 sm:px-4 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 md:mb-3 lg:mb-4">
+              {t("home.about.finalCta.title")}
+            </h2>
+            <p className="text-sm md:text-base lg:text-xl text-muted-foreground mb-5 md:mb-6 lg:mb-8 max-w-2xl mx-auto">
+              {t("home.about.finalCta.description")}
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 lg:gap-4">
+              {!isAuthenticated && (
+                <>
+                  <button
+                    onClick={() => navigate("/auth/register")}
+                    className="bg-primary text-primary-foreground px-5 md:px-6 lg:px-8 py-2 md:py-2.5 lg:py-3 rounded-lg text-sm md:text-base font-semibold hover:opacity-90 transition"
+                  >
+                    {t("home.about.finalCta.createAccount")}
+                  </button>
+                  <button
+                    onClick={() => navigate("/auth/login")}
+                    className="border-2 border-primary text-primary px-5 md:px-6 lg:px-8 py-2 md:py-2.5 lg:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-primary/10 transition"
+                  >
+                    {t("home.about.finalCta.signIn")}
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => navigate("/courses")}
+                className="bg-secondary text-secondary-foreground px-5 md:px-6 lg:px-8 py-2 md:py-2.5 lg:py-3 rounded-lg text-sm md:text-base font-semibold hover:opacity-90 transition"
+              >
+                {t("home.about.finalCta.browseCourses")}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

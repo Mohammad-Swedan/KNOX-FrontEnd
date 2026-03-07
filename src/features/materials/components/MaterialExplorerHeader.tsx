@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui/button";
 import { Separator } from "@/shared/ui/separator";
 import { Plus, Sparkles } from "lucide-react";
@@ -18,17 +19,19 @@ export function MaterialExplorerHeader({
   onAddFolder,
   onAddMaterial,
 }: MaterialExplorerHeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <>
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Sparkles className="h-4 w-4 text-primary" />
-            Course #{courseId} · Materials Vault
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
+            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+            {t("materials.explorer.courseLabel", { courseId })}
           </div>
-          <div className="flex items-center gap-3">
-            <h2 className="text-3xl font-semibold tracking-tight">
-              Course Materials
+          <div className="flex items-center gap-2 sm:gap-3">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
+              {t("materials.explorer.title")}
             </h2>
             <ShareButton
               url={`/courses/${courseId}/materials`}
@@ -36,29 +39,38 @@ export function MaterialExplorerHeader({
               showText={false}
             />
           </div>
-          <p className="text-sm text-muted-foreground">
-            Access all course materials, organized by folders and files.
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            {t("materials.explorer.description")}
           </p>
         </div>
 
         {isManagementMode && (
-          <div className="flex gap-2">
-            <Button onClick={onAddFolder} variant="outline" size="sm">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Folder
+          <div className="flex gap-1.5 sm:gap-2">
+            <Button
+              onClick={onAddFolder}
+              variant="outline"
+              size="sm"
+              className="text-xs sm:text-sm h-8 sm:h-9"
+            >
+              <Plus className="me-1.5 sm:me-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              {t("materials.explorer.addFolder")}
             </Button>
-            <Button onClick={onAddMaterial} size="sm">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Material
+            <Button
+              onClick={onAddMaterial}
+              size="sm"
+              className="text-xs sm:text-sm h-8 sm:h-9"
+            >
+              <Plus className="me-1.5 sm:me-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              {t("materials.explorer.addMaterial")}
             </Button>
           </div>
         )}
 
-        <div className="rounded-2xl border border-border/70 bg-background/60 px-4 py-3 shadow-sm">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Total Items
+        <div className="rounded-xl sm:rounded-2xl border border-border/70 bg-background/60 px-3 py-2 sm:px-4 sm:py-3 shadow-sm">
+          <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">
+            {t("materials.explorer.totalItems")}
           </p>
-          <p className="text-2xl font-semibold">{totalItems}</p>
+          <p className="text-xl sm:text-2xl font-semibold">{totalItems}</p>
         </div>
       </div>
 
