@@ -1,4 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "sonner";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useFolderContents } from "../hooks/useFolderContents";
 import { LoadingState, ErrorState } from "../components/PageStates";
@@ -6,6 +8,8 @@ import { FolderPageHeader } from "../components/FolderPageHeader";
 import { FoldersList } from "../components/FoldersList";
 import { MaterialsList } from "../components/MaterialsList";
 import { EmptyState } from "../components/EmptyState";
+import { CreateFolderDialog } from "../components/CreateFolderDialog";
+import { createFolder } from "../api";
 
 interface FolderPageProps {
   mode?: "public" | "manage";
@@ -16,6 +20,7 @@ export default function FolderPage({ mode = "public" }: FolderPageProps) {
     courseId: string;
     folderId: string;
   }>();
+  const navigate = useNavigate();
   const { canManageContent } = useUserRole();
 
   // Check if user can see management UI
@@ -29,16 +34,36 @@ export default function FolderPage({ mode = "public" }: FolderPageProps) {
     handleDeleteMaterial,
     handleEditFolder,
     handleEditMaterial,
+    refetch,
   } = useFolderContents({ courseId, folderId, isManagementMode });
 
+  const [showCreateFolderDialog, setShowCreateFolderDialog] = useState(false);
+
   const handleAddFolder = () => {
-    // TODO: Implement add folder dialog
-    console.log("Add folder clicked");
+    setShowCreateFolderDialog(true);
+  };
+
+  const handleCreateFolder = async (name: string, description?: string) => {
+    if (!courseId) return;
+
+    try {
+      await createFolder({
+        name,
+        courseId: parseInt(courseId),
+        description: description || null,
+      });
+      toast.success("Folder created successfully!");
+      refetch();
+    } catch (err) {
+      console.error("Failed to create folder:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to create folder");
+      throw err;
+    }
   };
 
   const handleAddMaterial = () => {
-    // TODO: Implement add material dialog
-    console.log("Add material clicked");
+    if (!courseId) return;
+    navigate(`/dashboard/courses/${courseId}/materials/add`);
   };
 
   if (loading) return <LoadingState />;
@@ -76,6 +101,12 @@ export default function FolderPage({ mode = "public" }: FolderPageProps) {
 
         {isEmpty && <EmptyState />}
       </div>
+
+      <CreateFolderDialog
+        open={showCreateFolderDialog}
+        onOpenChange={setShowCreateFolderDialog}
+        onSubmit={handleCreateFolder}
+      />
     </div>
   );
 }

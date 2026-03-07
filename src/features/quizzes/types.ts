@@ -100,6 +100,8 @@ export type CreateQuizPayload = {
   courseId: number;
   description: string | null;
   questions: CreateQuizQuestionPayload[];
+  isFree?: boolean;
+  productCourseId?: number;
 };
 
 // Helper function to get question type label

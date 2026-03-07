@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getCourseMaterials, GetMyCourseContent } from "../api";
 import type { CourseMaterialsResponse } from "../types";
 
@@ -25,6 +25,11 @@ export function useCourseMaterials(
     null
   );
   const [error, setError] = useState<string | null>(null);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  const refetch = useCallback(() => {
+    setRefetchTrigger((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     async function loadRootMaterials() {
@@ -49,7 +54,7 @@ export function useCourseMaterials(
     }
 
     loadRootMaterials();
-  }, [courseId, isManagementMode]);
+  }, [courseId, isManagementMode, refetchTrigger]);
 
-  return { loading, contents, error };
+  return { loading, contents, error, refetch };
 }

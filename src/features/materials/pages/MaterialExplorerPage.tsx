@@ -1,13 +1,17 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/shared/ui/card";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/shared/ui/button";
+import { toast } from "sonner";
 import SEO from "@/shared/components/seo/SEO";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useCourseMaterials } from "../hooks/useCourseMaterials";
 import { MaterialExplorerHeader } from "../components/MaterialExplorerHeader";
 import { MaterialExplorerContent } from "../components/MaterialExplorerContent";
+import { CreateFolderDialog } from "../components/CreateFolderDialog";
+import { createFolder } from "../api";
 import type { FolderItem, MaterialItem } from "../types";
 
 interface MaterialExplorerProps {
@@ -19,25 +23,45 @@ export default function MaterialExplorerPage({
 }: MaterialExplorerProps) {
   const { courseId } = useParams<{ courseId: string }>();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { canManageContent } = useUserRole();
 
   // Check if user can see management UI
   const isManagementMode = mode === "manage" && canManageContent();
 
-  const { loading, contents, error } = useCourseMaterials({
+  const { loading, contents, error, refetch } = useCourseMaterials({
     courseId,
     isManagementMode,
   });
 
+  const [showCreateFolderDialog, setShowCreateFolderDialog] = useState(false);
+
   // Management action handlers
   const handleAddFolder = () => {
-    // TODO: Open add folder dialog
-    console.log("Add folder clicked");
+    setShowCreateFolderDialog(true);
+  };
+
+  const handleCreateFolder = async (name: string, description?: string) => {
+    if (!courseId) return;
+
+    try {
+      await createFolder({
+        name,
+        courseId: parseInt(courseId),
+        description: description || null,
+      });
+      toast.success("Folder created successfully!");
+      refetch();
+    } catch (err) {
+      console.error("Failed to create folder:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to create folder");
+      throw err;
+    }
   };
 
   const handleAddMaterial = () => {
-    // TODO: Open add material dialog
-    console.log("Add material clicked");
+    if (!courseId) return;
+    navigate(`/dashboard/courses/${courseId}/materials/add`);
   };
 
   const handleEditFolder = (folder: FolderItem) => {
@@ -138,6 +162,12 @@ export default function MaterialExplorerPage({
           />
         </div>
       </Card>
+
+      <CreateFolderDialog
+        open={showCreateFolderDialog}
+        onOpenChange={setShowCreateFolderDialog}
+        onSubmit={handleCreateFolder}
+      />
     </>
   );
 }

@@ -31,10 +31,14 @@ export const uploadTemporaryFile = async (
 /**
  * Create a new quiz
  * @param payload - The quiz data to create
+ * @returns The ID of the created quiz
  */
-export const createQuiz = async (payload: CreateQuizPayload): Promise<void> => {
+export const createQuiz = async (payload: CreateQuizPayload): Promise<number> => {
   try {
-    await apiClient.post("/quizzes", payload);
+    const response = await apiClient.post<{ id: number } | number>("/quizzes", payload);
+    // Backend may return { id } or just the id as a number
+    const data = response.data;
+    return typeof data === "number" ? data : (data as { id: number }).id;
   } catch (err) {
     console.error("Failed to create quiz:", err);
     const error = err as {

@@ -8,6 +8,7 @@ export interface Course {
   materials: number;
   quizzes: number;
   hasCourseInfo: boolean;
+  hasProductCourse: boolean;
 }
 
 // Backend API response type
@@ -22,6 +23,7 @@ export interface CourseApiResponse {
   numberOfMaterials: number;
   numberOfQuizzes: number;
   hasCourseInfo: boolean;
+  hasProductCourse: boolean;
 }
 
 // Resource type enum values

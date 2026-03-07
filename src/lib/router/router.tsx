@@ -26,6 +26,21 @@ import MajorCoursesPage from "@/features/courses/pages/MajorCoursesPage";
 import MaterialExplorerPage from "@/features/materials/pages/MaterialExplorerPage";
 import ManageResourcesPage from "@/features/courses/pages/ManageResourcesPage";
 
+// Product Courses
+import ProductCourseListPage from "@/features/product-courses/pages/ProductCourseListPage";
+import CreateProductCoursePage from "@/features/product-courses/pages/CreateProductCoursePage";
+import EditProductCoursePage from "@/features/product-courses/pages/EditProductCoursePage";
+import ProductCourseDetailPage from "@/features/product-courses/pages/ProductCourseDetailPage";
+import ManageLessonsPage from "@/features/product-courses/pages/ManageLessonsPage";
+import AddVideoLessonPage from "@/features/product-courses/pages/AddVideoLessonPage";
+import AddQuizLessonPage from "@/features/product-courses/pages/AddQuizLessonPage";
+import AddMaterialLessonPage from "@/features/product-courses/pages/AddMaterialLessonPage";
+import PrepaidCodesPage from "@/features/product-courses/pages/PrepaidCodesPage";
+import ProductCourseCatalog from "@/features/product-courses/pages/ProductCourseCatalog";
+import MyEnrollmentsPage from "@/features/product-courses/pages/MyEnrollmentsPage";
+import CertificateVerifyPage from "@/features/product-courses/pages/CertificateVerifyPage";
+import CoursePlayerPage from "@/features/product-courses/pages/CoursePlayerPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +62,35 @@ export const router = createBrowserRouter([
       {
         path: "courses/:courseId/quizzes/:quizId",
         element: <QuizQuestionsPage />,
+      },
+      // Product Courses — Public routes
+      {
+        path: "browse/product-courses",
+        element: <ProductCourseCatalog />,
+      },
+      {
+        path: "browse/product-courses/:id/:slug",
+        element: <ProductCourseDetailPage />,
+      },
+      {
+        path: "certificates/verify",
+        element: <CertificateVerifyPage />,
+      },
+      {
+        path: "product-courses/:id/learn",
+        element: (
+          <ProtectedRoute>
+            <CoursePlayerPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "my-learning",
+        element: (
+          <ProtectedRoute>
+            <MyEnrollmentsPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "profile",
@@ -77,7 +121,7 @@ export const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <ProtectedRoute requiredRoles={["Writer", "Admin", "SuperAdmin"]}>
+      <ProtectedRoute requiredRoles={["Writer", "Admin", "SuperAdmin", "Instructor"]}>
         <DashboardLayout />
       </ProtectedRoute>
     ),
@@ -134,6 +178,95 @@ export const router = createBrowserRouter([
       {
         path: "courses/:courseId/resources",
         element: <ManageResourcesPage />,
+      },
+      // Product Courses — Dashboard management routes
+      {
+        path: "courses/:academicCourseId/product-courses",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <ProductCourseListPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "courses/:academicCourseId/product-courses/create",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <CreateProductCoursePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id",
+        element: <ProductCourseDetailPage />,
+      },
+      {
+        path: "product-courses/:id/edit",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <EditProductCoursePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/lessons",
+        element: <ManageLessonsPage />,
+      },
+      {
+        path: "product-courses/:id/lessons/add-video",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddVideoLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/topics/:topicId/lessons/add-video",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddVideoLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/lessons/add-quiz",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddQuizLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/topics/:topicId/lessons/add-quiz",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddQuizLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/lessons/add-material",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddMaterialLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/topics/:topicId/lessons/add-material",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <AddMaterialLessonPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "product-courses/:id/prepaid-codes",
+        element: (
+          <ProtectedRoute requiredRoles={["Admin", "SuperAdmin", "Instructor"]}>
+            <PrepaidCodesPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "users",

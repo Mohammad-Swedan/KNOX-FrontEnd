@@ -40,6 +40,7 @@ export const mapApiResponseToCourse = (
     materials: apiCourse.numberOfMaterials,
     quizzes: apiCourse.numberOfQuizzes,
     hasCourseInfo: apiCourse.hasCourseInfo,
+    hasProductCourse: apiCourse.hasProductCourse ?? false,
   };
 };
 
