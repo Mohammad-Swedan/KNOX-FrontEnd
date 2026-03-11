@@ -32,37 +32,40 @@ import type {
   LessonQuizContent,
   LessonMaterialContent,
   LessonVideoContent,
+  LessonExternalVideoContent,
+  UpdateTopicRequest,
+  UpdateLessonRequest,
+  TogglePublishResponse,
+  PermanentUploadResponse,
 } from "./types";
 
 // ── Product Courses CRUD ───────────────────────────────────
 
 /** Get product courses by academic course */
 export const fetchProductCoursesByAcademic = async (
-  academicCourseId: number
+  academicCourseId: number,
 ): Promise<ProductCourseSummary[]> => {
   const response = await apiClient.get<ProductCourseSummary[]>(
-    `/product-courses/by-academic/${academicCourseId}`
+    `/product-courses/by-academic/${academicCourseId}`,
   );
   return response.data;
 };
 
 /** Get a single product course by ID */
 export const fetchProductCourseById = async (
-  id: number
+  id: number,
 ): Promise<ProductCourse> => {
-  const response = await apiClient.get<ProductCourse>(
-    `/product-courses/${id}`
-  );
+  const response = await apiClient.get<ProductCourse>(`/product-courses/${id}`);
   return response.data;
 };
 
 /** Create a new product course */
 export const createProductCourse = async (
-  data: CreateProductCourseRequest
+  data: CreateProductCourseRequest,
 ): Promise<ProductCourse> => {
   const response = await apiClient.post<ProductCourse>(
     "/product-courses",
-    data
+    data,
   );
   return response.data;
 };
@@ -70,28 +73,58 @@ export const createProductCourse = async (
 /** Update an existing product course */
 export const updateProductCourse = async (
   id: number,
-  data: UpdateProductCourseRequest
+  data: UpdateProductCourseRequest,
 ): Promise<ProductCourse> => {
   const response = await apiClient.put<ProductCourse>(
     `/product-courses/${id}`,
-    data
+    data,
   );
   return response.data;
 };
 
 /** Publish a product course (Draft → Published) */
 export const publishProductCourse = async (
-  id: number
+  id: number,
 ): Promise<{ message: string }> => {
   const response = await apiClient.post<{ message: string }>(
-    `/product-courses/${id}/publish`
+    `/product-courses/${id}/publish`,
+  );
+  return response.data;
+};
+
+/** Unpublish a product course → back to Draft */
+export const unpublishProductCourse = async (
+  id: number,
+): Promise<{ message: string }> => {
+  const response = await apiClient.post<{ message: string }>(
+    `/product-courses/${id}/unpublish`,
+  );
+  return response.data;
+};
+
+/** Toggle publish/unpublish a product course */
+export const togglePublishProductCourse = async (
+  id: number,
+): Promise<TogglePublishResponse> => {
+  const response = await apiClient.post<TogglePublishResponse>(
+    `/product-courses/${id}/toggle-publish`,
+  );
+  return response.data;
+};
+
+/** Soft-delete a product course */
+export const deleteProductCourse = async (
+  id: number,
+): Promise<{ message: string }> => {
+  const response = await apiClient.delete<{ message: string }>(
+    `/product-courses/${id}`,
   );
   return response.data;
 };
 
 /** Filter / browse product courses (public) */
 export const filterProductCourses = async (
-  params: ProductCourseFilterParams
+  params: ProductCourseFilterParams,
 ): Promise<PaginatedResponse<ProductCourseSummary>> => {
   const extra: string[] = [];
   if (params.search) extra.push(`search=${encodeURIComponent(params.search)}`);
@@ -106,7 +139,7 @@ export const filterProductCourses = async (
     "/product-courses/filter",
     params.pageNumber ?? 1,
     params.pageSize ?? 10,
-    extra.join("&")
+    extra.join("&"),
   );
 };
 
@@ -115,11 +148,33 @@ export const filterProductCourses = async (
 /** Add a topic to a product course */
 export const addTopic = async (
   courseId: number,
-  data: AddTopicRequest
+  data: AddTopicRequest,
 ): Promise<TopicDto> => {
   const response = await apiClient.post<TopicDto>(
     `/product-courses/${courseId}/topics`,
-    data
+    data,
+  );
+  return response.data;
+};
+
+/** Update a topic's title and/or order */
+export const updateTopic = async (
+  topicId: number,
+  data: UpdateTopicRequest,
+): Promise<TopicDto> => {
+  const response = await apiClient.put<TopicDto>(
+    `/product-courses/topics/${topicId}`,
+    data,
+  );
+  return response.data;
+};
+
+/** Delete a topic (cascades to all lessons + external storage) */
+export const deleteTopic = async (
+  topicId: number,
+): Promise<{ message: string }> => {
+  const response = await apiClient.delete<{ message: string }>(
+    `/product-courses/topics/${topicId}`,
   );
   return response.data;
 };
@@ -128,10 +183,10 @@ export const addTopic = async (
 
 /** Get lessons for a product course (flat legacy) */
 export const fetchLessons = async (
-  productCourseId: number
+  productCourseId: number,
 ): Promise<Lesson[]> => {
   const response = await apiClient.get<Lesson[]>(
-    `/product-courses/${productCourseId}/lessons`
+    `/product-courses/${productCourseId}/lessons`,
   );
   return response.data;
 };
@@ -140,11 +195,33 @@ export const fetchLessons = async (
 export const addLesson = async (
   courseId: number,
   topicId: number,
-  data: AddLessonRequest
+  data: AddLessonRequest,
 ): Promise<Lesson> => {
   const response = await apiClient.post<Lesson>(
     `/product-courses/${courseId}/topics/${topicId}/lessons`,
-    data
+    data,
+  );
+  return response.data;
+};
+
+/** Update a lesson's title, order, free-preview flag, or content reference */
+export const updateLesson = async (
+  lessonId: number,
+  data: UpdateLessonRequest,
+): Promise<Lesson> => {
+  const response = await apiClient.put<Lesson>(
+    `/product-courses/lessons/${lessonId}`,
+    data,
+  );
+  return response.data;
+};
+
+/** Delete a lesson + remove associated external content from storage */
+export const deleteLesson = async (
+  lessonId: number,
+): Promise<{ message: string }> => {
+  const response = await apiClient.delete<{ message: string }>(
+    `/product-courses/lessons/${lessonId}`,
   );
   return response.data;
 };
@@ -153,40 +230,40 @@ export const addLesson = async (
 
 /** Get public course outline (no auth required) */
 export const fetchCourseOutline = async (
-  courseId: number
+  courseId: number,
 ): Promise<CourseOutlineDto> => {
   const response = await apiClient.get<CourseOutlineDto>(
-    `/product-courses/${courseId}/outline`
+    `/product-courses/${courseId}/outline`,
   );
   return response.data;
 };
 
 /** Get enrolled course outline with progress (auth required) */
 export const fetchEnrolledOutline = async (
-  courseId: number
+  courseId: number,
 ): Promise<EnrolledCourseOutlineDto> => {
   const response = await apiClient.get<EnrolledCourseOutlineDto>(
-    `/product-courses/${courseId}/enrolled-outline`
+    `/product-courses/${courseId}/enrolled-outline`,
   );
   return response.data;
 };
 
 /** Get unified course content (topics + lessons, respects enrollment status) */
 export const fetchCourseContent = async (
-  courseId: number
+  courseId: number,
 ): Promise<CourseContentDto> => {
   const response = await apiClient.get<CourseContentDto>(
-    `/product-courses/${courseId}/content`
+    `/product-courses/${courseId}/content`,
   );
   return response.data;
 };
 
 /** Get enrolled course content (topics + lessons with completion status) */
 export const fetchEnrolledContent = async (
-  courseId: number
+  courseId: number,
 ): Promise<CourseContentDto> => {
   const response = await apiClient.get<CourseContentDto>(
-    `/product-courses/${courseId}/enrolled-content`
+    `/product-courses/${courseId}/enrolled-content`,
   );
   return response.data;
 };
@@ -195,11 +272,11 @@ export const fetchEnrolledContent = async (
 
 /** Create a video entry (returns upload URL) */
 export const createVideo = async (
-  data: CreateVideoRequest
+  data: CreateVideoRequest,
 ): Promise<CreateVideoResult> => {
   const response = await apiClient.post<CreateVideoResult>(
     "/product-courses/videos/create",
-    data
+    data,
   );
   return response.data;
 };
@@ -209,7 +286,7 @@ export const uploadVideoToBunny = (
   file: File,
   uploadUrl: string,
   libraryApiKey: string,
-  onProgress: (percent: number) => void
+  onProgress: (percent: number) => void,
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -239,11 +316,9 @@ export const uploadVideoToBunny = (
 };
 
 /** Get video info / status by ID */
-export const fetchVideoInfo = async (
-  videoId: number
-): Promise<VideoInfo> => {
+export const fetchVideoInfo = async (videoId: number): Promise<VideoInfo> => {
   const response = await apiClient.get<VideoInfo>(
-    `/product-courses/videos/${videoId}`
+    `/product-courses/videos/${videoId}`,
   );
   return response.data;
 };
@@ -251,17 +326,17 @@ export const fetchVideoInfo = async (
 /** Get a signed playback token for a video (auth optional for free-preview) */
 export const fetchVideoToken = async (
   videoId: number,
-  skipAuth = false
+  skipAuth = false,
 ): Promise<VideoToken> => {
   if (skipAuth) {
     // Use a plain axios call without the auth interceptor
     const response = await axios.get<VideoToken>(
-      `${BASE_URL}/product-courses/videos/token/${videoId}`
+      `${BASE_URL}/product-courses/videos/token/${videoId}`,
     );
     return response.data;
   }
   const response = await apiClient.get<VideoToken>(
-    `/product-courses/videos/token/${videoId}`
+    `/product-courses/videos/token/${videoId}`,
   );
   return response.data;
 };
@@ -270,11 +345,11 @@ export const fetchVideoToken = async (
 
 /** Enroll in a product course */
 export const enrollInCourse = async (
-  data: EnrollRequest
+  data: EnrollRequest,
 ): Promise<ProductEnrollment> => {
   const response = await apiClient.post<ProductEnrollment>(
     "/product-courses/enrollments",
-    data
+    data,
   );
   return response.data;
 };
@@ -282,23 +357,23 @@ export const enrollInCourse = async (
 /** Get current user's enrollments */
 export const fetchMyEnrollments = async (
   pageNumber = 1,
-  pageSize = 10
+  pageSize = 10,
 ): Promise<PaginatedResponse<ProductEnrollment>> => {
   return getPaginated<ProductEnrollment>(
     "/product-courses/enrollments/my",
     pageNumber,
-    pageSize
+    pageSize,
   );
 };
 
 /** Mark a lesson as completed */
 export const completeLesson = async (
   enrollmentId: number,
-  lessonId: number
+  lessonId: number,
 ): Promise<{ message: string }> => {
   const response = await apiClient.post<{ message: string }>(
     `/product-courses/enrollments/${enrollmentId}/complete-lesson`,
-    { lessonId }
+    { lessonId },
   );
   return response.data;
 };
@@ -307,10 +382,10 @@ export const completeLesson = async (
 
 /** Verify a certificate by certificate number */
 export const verifyCertificate = async (
-  certificateNumber: string
+  certificateNumber: string,
 ): Promise<Certificate> => {
   const response = await apiClient.get<Certificate>(
-    `/product-courses/certificates/verify/${certificateNumber}`
+    `/product-courses/certificates/verify/${certificateNumber}`,
   );
   return response.data;
 };
@@ -319,11 +394,11 @@ export const verifyCertificate = async (
 
 /** Create a prepaid code */
 export const createPrepaidCode = async (
-  data: CreatePrepaidCodeRequest
+  data: CreatePrepaidCodeRequest,
 ): Promise<PrepaidCode> => {
   const response = await apiClient.post<PrepaidCode>(
     "/product-courses/prepaid-codes",
-    data
+    data,
   );
   return response.data;
 };
@@ -332,30 +407,58 @@ export const createPrepaidCode = async (
 
 /** Fetch quiz content for a quiz-type lesson */
 export const fetchLessonQuiz = async (
-  lessonId: number
+  lessonId: number,
 ): Promise<LessonQuizContent> => {
   const response = await apiClient.get<LessonQuizContent>(
-    `/product-courses/lessons/${lessonId}/quiz`
+    `/product-courses/lessons/${lessonId}/quiz`,
   );
   return response.data;
 };
 
 /** Fetch video content for a video-type lesson */
 export const fetchLessonVideo = async (
-  lessonId: number
+  lessonId: number,
 ): Promise<LessonVideoContent> => {
   const response = await apiClient.get<LessonVideoContent>(
-    `/product-courses/lessons/${lessonId}/video`
+    `/product-courses/lessons/${lessonId}/video`,
   );
   return response.data;
 };
 
 /** Fetch material/document content for a document-type lesson */
 export const fetchLessonMaterial = async (
-  lessonId: number
+  lessonId: number,
 ): Promise<LessonMaterialContent> => {
   const response = await apiClient.get<LessonMaterialContent>(
-    `/product-courses/lessons/${lessonId}/material`
+    `/product-courses/lessons/${lessonId}/material`,
+  );
+  return response.data;
+};
+
+/** Fetch external-video content (directUrl) for an external-video-type lesson */
+export const fetchLessonExternalVideo = async (
+  lessonId: number,
+): Promise<LessonExternalVideoContent> => {
+  const response = await apiClient.get<LessonExternalVideoContent>(
+    `/product-courses/lessons/${lessonId}/external-video`,
+  );
+  return response.data;
+};
+
+// ── File Upload ────────────────────────────────────────────
+
+/** Upload a file to permanent storage (e.g. thumbnails, materials) */
+export const uploadPermanentFile = async (
+  file: File,
+  fileCategory: string,
+): Promise<PermanentUploadResponse> => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("fileCategory", fileCategory);
+  const response = await apiClient.post<PermanentUploadResponse>(
+    "/files/upload/permanent",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
   return response.data;
 };

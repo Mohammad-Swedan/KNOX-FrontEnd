@@ -1,12 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import {
   Calendar,
   Shield,
   CheckCircle2,
   ShieldCheck,
   Clock,
+  ShieldAlert,
+  KeyRound,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { User } from "@/app/providers/AuthContext";
 import { formatDate, getRoleBadgeVariant } from "../utils/profileUtils";
 
@@ -93,19 +97,60 @@ export const AccountDetailsCard = ({ user }: AccountDetailsCardProps) => {
               <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
                 Verification Status
               </p>
-              <Badge
-                variant="outline"
-                className={`text-xs ${
-                  user.isVerfied
-                    ? "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800"
-                    : "bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-200 dark:border-gray-800"
-                }`}
-              >
-                {user.isVerfied ? "Verified" : "Not Verified"}
-              </Badge>
+              {user.isVerfied ? (
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800"
+                >
+                  Verified
+                </Badge>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800 w-fit"
+                  >
+                    <ShieldAlert className="h-3 w-3 me-1" />
+                    Not Verified
+                  </Badge>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs w-fit border-primary/50 text-primary hover:bg-primary/10"
+                    asChild
+                  >
+                    <Link
+                      to={`/auth/verify-account?email=${encodeURIComponent(user.email)}`}
+                    >
+                      <ShieldCheck className="h-3 w-3 me-1.5" />
+                      Verify Now
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}
+
+        {/* Change Password */}
+        <div className="group flex items-start gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-white dark:bg-slate-700 shadow-sm">
+            <KeyRound className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
+              Password
+            </p>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs w-fit"
+              asChild
+            >
+              <Link to="/profile/change-password">Change Password</Link>
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

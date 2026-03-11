@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { getCourseMaterials, GetMyCourseContent } from "../api";
+import { getCourseMaterials, getManageContents } from "../api";
 import type { CourseMaterialsResponse } from "../types";
 
 interface UseCourseMaterialsProps {
@@ -8,7 +8,7 @@ interface UseCourseMaterialsProps {
 }
 
 export function useCourseMaterials(
-  courseIdOrProps: string | undefined | UseCourseMaterialsProps
+  courseIdOrProps: string | undefined | UseCourseMaterialsProps,
 ) {
   // Support both old (string) and new (object) API
   const courseId =
@@ -22,7 +22,7 @@ export function useCourseMaterials(
 
   const [loading, setLoading] = useState(true);
   const [contents, setContents] = useState<CourseMaterialsResponse | null>(
-    null
+    null,
   );
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
@@ -39,13 +39,14 @@ export function useCourseMaterials(
       setError(null);
 
       try {
+        // Manage mode uses /manage-contents so admins/writers see everything they can manage
         const data = isManagementMode
-          ? await GetMyCourseContent(courseId)
+          ? await getManageContents(courseId)
           : await getCourseMaterials(courseId);
         setContents(data);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Failed to load materials"
+          err instanceof Error ? err.message : "Failed to load materials",
         );
         console.error("Error loading materials:", err);
       } finally {

@@ -57,6 +57,7 @@ const EditProductCoursePage = () => {
           {course && (
             <ProductCourseForm
               initialData={course}
+              courseId={courseId}
               academicCourseId={course.academicCourseId ?? undefined}
               onSubmit={handleSubmit}
               isSubmitting={isSubmitting}

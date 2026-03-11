@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/shared/ui/card";
@@ -11,8 +11,19 @@ import { useCourseMaterials } from "../hooks/useCourseMaterials";
 import { MaterialExplorerHeader } from "../components/MaterialExplorerHeader";
 import { MaterialExplorerContent } from "../components/MaterialExplorerContent";
 import { CreateFolderDialog } from "../components/CreateFolderDialog";
-import { createFolder } from "../api";
+import { AddMaterialDialog } from "../components/AddMaterialDialog";
+import { EditMaterialDialog } from "../components/EditMaterialDialog";
+import { EditFolderDialog } from "../components/EditFolderDialog";
+import {
+  createFolder,
+  createMaterial,
+  updateMaterial,
+  updateFolder,
+  deleteFolder,
+  deleteMaterial,
+} from "../api";
 import type { FolderItem, MaterialItem } from "../types";
+import { addLesson } from "@/features/product-courses/api";
 
 interface MaterialExplorerProps {
   mode?: "public" | "manage";
@@ -22,66 +33,169 @@ export default function MaterialExplorerPage({
   mode = "public",
 }: MaterialExplorerProps) {
   const { courseId } = useParams<{ courseId: string }>();
-  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { canManageContent } = useUserRole();
 
   // Check if user can see management UI
   const isManagementMode = mode === "manage" && canManageContent();
+
+  // Product-course lesson integration (mirrors AddQuizPage pattern)
+  const productCourseIdParam = searchParams.get("productCourseId");
+  const topicIdParam = searchParams.get("topicId");
+  const lessonTitle = searchParams.get("lessonTitle");
+  const lessonOrder = searchParams.get("lessonOrder");
+  const lessonIsFree = searchParams.get("lessonIsFree") === "true";
+  const returnTo = searchParams.get("returnTo");
+  const productCourseId = productCourseIdParam
+    ? parseInt(productCourseIdParam)
+    : undefined;
+  const topicId = topicIdParam ? parseInt(topicIdParam) : undefined;
 
   const { loading, contents, error, refetch } = useCourseMaterials({
     courseId,
     isManagementMode,
   });
 
+  // ── Dialog state ──────────────────────────────────────────────────────────
   const [showCreateFolderDialog, setShowCreateFolderDialog] = useState(false);
+  // Auto-open the upload dialog when arriving from the product-course lesson flow
+  const [showAddMaterialDialog, setShowAddMaterialDialog] = useState(
+    () => !!(productCourseId && isManagementMode),
+  );
+  const [editingFolder, setEditingFolder] = useState<FolderItem | null>(null);
+  const [editingMaterial, setEditingMaterial] = useState<MaterialItem | null>(
+    null,
+  );
 
-  // Management action handlers
-  const handleAddFolder = () => {
-    setShowCreateFolderDialog(true);
-  };
-
+  // ── Create folder ─────────────────────────────────────────────────────────
   const handleCreateFolder = async (name: string, description?: string) => {
     if (!courseId) return;
-
     try {
       await createFolder({
         name,
         courseId: parseInt(courseId),
         description: description || null,
+        parentFolderId: null,
       });
       toast.success("Folder created successfully!");
       refetch();
     } catch (err) {
-      console.error("Failed to create folder:", err);
-      toast.error(err instanceof Error ? err.message : "Failed to create folder");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create folder",
+      );
       throw err;
     }
   };
 
-  const handleAddMaterial = () => {
+  // ── Add material ──────────────────────────────────────────────────────────
+  const handleAddMaterial = async (payload: {
+    title: string;
+    contemtUrl: string;
+    folderId?: number | null;
+    description?: string;
+    tags?: string[];
+  }) => {
     if (!courseId) return;
-    navigate(`/dashboard/courses/${courseId}/materials/add`);
+    try {
+      const newMaterial = await createMaterial(parseInt(courseId), payload);
+
+      // Product-course lesson flow: also create the lesson and navigate back
+      if (productCourseId && topicId && lessonTitle) {
+        await addLesson(productCourseId, topicId, {
+          title: lessonTitle,
+          order: lessonOrder ? parseInt(lessonOrder) : 1,
+          type: 2, // Material
+          isFreePreview: lessonIsFree,
+          referenceId: newMaterial.id,
+        });
+        toast.success("Material lesson added successfully!");
+        navigate(
+          returnTo ?? `/dashboard/product-courses/${productCourseId}/lessons`,
+        );
+        return;
+      }
+
+      toast.success("Material added successfully!");
+      refetch();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to add material",
+      );
+      throw err;
+    }
   };
 
-  const handleEditFolder = (folder: FolderItem) => {
-    // TODO: Open edit folder dialog
-    console.log("Edit folder:", folder.id);
+  // ── Edit folder ───────────────────────────────────────────────────────────
+  const handleUpdateFolder = async (
+    folderId: number,
+    payload: { name?: string; description?: string },
+  ) => {
+    if (!courseId) return;
+    try {
+      await updateFolder(parseInt(courseId), folderId, payload);
+      toast.success("Folder updated successfully!");
+      setEditingFolder(null);
+      refetch();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update folder",
+      );
+      throw err;
+    }
   };
 
-  const handleDeleteFolder = (folderId: number) => {
-    // TODO: Confirm and delete folder
-    console.log("Delete folder:", folderId);
+  // ── Edit material ─────────────────────────────────────────────────────────
+  const handleUpdateMaterial = async (
+    materialId: number,
+    payload: {
+      title?: string;
+      contentUrl?: string;
+      description?: string;
+      tags?: string[];
+    },
+  ) => {
+    if (!courseId) return;
+    try {
+      await updateMaterial(parseInt(courseId), materialId, payload);
+      toast.success("Material updated successfully!");
+      setEditingMaterial(null);
+      refetch();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update material",
+      );
+      throw err;
+    }
   };
 
-  const handleEditMaterial = (material: MaterialItem) => {
-    // TODO: Open edit material dialog
-    console.log("Edit material:", material.id);
+  // ── Delete folder ─────────────────────────────────────────────────────────
+  const handleDeleteFolder = async (folderId: number) => {
+    if (!courseId) return;
+    try {
+      await deleteFolder(parseInt(courseId), folderId);
+      toast.success("Folder deleted.");
+      refetch();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to delete folder",
+      );
+    }
   };
 
-  const handleDeleteMaterial = (materialId: number) => {
-    // TODO: Confirm and delete material
-    console.log("Delete material:", materialId);
+  // ── Delete material ───────────────────────────────────────────────────────
+  const handleDeleteMaterial = async (materialId: number) => {
+    if (!courseId) return;
+    try {
+      await deleteMaterial(parseInt(courseId), materialId);
+      toast.success("Material deleted.");
+      refetch();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to delete material",
+      );
+    }
   };
 
   if (loading) {
@@ -142,12 +256,40 @@ export default function MaterialExplorerPage({
         <div className="absolute right-8 top-6 hidden h-32 w-32 rounded-full bg-primary/20 blur-3xl sm:block" />
 
         <div className="flex flex-col gap-4 sm:gap-6">
+          {/* Product-course lesson banner */}
+          {productCourseId && isManagementMode && (
+            <div className="p-4 rounded-xl border bg-amber-500/5 border-amber-200 dark:border-amber-900 space-y-1.5">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-amber-500" />
+                <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                  Product Course Material
+                </p>
+              </div>
+              {lessonTitle && (
+                <p className="text-xs text-muted-foreground">
+                  Will be saved as lesson:{" "}
+                  <span className="font-medium text-foreground">
+                    "{lessonTitle}"
+                  </span>
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Upload a new material below — it will be automatically linked as
+                a{" "}
+                <span className="font-medium">
+                  {lessonIsFree ? "free preview" : "paid"}
+                </span>{" "}
+                lesson.
+              </p>
+            </div>
+          )}
+
           <MaterialExplorerHeader
             courseId={courseId}
             totalItems={totalItems}
             isManagementMode={isManagementMode}
-            onAddFolder={handleAddFolder}
-            onAddMaterial={handleAddMaterial}
+            onAddFolder={() => setShowCreateFolderDialog(true)}
+            onAddMaterial={() => setShowAddMaterialDialog(true)}
           />
 
           <MaterialExplorerContent
@@ -155,18 +297,47 @@ export default function MaterialExplorerPage({
             materials={contents.materials}
             courseId={courseId}
             isManagementMode={isManagementMode}
-            onEditFolder={handleEditFolder}
+            onEditFolder={(folder) => setEditingFolder(folder)}
             onDeleteFolder={handleDeleteFolder}
-            onEditMaterial={handleEditMaterial}
+            onEditMaterial={(material) => setEditingMaterial(material)}
             onDeleteMaterial={handleDeleteMaterial}
           />
         </div>
       </Card>
 
+      {/* Create Folder dialog */}
       <CreateFolderDialog
         open={showCreateFolderDialog}
         onOpenChange={setShowCreateFolderDialog}
         onSubmit={handleCreateFolder}
+      />
+
+      {/* Add Material dialog */}
+      <AddMaterialDialog
+        open={showAddMaterialDialog}
+        onOpenChange={setShowAddMaterialDialog}
+        defaultFolderId={null}
+        onSubmit={handleAddMaterial}
+      />
+
+      {/* Edit Folder dialog */}
+      <EditFolderDialog
+        open={editingFolder !== null}
+        onOpenChange={(open: boolean) => {
+          if (!open) setEditingFolder(null);
+        }}
+        folder={editingFolder}
+        onSubmit={handleUpdateFolder}
+      />
+
+      {/* Edit Material dialog */}
+      <EditMaterialDialog
+        open={editingMaterial !== null}
+        onOpenChange={(open: boolean) => {
+          if (!open) setEditingMaterial(null);
+        }}
+        material={editingMaterial}
+        onSubmit={handleUpdateMaterial}
       />
     </>
   );

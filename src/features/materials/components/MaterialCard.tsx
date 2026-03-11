@@ -26,9 +26,16 @@ export function MaterialCard({
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <p className="truncate font-medium text-foreground group-hover:text-primary">
-          {material.title}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="truncate font-medium text-foreground group-hover:text-primary">
+            {material.title}
+          </p>
+          {!isManagementMode && material.tags?.[0] && (
+            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+              {material.tags[0]}
+            </span>
+          )}
+        </div>
         {material.description && (
           <p className="truncate text-xs text-muted-foreground">
             {material.description}

@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  useSearchParams,
+  useLocation,
+} from "react-router-dom";
 import {
   ArrowLeft,
   Loader2,
@@ -36,7 +41,11 @@ import CourseContentView from "../components/CourseContentView";
 import EnrollButton from "../components/EnrollButton";
 import VideoPlayer from "../components/VideoPlayer";
 import { useLessonContent } from "../hooks/useLessonContent";
-import type { LessonOutlineDto, CourseContentLessonDto, ProductCourseSummary } from "../types";
+import type {
+  LessonOutlineDto,
+  CourseContentLessonDto,
+  ProductCourseSummary,
+} from "../types";
 import { LessonType } from "../types";
 
 const ProductCourseDetailPage = () => {
@@ -47,24 +56,35 @@ const ProductCourseDetailPage = () => {
   const { isAuthenticated } = useAuth();
 
   // Course summary passed from the catalog card via navigation state
-  const courseSummary = (location.state as { courseSummary?: ProductCourseSummary } | null)?.courseSummary;
+  const courseSummary = (
+    location.state as { courseSummary?: ProductCourseSummary } | null
+  )?.courseSummary;
 
   const courseId = id ? parseInt(id) : undefined;
   const { course, loading: courseLoading } = useProductCourse(courseId);
   const { outline, loading: outlineLoading } = useCourseOutline(courseId);
 
   // Fallback values from catalog card (since detail API may not include instructor info)
-  const instructorName = course?.instructorName || courseSummary?.instructorName || null;
-  const instructorPicture = course?.instructorProfilePictureUrl || courseSummary?.instructorProfilePictureUrl || null;
+  const instructorName =
+    course?.instructorName || courseSummary?.instructorName || null;
+  const instructorPicture =
+    course?.instructorProfilePictureUrl ||
+    courseSummary?.instructorProfilePictureUrl ||
+    null;
   const lessonCount = course?.lessonCount || courseSummary?.lessonCount || 0;
 
   const getInitials = (name: string) =>
-    name.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2);
+    name
+      .split(" ")
+      .map((w: string) => w[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
 
   // Check if user is already enrolled (from external sources first)
   const { items: enrollments, refetch: refetchEnrollments } = useMyEnrollments(
     isAuthenticated ? 1 : 0,
-    isAuthenticated ? 200 : 0
+    isAuthenticated ? 200 : 0,
   );
   const enrolledFromList = courseId
     ? (enrollments ?? []).some((e) => e.productCourseId === courseId)
@@ -115,7 +135,8 @@ const ProductCourseDetailPage = () => {
     fetchContent: fetchLessonContent,
     clear: clearLessonContent,
   } = useLessonContent();
-  const [selectedLesson, setSelectedLesson] = useState<CourseContentLessonDto | null>(null);
+  const [selectedLesson, setSelectedLesson] =
+    useState<CourseContentLessonDto | null>(null);
   const [autoOpenDone, setAutoOpenDone] = useState(false);
 
   // Auto-open the next incomplete lesson when enrolled content loads
@@ -180,7 +201,8 @@ const ProductCourseDetailPage = () => {
   };
 
   // Mark lesson as completed
-  const { complete: completeLessonAction, loading: completeLessonLoading } = useCompleteLesson();
+  const { complete: completeLessonAction, loading: completeLessonLoading } =
+    useCompleteLesson();
 
   const handleMarkCompleted = async (lessonId: number) => {
     const enrollmentId = courseContent?.enrollmentId;
@@ -239,8 +261,7 @@ const ProductCourseDetailPage = () => {
     );
   }
 
-  const trialVideoUrl =
-    course.trialVideoUrl || outline?.trialVideoUrl || null;
+  const trialVideoUrl = course.trialVideoUrl || outline?.trialVideoUrl || null;
   const isBunnyEmbed = (url: string) =>
     url.includes("iframe.mediadelivery.net") || url.includes("/embed/");
 
@@ -248,157 +269,161 @@ const ProductCourseDetailPage = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section - Only show for non-enrolled users */}
       {!isEnrolledFinal && (
-      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+          {/* Decorative blobs */}
+          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-violet-500/10 blur-3xl" />
 
-        <div className="relative container mx-auto px-4 py-8 max-w-6xl">
-          <Button
-            variant="ghost"
-            className="mb-6 gap-2 cursor-pointer text-white/70 hover:text-white hover:bg-white/10"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Courses
-          </Button>
+          <div className="relative container mx-auto px-4 py-8 max-w-6xl">
+            <Button
+              variant="ghost"
+              className="mb-6 gap-2 cursor-pointer text-white/70 hover:text-white hover:bg-white/10"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Courses
+            </Button>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-            {/* Left: Course info */}
-            <div className="lg:col-span-3 space-y-4">
-              <div className="flex flex-wrap gap-2">
-                {isEnrolledFinal && (
-                  <Badge className="bg-emerald-500/90 text-white border-0 gap-1">
-                    <CheckCircle className="h-3 w-3" />
-                    Enrolled
-                  </Badge>
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              {/* Left: Course info */}
+              <div className="lg:col-span-3 space-y-4">
+                <div className="flex flex-wrap gap-2">
+                  {isEnrolledFinal && (
+                    <Badge className="bg-emerald-500/90 text-white border-0 gap-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Enrolled
+                    </Badge>
+                  )}
+                  {course.isFree && (
+                    <Badge className="bg-emerald-500/90 text-white border-0">
+                      Free
+                    </Badge>
+                  )}
+                  {course.categories.map((cat) => (
+                    <Badge
+                      key={cat}
+                      variant="outline"
+                      className="border-white/20 text-white/80"
+                    >
+                      {cat}
+                    </Badge>
+                  ))}
+                </div>
+
+                <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+                  {course.title}
+                </h1>
+
+                {course.description && (
+                  <p className="text-white/70 text-base leading-relaxed max-w-2xl">
+                    {course.description}
+                  </p>
                 )}
-                {course.isFree && (
-                  <Badge className="bg-emerald-500/90 text-white border-0">
-                    Free
-                  </Badge>
+
+                {instructorName && (
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-14 w-14 border-2 border-white/20 shadow-lg">
+                      {instructorPicture ? (
+                        <AvatarImage
+                          src={instructorPicture}
+                          alt={instructorName}
+                        />
+                      ) : null}
+                      <AvatarFallback className="text-lg font-bold bg-white/15 text-white">
+                        {getInitials(instructorName)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-white/50 text-xs">Created by</p>
+                      <p className="text-white text-base font-semibold">
+                        {instructorName}
+                      </p>
+                    </div>
+                  </div>
                 )}
-                {course.categories.map((cat) => (
-                  <Badge
-                    key={cat}
-                    variant="outline"
-                    className="border-white/20 text-white/80"
-                  >
-                    {cat}
-                  </Badge>
-                ))}
-              </div>
 
-              <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
-                {course.title}
-              </h1>
-
-              {course.description && (
-                <p className="text-white/70 text-base leading-relaxed max-w-2xl">
-                  {course.description}
-                </p>
-              )}
-
-              {instructorName && (
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-14 w-14 border-2 border-white/20 shadow-lg">
-                    {instructorPicture ? (
-                      <AvatarImage src={instructorPicture} alt={instructorName} />
-                    ) : null}
-                    <AvatarFallback className="text-lg font-bold bg-white/15 text-white">
-                      {getInitials(instructorName)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-white/50 text-xs">Created by</p>
-                    <p className="text-white text-base font-semibold">
-                      {instructorName}
-                    </p>
+                {/* Stats */}
+                <div className="flex flex-wrap items-center gap-5 pt-2">
+                  <div className="flex items-center gap-1.5">
+                    <BookOpen className="h-4 w-4 text-white/60" />
+                    <span className="font-semibold text-sm">
+                      {course.lessonCount || lessonCount}
+                    </span>
+                    <span className="text-white/50 text-sm">lessons</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-white/50 text-sm">
+                    <Calendar className="h-4 w-4" />
+                    Last updated{" "}
+                    {new Date(
+                      course.updatedAt || course.createdAt,
+                    ).toLocaleDateString()}
                   </div>
                 </div>
-              )}
-
-              {/* Stats */}
-              <div className="flex flex-wrap items-center gap-5 pt-2">
-                <div className="flex items-center gap-1.5">
-                  <BookOpen className="h-4 w-4 text-white/60" />
-                  <span className="font-semibold text-sm">
-                    {course.lessonCount || lessonCount}
-                  </span>
-                  <span className="text-white/50 text-sm">lessons</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-white/50 text-sm">
-                  <Calendar className="h-4 w-4" />
-                  Last updated{" "}
-                  {new Date(
-                    course.updatedAt || course.createdAt
-                  ).toLocaleDateString()}
-                </div>
               </div>
-            </div>
 
-            {/* Right: Trial video or thumbnail */}
-            <div className="lg:col-span-2">
-              {trialVideoUrl && !showTrialVideo ? (
-                <div
-                  className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/40 cursor-pointer group aspect-video bg-black"
-                  onClick={() => setShowTrialVideo(true)}
-                >
-                  {course.thumbnailUrl ? (
+              {/* Right: Trial video or thumbnail */}
+              <div className="lg:col-span-2">
+                {trialVideoUrl && !showTrialVideo ? (
+                  <div
+                    className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/40 cursor-pointer group aspect-video bg-black"
+                    onClick={() => setShowTrialVideo(true)}
+                  >
+                    {course.thumbnailUrl ? (
+                      <img
+                        src={course.thumbnailUrl}
+                        alt={course.title}
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-violet-600/20" />
+                    )}
+                    {/* Animated overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {/* Pulse ring */}
+                      <div className="absolute w-20 h-20 rounded-full bg-white/20 animate-ping [animation-duration:2s]" />
+                      <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+                        <Play className="h-7 w-7 text-primary fill-primary ml-1" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                      <Badge className="bg-black/60 text-white border-0 text-xs backdrop-blur-sm">
+                        Preview this course
+                      </Badge>
+                    </div>
+                  </div>
+                ) : trialVideoUrl && showTrialVideo ? (
+                  <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video bg-black ring-1 ring-white/10 animate-in fade-in duration-500">
+                    {isBunnyEmbed(trialVideoUrl) ? (
+                      <iframe
+                        src={trialVideoUrl}
+                        title="Trial video preview"
+                        className="w-full h-full border-0"
+                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <video
+                        src={trialVideoUrl}
+                        controls
+                        autoPlay
+                        className="w-full h-full"
+                      />
+                    )}
+                  </div>
+                ) : course.thumbnailUrl ? (
+                  <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video ring-1 ring-white/10">
                     <img
                       src={course.thumbnailUrl}
                       alt={course.title}
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                      className="w-full h-full object-cover"
                     />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-violet-600/20" />
-                  )}
-                  {/* Animated overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {/* Pulse ring */}
-                    <div className="absolute w-20 h-20 rounded-full bg-white/20 animate-ping [animation-duration:2s]" />
-                    <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-                      <Play className="h-7 w-7 text-primary fill-primary ml-1" />
-                    </div>
                   </div>
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                    <Badge className="bg-black/60 text-white border-0 text-xs backdrop-blur-sm">
-                      Preview this course
-                    </Badge>
-                  </div>
-                </div>
-              ) : trialVideoUrl && showTrialVideo ? (
-                <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video bg-black ring-1 ring-white/10 animate-in fade-in duration-500">
-                  {isBunnyEmbed(trialVideoUrl) ? (
-                    <iframe
-                      src={trialVideoUrl}
-                      className="w-full h-full border-0"
-                      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <video
-                      src={trialVideoUrl}
-                      controls
-                      autoPlay
-                      className="w-full h-full"
-                    />
-                  )}
-                </div>
-              ) : course.thumbnailUrl ? (
-                <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video ring-1 ring-white/10">
-                  <img
-                    src={course.thumbnailUrl}
-                    alt={course.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
 
       {/* Back button for enrolled users */}
@@ -419,14 +444,20 @@ const ProductCourseDetailPage = () => {
 
       {/* Body */}
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className={`grid grid-cols-1 ${isEnrolledFinal ? '' : 'lg:grid-cols-3'} gap-8`}>
+        <div
+          className={`grid grid-cols-1 ${isEnrolledFinal ? "" : "lg:grid-cols-3"} gap-8`}
+        >
           {/* Main content */}
-          <div className={`${isEnrolledFinal ? '' : 'lg:col-span-2'} space-y-8`}>
+          <div
+            className={`${isEnrolledFinal ? "" : "lg:col-span-2"} space-y-8`}
+          >
             {/* Course content view (fetched from /content API) */}
             {showContent && contentLoading && (
               <div className="flex items-center justify-center py-12">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                <span className="ml-2 text-muted-foreground text-sm">Loading content...</span>
+                <span className="ml-2 text-muted-foreground text-sm">
+                  Loading content...
+                </span>
               </div>
             )}
 
@@ -475,29 +506,9 @@ const ProductCourseDetailPage = () => {
 
           {/* Sidebar — only shown for non-enrolled users */}
           {!isEnrolledFinal && (
-          <div className="space-y-4">
+            <div className="space-y-4">
               <Card className="sticky top-20 shadow-lg border-0 bg-card">
                 <CardContent className="pt-6 space-y-5">
-                  {/* Instructor */}
-                  {instructorName && (
-                    <div className="flex items-center gap-3 pb-4 border-b">
-                      <Avatar className="h-12 w-12 shrink-0 border border-border shadow-sm">
-                        {instructorPicture ? (
-                          <AvatarImage src={instructorPicture} alt={instructorName} />
-                        ) : null}
-                        <AvatarFallback className="text-sm font-bold bg-primary/10 text-primary">
-                          {getInitials(instructorName)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0">
-                        <p className="text-[11px] text-muted-foreground">Instructor</p>
-                        <p className="text-sm font-semibold truncate">
-                          {instructorName}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Price */}
                   <div className="text-center">
                     {course.isFree ? (
@@ -578,7 +589,9 @@ const ProductCourseDetailPage = () => {
                     )}
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Lessons</span>
-                      <span className="font-medium">{course.lessonCount || lessonCount}</span>
+                      <span className="font-medium">
+                        {course.lessonCount || lessonCount}
+                      </span>
                     </div>
                     {outline && (
                       <div className="flex justify-between">
@@ -591,7 +604,7 @@ const ProductCourseDetailPage = () => {
                   </div>
                 </CardContent>
               </Card>
-          </div>
+            </div>
           )}
         </div>
       </div>
@@ -613,10 +626,7 @@ const ProductCourseDetailPage = () => {
       </Dialog>
 
       {/* Enrollment prompt dialog */}
-      <Dialog
-        open={showEnrollPrompt}
-        onOpenChange={setShowEnrollPrompt}
-      >
+      <Dialog open={showEnrollPrompt} onOpenChange={setShowEnrollPrompt}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Enroll to Access</DialogTitle>

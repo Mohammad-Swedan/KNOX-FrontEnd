@@ -1,5 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { BookOpen, FileText, Loader2, Trophy, Link2, GraduationCap } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  Loader2,
+  Trophy,
+  Link2,
+  GraduationCap,
+} from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import {
   Card,
@@ -61,7 +68,11 @@ export const CoursesTable = ({
 }: CoursesTableProps) => {
   const navigate = useNavigate();
   const { hasRole } = useUserRole();
-  const canManageProductCourses = hasRole(["SuperAdmin", "Admin", "Instructor"]);
+  const canManageProductCourses = hasRole([
+    "SuperAdmin",
+    "Admin",
+    "Instructor",
+  ]);
 
   return (
     <Card>
@@ -160,7 +171,7 @@ export const CoursesTable = ({
                       <Badge
                         variant="outline"
                         className={getRequirementTypeBadgeColor(
-                          course.requirementType
+                          course.requirementType,
                         )}
                       >
                         {course.requirementType}
@@ -170,7 +181,7 @@ export const CoursesTable = ({
                       <Badge
                         variant="outline"
                         className={getRequirementNatureBadgeColor(
-                          course.requirementNature
+                          course.requirementNature,
                         )}
                       >
                         {course.requirementNature}
@@ -196,11 +207,11 @@ export const CoursesTable = ({
                       <div className="flex justify-end gap-2">
                         <Button
                           variant="outline"
-                          className="hover:cursor-pointer"
+                          className="cursor-pointer"
                           size="sm"
                           onClick={() =>
                             navigate(
-                              `/dashboard/courses/${course.id}/materials`
+                              `/dashboard/courses/${course.id}/materials`,
                             )
                           }
                         >
@@ -209,7 +220,7 @@ export const CoursesTable = ({
                         </Button>
                         <Button
                           variant="outline"
-                          className="hover:cursor-pointer"
+                          className="cursor-pointer"
                           size="sm"
                           onClick={() =>
                             navigate(`/dashboard/courses/${course.id}/quizzes`)
@@ -220,11 +231,11 @@ export const CoursesTable = ({
                         </Button>
                         <Button
                           variant="outline"
-                          className="hover:cursor-pointer"
+                          className="cursor-pointer"
                           size="sm"
                           onClick={() =>
                             navigate(
-                              `/dashboard/courses/${course.id}/resources`
+                              `/dashboard/courses/${course.id}/resources`,
                             )
                           }
                         >
@@ -234,11 +245,11 @@ export const CoursesTable = ({
                         {canManageProductCourses && (
                           <Button
                             variant="outline"
-                            className="hover:cursor-pointer"
+                            className="cursor-pointer"
                             size="sm"
                             onClick={() =>
                               navigate(
-                                `/dashboard/courses/${course.id}/product-courses`
+                                `/dashboard/courses/${course.id}/product-courses`,
                               )
                             }
                           >

@@ -16,9 +16,22 @@ export interface RegisterRequest {
   majorId: number;
 }
 
+export interface RegisterUserInfo {
+  domainUserId: number;
+  identityUserId: number;
+  email: string;
+  assignedRole: string;
+}
+
 export interface RegisterResponse {
+  user?: RegisterUserInfo;
+  requiresVerification?: boolean;
   message?: string;
-  userId?: string;
+  otpSent?: boolean;
+  // Tokens returned when no verification is required
+  accessToken?: string;
+  refreshToken?: string;
+  expiresAt?: string;
 }
 
 export interface RefreshRequest {
@@ -52,4 +65,51 @@ export interface UserInfoResponse {
   facultyName: string;
   majorId: number;
   majorName: string;
+}
+
+// ─── Account Verification ────────────────────────────────────────────────────
+
+export interface SendVerificationOtpRequest {
+  email: string;
+}
+
+export interface VerifyAccountRequest {
+  email: string;
+  otp: string;
+}
+
+export interface VerifyAccountResponse {
+  message: string;
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string;
+}
+
+export interface CheckVerificationStatusResponse {
+  email: string;
+  isVerified: boolean;
+}
+
+// ─── Forgot Password ─────────────────────────────────────────────────────────
+
+export interface ForgotPasswordSendOtpRequest {
+  email: string;
+}
+
+export interface ForgotPasswordVerifyOtpRequest {
+  email: string;
+  otp: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
+// ─── Change Password (Authenticated) ─────────────────────────────────────────
+
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
 }

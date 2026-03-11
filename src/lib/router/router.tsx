@@ -5,6 +5,9 @@ import AboutPage from "../../features/home/pages/AboutPage";
 import NotFoundPage from "@/features/home/pages/NotFoundPage";
 import LoginPage from "@/features/auth/pages/LoginPage";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
+import VerifyAccountPage from "@/features/auth/pages/VerifyAccountPage";
 import AuthLayout from "@/shared/layout/AuthLayout";
 import CoursesPage from "@/features/courses/pages/CoursesPage";
 import CourseInfoPage from "@/features/courses/pages/CourseInfoPage";
@@ -108,6 +111,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "profile/change-password",
+        element: (
+          <ProtectedRoute>
+            <ResetPasswordPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
@@ -116,12 +127,16 @@ export const router = createBrowserRouter([
     children: [
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "verify-account", element: <VerifyAccountPage /> },
+      { path: "forgot-password", element: <ForgotPasswordPage /> },
     ],
   },
   {
     path: "/dashboard",
     element: (
-      <ProtectedRoute requiredRoles={["Writer", "Admin", "SuperAdmin", "Instructor"]}>
+      <ProtectedRoute
+        requiredRoles={["Writer", "Admin", "SuperAdmin", "Instructor"]}
+      >
         <DashboardLayout />
       </ProtectedRoute>
     ),

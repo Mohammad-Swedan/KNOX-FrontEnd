@@ -1,4 +1,5 @@
 import { ChevronLeftIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Card,
@@ -26,20 +27,22 @@ const ForgotPasswordPage = () => {
           <div>
             <CardTitle className="mb-1.5 text-2xl">Forgot Password?</CardTitle>
             <CardDescription className="text-base">
-              Enter your email and we&apos;ll send you instructions to reset
-              your password
+              Enter your email and we&apos;ll send you a one-time code to reset
+              your password.
             </CardDescription>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {/* ForgotPassword Form */}
           <ForgotPasswordForm />
 
-          <a href="#" className="group mx-auto flex w-fit items-center gap-2">
+          <Link
+            to="/auth/login"
+            className="group mx-auto flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
             <ChevronLeftIcon className="size-5 transition-transform duration-200 group-hover:-translate-x-0.5" />
             <span>Back to login</span>
-          </a>
+          </Link>
         </CardContent>
       </Card>
     </div>

@@ -23,11 +23,16 @@ import type {
   UpdateProductCourseRequest,
   ProductCourse,
 } from "../types";
+import ThumbnailUploader from "./ThumbnailUploader";
+import TrialVideoUploaderField from "./TrialVideoUploaderField";
 
 interface ProductCourseFormProps {
   initialData?: ProductCourse | null;
   academicCourseId?: number;
-  onSubmit: (data: CreateProductCourseRequest | UpdateProductCourseRequest) => Promise<void>;
+  courseId?: number;
+  onSubmit: (
+    data: CreateProductCourseRequest | UpdateProductCourseRequest,
+  ) => Promise<void>;
   isSubmitting: boolean;
   submitLabel?: string;
 }
@@ -35,24 +40,31 @@ interface ProductCourseFormProps {
 export default function ProductCourseForm({
   initialData,
   academicCourseId,
+  courseId,
   onSubmit,
   isSubmitting,
   submitLabel = "Save",
 }: ProductCourseFormProps) {
   const [title, setTitle] = useState(initialData?.title ?? "");
-  const [description, setDescription] = useState(initialData?.description ?? "");
+  const [description, setDescription] = useState(
+    initialData?.description ?? "",
+  );
   const [price, setPrice] = useState(initialData?.price ?? 0);
   const [isFree, setIsFree] = useState(initialData?.isFree ?? false);
-  const [thumbnailUrl, setThumbnailUrl] = useState(initialData?.thumbnailUrl ?? "");
-  const [trialVideoUrl, setTrialVideoUrl] = useState(initialData?.trialVideoUrl ?? "");
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    initialData?.thumbnailUrl ?? "",
+  );
+  const [trialVideoUrl, setTrialVideoUrl] = useState(
+    initialData?.trialVideoUrl ?? "",
+  );
   const [universityId, setUniversityId] = useState<number | undefined>(
-    initialData?.universityId ?? undefined
+    initialData?.universityId ?? undefined,
   );
   const [facultyId, setFacultyId] = useState<number | undefined>(
-    initialData?.facultyId ?? undefined
+    initialData?.facultyId ?? undefined,
   );
   const [majorId, setMajorId] = useState<number | undefined>(
-    initialData?.majorId ?? undefined
+    initialData?.majorId ?? undefined,
   );
 
   // Options
@@ -168,32 +180,20 @@ export default function ProductCourseForm({
         </div>
       </div>
 
-      {/* Thumbnail URL */}
-      <div className="space-y-2">
-        <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
-        <Input
-          id="thumbnailUrl"
-          value={thumbnailUrl}
-          onChange={(e) => setThumbnailUrl(e.target.value)}
-          maxLength={1000}
-          placeholder="https://..."
-        />
-      </div>
+      {/* Thumbnail */}
+      <ThumbnailUploader
+        label="Thumbnail"
+        value={thumbnailUrl}
+        onChange={setThumbnailUrl}
+      />
 
-      {/* Trial / Preview Video URL */}
-      <div className="space-y-2">
-        <Label htmlFor="trialVideoUrl">Trial / Preview Video URL</Label>
-        <Input
-          id="trialVideoUrl"
-          value={trialVideoUrl}
-          onChange={(e) => setTrialVideoUrl(e.target.value)}
-          maxLength={1000}
-          placeholder="https://..."
-        />
-        <p className="text-xs text-muted-foreground">
-          A short public video shown to visitors before they enroll.
-        </p>
-      </div>
+      {/* Trial / Preview Video */}
+      <TrialVideoUploaderField
+        label="Trial / Preview Video"
+        courseId={courseId}
+        value={trialVideoUrl}
+        onChange={setTrialVideoUrl}
+      />
 
       {/* University / Faculty / Major dropdowns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -242,9 +242,7 @@ export default function ProductCourseForm({
           <Label>Major</Label>
           <Select
             value={majorId?.toString() ?? ""}
-            onValueChange={(val) =>
-              setMajorId(val ? parseInt(val) : undefined)
-            }
+            onValueChange={(val) => setMajorId(val ? parseInt(val) : undefined)}
             disabled={!facultyId}
           >
             <SelectTrigger className="w-full">
@@ -262,7 +260,11 @@ export default function ProductCourseForm({
       </div>
 
       {/* Submit */}
-      <Button type="submit" disabled={isSubmitting || !title.trim()} className="w-full cursor-pointer">
+      <Button
+        type="submit"
+        disabled={isSubmitting || !title.trim()}
+        className="w-full cursor-pointer"
+      >
         {isSubmitting ? (
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />

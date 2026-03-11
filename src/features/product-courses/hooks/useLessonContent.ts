@@ -3,14 +3,25 @@
 // ============================================================
 
 import { useState, useCallback } from "react";
-import { fetchLessonQuiz, fetchLessonVideo, fetchLessonMaterial } from "../api";
+import {
+  fetchLessonQuiz,
+  fetchLessonVideo,
+  fetchLessonMaterial,
+  fetchLessonExternalVideo,
+} from "../api";
 import { LessonType } from "../types";
-import type { LessonQuizContent, LessonVideoContent, LessonMaterialContent } from "../types";
+import type {
+  LessonQuizContent,
+  LessonVideoContent,
+  LessonMaterialContent,
+  LessonExternalVideoContent,
+} from "../types";
 
 export type LessonContentData =
   | { kind: "quiz"; data: LessonQuizContent }
   | { kind: "video"; data: LessonVideoContent }
   | { kind: "material"; data: LessonMaterialContent }
+  | { kind: "external"; data: LessonExternalVideoContent }
   | null;
 
 /**
@@ -39,6 +50,9 @@ export const useLessonContent = () => {
         } else if (lessonType === LessonType.Video) {
           const data = await fetchLessonVideo(lessonId);
           setContent({ kind: "video", data });
+        } else if (lessonType === LessonType.ExternalVideo) {
+          const data = await fetchLessonExternalVideo(lessonId);
+          setContent({ kind: "external", data });
         } else {
           // Document type
           const data = await fetchLessonMaterial(lessonId);
@@ -46,9 +60,12 @@ export const useLessonContent = () => {
         }
       } catch (err) {
         console.error("Failed to fetch lesson content:", err);
-        const status = (err as { response?: { status?: number } })?.response?.status;
+        const status = (err as { response?: { status?: number } })?.response
+          ?.status;
         if (status === 403) {
-          setError("You don't have access to this lesson. Please enroll in the course.");
+          setError(
+            "You don't have access to this lesson. Please enroll in the course.",
+          );
         } else {
           setError("Failed to load lesson content. Please try again.");
         }
@@ -57,12 +74,13 @@ export const useLessonContent = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const clear = useCallback(() => {
     setContent(null);
     setError(null);
+    setLoading(false);
     setActiveLessonId(null);
   }, []);
 

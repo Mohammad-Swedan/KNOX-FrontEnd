@@ -16,7 +16,9 @@ import { useCompleteLesson } from "../hooks/useEnrollment";
 import { useLessonContent } from "../hooks/useLessonContent";
 import EnrolledCourseOutline from "../components/EnrolledCourseOutline";
 import QuizLessonViewer from "../components/QuizLessonViewer";
+import VideoLessonViewer from "../components/VideoLessonViewer";
 import MaterialLessonViewer from "../components/MaterialLessonViewer";
+import ExternalVideoViewer from "../components/ExternalVideoViewer";
 import type { LessonProgressDto } from "../types";
 import { LessonType } from "../types";
 
@@ -29,7 +31,7 @@ const CoursePlayerPage = () => {
   const { complete, loading: completing } = useCompleteLesson();
 
   const [activeLesson, setActiveLesson] = useState<LessonProgressDto | null>(
-    null
+    null,
   );
 
   // Lesson content fetching
@@ -38,18 +40,15 @@ const CoursePlayerPage = () => {
     loading: lessonContentLoading,
     error: lessonContentError,
     fetchContent: fetchLessonContent,
-    clear: clearLessonContent,
   } = useLessonContent();
 
   // Auto-select first incomplete lesson on load
   const selectInitialLesson = useCallback(() => {
     if (!outline) return;
     // Find first incomplete lesson
-    for (const topic of [...outline.topics].sort(
-      (a, b) => a.order - b.order
-    )) {
+    for (const topic of [...outline.topics].sort((a, b) => a.order - b.order)) {
       for (const lesson of [...topic.lessons].sort(
-        (a, b) => a.order - b.order
+        (a, b) => a.order - b.order,
       )) {
         if (!lesson.isCompleted) {
           setActiveLesson(lesson);
@@ -59,12 +58,10 @@ const CoursePlayerPage = () => {
       }
     }
     // All done, select the last lesson
-    const lastTopic = [...outline.topics].sort(
-      (a, b) => b.order - a.order
-    )[0];
+    const lastTopic = [...outline.topics].sort((a, b) => b.order - a.order)[0];
     if (lastTopic) {
       const lastLesson = [...lastTopic.lessons].sort(
-        (a, b) => b.order - a.order
+        (a, b) => b.order - a.order,
       )[0];
       if (lastLesson) {
         setActiveLesson(lastLesson);
@@ -79,7 +76,7 @@ const CoursePlayerPage = () => {
       setActiveLesson(lesson);
       fetchLessonContent(lesson.id, lesson.type);
     },
-    [fetchLessonContent]
+    [fetchLessonContent],
   );
 
   // Auto-select on first load
@@ -163,7 +160,7 @@ const CoursePlayerPage = () => {
 
       {/* Completion banner */}
       {outline.isCompleted && (
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
+        <div className="bg-linear-to-r from-emerald-500 to-teal-600 text-white">
           <div className="container mx-auto px-4 py-4 max-w-7xl flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -220,8 +217,10 @@ const CoursePlayerPage = () => {
                   {activeLesson.type === LessonType.Video
                     ? "Video Lesson"
                     : activeLesson.type === LessonType.Quiz
-                    ? "Quiz"
-                    : "Document"}
+                      ? "Quiz"
+                      : activeLesson.type === LessonType.ExternalVideo
+                        ? "External Video"
+                        : "Document"}
                 </p>
               </div>
 
@@ -238,7 +237,9 @@ const CoursePlayerPage = () => {
               {lessonContentError && !lessonContentLoading && (
                 <Card>
                   <CardContent className="flex flex-col items-center justify-center py-12 gap-4">
-                    <p className="text-lg font-medium">Could not load content</p>
+                    <p className="text-lg font-medium">
+                      Could not load content
+                    </p>
                     <p className="text-sm text-muted-foreground text-center">
                       {lessonContentError}
                     </p>
@@ -265,8 +266,8 @@ const CoursePlayerPage = () => {
               {!lessonContentLoading &&
                 !lessonContentError &&
                 lessonContent?.kind === "video" && (
-                  <MaterialLessonViewer
-                    material={lessonContent.data}
+                  <VideoLessonViewer
+                    video={lessonContent.data}
                     onRefresh={() =>
                       fetchLessonContent(activeLesson.id, activeLesson.type)
                     }
@@ -276,25 +277,37 @@ const CoursePlayerPage = () => {
               {!lessonContentLoading &&
                 !lessonContentError &&
                 lessonContent?.kind === "material" && (
-                  <MaterialLessonViewer
-                    material={lessonContent.data}
-                    onRefresh={() =>
-                      fetchLessonContent(activeLesson.id, activeLesson.type)
-                    }
-                  />
+                  <MaterialLessonViewer material={lessonContent.data} />
                 )}
 
               {!lessonContentLoading &&
                 !lessonContentError &&
+                lessonContent?.kind === "external" &&
+                (lessonContent.data.directUrl ? (
+                  <ExternalVideoViewer
+                    directUrl={lessonContent.data.directUrl}
+                  />
+                ) : (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
+                      <p className="text-muted-foreground text-sm">
+                        No URL set for this external video lesson.
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+
+              {!lessonContentLoading &&
+                !lessonContentError &&
                 !lessonContent && (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
-                    <p className="text-muted-foreground text-sm">
-                      No content linked to this lesson yet.
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
+                      <p className="text-muted-foreground text-sm">
+                        No content linked to this lesson yet.
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
 
               {/* Mark as complete */}
               {!activeLesson.isCompleted && (

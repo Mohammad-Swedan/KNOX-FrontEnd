@@ -5,8 +5,13 @@ import { Label } from "@/shared/ui/label";
 import { Checkbox } from "@/shared/ui/checkbox";
 import { Progress } from "@/shared/ui/progress";
 import {
-  Upload, Loader2, CheckCircle, AlertCircle, Video,
-  CloudUpload, X,
+  Upload,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  Video,
+  CloudUpload,
+  X,
 } from "lucide-react";
 import { useVideoUpload } from "../hooks/useVideoUpload";
 
@@ -74,7 +79,9 @@ export default function VideoUploader({
         </div>
         <div className="text-center">
           <h3 className="text-base font-semibold">Upload Complete</h3>
-          <p className="text-sm text-muted-foreground mt-1">Video lesson added successfully.</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Video lesson added successfully.
+          </p>
         </div>
         <Button onClick={reset} variant="outline" size="sm">
           Upload Another
@@ -126,6 +133,7 @@ export default function VideoUploader({
           ref={fileInputRef}
           type="file"
           accept="video/*"
+          aria-label="Upload video file"
           className="hidden"
           onChange={handleFileChange}
           disabled={isDisabled}
@@ -139,11 +147,17 @@ export default function VideoUploader({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{file.name}</p>
-              <p className="text-xs text-muted-foreground">{(file.size / (1024 * 1024)).toFixed(1)} MB</p>
+              <p className="text-xs text-muted-foreground">
+                {(file.size / (1024 * 1024)).toFixed(1)} MB
+              </p>
             </div>
             {!isDisabled && (
               <button
-                onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                onClick={() => {
+                  setFile(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                title="Remove selected file"
                 className="shrink-0 w-7 h-7 rounded-full hover:bg-destructive/10 flex items-center justify-center text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
               >
                 <X className="h-4 w-4" />
@@ -154,7 +168,10 @@ export default function VideoUploader({
           /* Drop area  entire rectangle is clickable */
           <div
             onClick={() => !isDisabled && fileInputRef.current?.click()}
-            onDragOver={(e) => { e.preventDefault(); if (!isDisabled) setIsDragging(true); }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              if (!isDisabled) setIsDragging(true);
+            }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
             className={[
@@ -162,18 +179,26 @@ export default function VideoUploader({
               isDisabled
                 ? "opacity-50 cursor-not-allowed bg-muted/20"
                 : isDragging
-                ? "border-primary bg-primary/5 scale-[1.01] cursor-copy"
-                : "border-border hover:border-primary/50 hover:bg-muted/40 cursor-pointer",
+                  ? "border-primary bg-primary/5 scale-[1.01] cursor-copy"
+                  : "border-border hover:border-primary/50 hover:bg-muted/40 cursor-pointer",
             ].join(" ")}
           >
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-muted"}`}>
-              <CloudUpload className={`h-6 w-6 transition-colors ${isDragging ? "text-primary" : "text-muted-foreground"}`} />
+            <div
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-muted"}`}
+            >
+              <CloudUpload
+                className={`h-6 w-6 transition-colors ${isDragging ? "text-primary" : "text-muted-foreground"}`}
+              />
             </div>
             <div className="text-center">
               <p className="text-sm font-medium">
-                {isDragging ? "Drop video here" : "Click or drag & drop a video"}
+                {isDragging
+                  ? "Drop video here"
+                  : "Click or drag & drop a video"}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">MP4, MOV, AVI, MKV, WebM</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                MP4, MOV, AVI, MKV, WebM
+              </p>
             </div>
           </div>
         )}
@@ -188,10 +213,15 @@ export default function VideoUploader({
           disabled={isDisabled}
         />
         <div>
-          <Label htmlFor="freePreview" className="cursor-pointer text-sm font-medium">
+          <Label
+            htmlFor="freePreview"
+            className="cursor-pointer text-sm font-medium"
+          >
             Free Preview
           </Label>
-          <p className="text-xs text-muted-foreground">Accessible without enrollment</p>
+          <p className="text-xs text-muted-foreground">
+            Accessible without enrollment
+          </p>
         </div>
       </div>
 
@@ -199,7 +229,9 @@ export default function VideoUploader({
       {state === "uploading" && (
         <div className="space-y-2 rounded-xl border bg-muted/30 px-4 py-3">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground font-medium">Uploading video</span>
+            <span className="text-muted-foreground font-medium">
+              Uploading video
+            </span>
             <span className="font-semibold tabular-nums">{progress}%</span>
           </div>
           <Progress value={progress} className="h-2" />

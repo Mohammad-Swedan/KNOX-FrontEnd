@@ -92,7 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             if (response.accessToken) {
               await decodeAndSetUser(
                 response.accessToken,
-                response.refreshToken
+                response.refreshToken,
               );
             }
           }
@@ -127,7 +127,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             if (response.accessToken) {
               await decodeAndSetUser(
                 response.accessToken,
-                response.refreshToken
+                response.refreshToken,
               );
               console.log("[Auth] Token refreshed successfully");
             }
@@ -141,7 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clearRefreshTimer, handleSessionExpired]
+    [clearRefreshTimer, handleSessionExpired],
   );
 
   // Decode JWT and extract user info and store in localStorage
@@ -229,7 +229,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         } catch (error) {
           console.warn(
             "[Auth] Failed to fetch detailed user info, using JWT data only:",
-            error
+            error,
           );
           // Continue with basic JWT data if fetching detailed info fails
         }
@@ -244,7 +244,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw error;
       }
     },
-    [handleSessionExpired, scheduleTokenRefresh]
+    [handleSessionExpired, scheduleTokenRefresh],
   );
 
   // Login function
@@ -267,7 +267,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLoading(false);
       }
     },
-    [decodeAndSetUser, handleSessionExpired]
+    [decodeAndSetUser, handleSessionExpired],
   );
 
   // Logout function
@@ -305,7 +305,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               if (response.accessToken && response.refreshToken) {
                 await decodeAndSetUser(
                   response.accessToken,
-                  response.refreshToken
+                  response.refreshToken,
                 );
               } else {
                 handleSessionExpired();
@@ -319,7 +319,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             setUser(existingSession.user);
             await scheduleTokenRefresh(
               existingSession.expiresAt,
-              existingSession.refreshToken
+              existingSession.refreshToken,
             );
           }
         }
@@ -343,12 +343,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     scheduleTokenRefresh,
   ]);
 
+  // Allow external callers (e.g. post-verification) to start a session from tokens
+  const loginWithTokens = useCallback(
+    async (accessToken: string, refreshToken: string) => {
+      await decodeAndSetUser(accessToken, refreshToken);
+    },
+    [decodeAndSetUser],
+  );
+
+  // Refresh the stored user info from /api/Users/me
+  const refreshUserInfo = useCallback(async () => {
+    try {
+      const userInfo = await getUserInfo();
+      setUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              fullName: userInfo.fullName,
+              isVerfied: userInfo.isVerfied,
+              verficationDate: userInfo.verficationDate,
+              isActive: userInfo.isActive,
+              role: userInfo.role,
+              profilePictureUrl: userInfo.profilePictureUrl,
+            }
+          : prev,
+      );
+    } catch (err) {
+      console.warn("[Auth] refreshUserInfo failed:", err);
+    }
+  }, []);
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
     isLoading,
     login,
+    loginWithTokens,
     logout,
+    refreshUserInfo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

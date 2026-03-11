@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   getCourseContents,
-  GetMyCourseContent,
+  getManageContents,
   deleteFolder,
   deleteMaterial,
 } from "../api";
@@ -50,8 +50,9 @@ export function useFolderContents({
       setError(null);
 
       try {
+        // Manage mode uses /manage-contents so writers/admins see everything they can manage
         const data = isManagementMode
-          ? await GetMyCourseContent(courseId, folderId)
+          ? await getManageContents(courseId, folderId)
           : await getCourseContents(courseId, folderId);
         setContents(data);
       } catch (err) {
@@ -66,46 +67,30 @@ export function useFolderContents({
   }, [courseId, folderId, isManagementMode, refetchTrigger]);
 
   const handleDeleteFolder = async (folderIdToDelete: number) => {
-    if (!confirm("Are you sure you want to delete this folder?")) return;
     if (!courseId) return;
-
     try {
-      await deleteFolder(folderIdToDelete);
-      const data = isManagementMode
-        ? await GetMyCourseContent(courseId, folderId)
-        : await getCourseContents(courseId, folderId);
-      setContents(data);
+      await deleteFolder(parseInt(courseId), folderIdToDelete);
+      refetch();
     } catch (err) {
       console.error("Error deleting folder:", err);
-      alert("Failed to delete folder");
+      throw err;
     }
   };
 
   const handleDeleteMaterial = async (materialId: number) => {
-    if (!confirm("Are you sure you want to delete this material?")) return;
     if (!courseId) return;
-
     try {
-      await deleteMaterial(materialId);
-      const data = isManagementMode
-        ? await GetMyCourseContent(courseId, folderId)
-        : await getCourseContents(courseId, folderId);
-      setContents(data);
+      await deleteMaterial(parseInt(courseId), materialId);
+      refetch();
     } catch (err) {
       console.error("Error deleting material:", err);
-      alert("Failed to delete material");
+      throw err;
     }
   };
 
-  const handleEditFolder = (folder: FolderItem) => {
-    // TODO: Implement edit folder dialog
-    console.log("Edit folder:", folder);
-  };
-
-  const handleEditMaterial = (material: MaterialItem) => {
-    // TODO: Implement edit material dialog
-    console.log("Edit material:", material);
-  };
+  // These are placeholders; the actual dialog opening is handled by the page
+  const handleEditFolder = (_f: FolderItem) => void _f;
+  const handleEditMaterial = (_m: MaterialItem) => void _m;
 
   return {
     contents,

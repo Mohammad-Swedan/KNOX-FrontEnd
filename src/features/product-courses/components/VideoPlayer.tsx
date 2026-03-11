@@ -16,19 +16,27 @@ export default function VideoPlayer({ videoId }: VideoPlayerProps) {
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const hlsRef = useRef<Hls | null>(null);
 
-  const [status, setStatus] = useState<"loading" | "iframe" | "hls" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "iframe" | "hls" | "error">(
+    "loading",
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [playbackUrl, setPlaybackUrl] = useState<string | null>(null);
 
   const loadToken = useCallback(async () => {
-    if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
+    if (hlsRef.current) {
+      hlsRef.current.destroy();
+      hlsRef.current = null;
+    }
     setStatus("loading");
     setErrorMsg("");
     setPlaybackUrl(null);
     try {
       const token: VideoToken = await fetchVideoToken(videoId);
       if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => loadToken(), token.expiresInSeconds * 800);
+      timerRef.current = setTimeout(
+        () => loadToken(),
+        token.expiresInSeconds * 800,
+      );
       setPlaybackUrl(token.playbackUrl);
       setStatus(isBunnyEmbed(token.playbackUrl) ? "iframe" : "hls");
     } catch {
@@ -38,39 +46,56 @@ export default function VideoPlayer({ videoId }: VideoPlayerProps) {
   }, [videoId]);
 
   // Run once on mount
-  useState(() => { void loadToken(); });
+  useState(() => {
+    void loadToken();
+  });
 
-  const onVideoMounted = useCallback((el: HTMLVideoElement | null) => {
-    if (!el || !playbackUrl) return;
-    if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
-    if (Hls.isSupported()) {
-      const hls = new Hls({ enableWorker: true });
-      hlsRef.current = hls;
-      hls.loadSource(playbackUrl);
-      hls.attachMedia(el);
-      hls.on(Hls.Events.ERROR, (_e, data) => {
-        if (data.fatal) { setErrorMsg("Playback error."); setStatus("error"); }
-      });
-    } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
-      el.src = playbackUrl;
-    } else {
-      setErrorMsg("Your browser does not support this video format.");
-      setStatus("error");
-    }
-  }, [playbackUrl]);
+  const onVideoMounted = useCallback(
+    (el: HTMLVideoElement | null) => {
+      if (!el || !playbackUrl) return;
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+      if (Hls.isSupported()) {
+        const hls = new Hls({ enableWorker: true });
+        hlsRef.current = hls;
+        hls.loadSource(playbackUrl);
+        hls.attachMedia(el);
+        hls.on(Hls.Events.ERROR, (_e, data) => {
+          if (data.fatal) {
+            setErrorMsg("Playback error.");
+            setStatus("error");
+          }
+        });
+      } else if (el.canPlayType("application/vnd.apple.mpegurl")) {
+        el.src = playbackUrl;
+      } else {
+        setErrorMsg("Your browser does not support this video format.");
+        setStatus("error");
+      }
+    },
+    [playbackUrl],
+  );
 
   return (
     <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-xl">
       {status === "iframe" && playbackUrl && (
         <iframe
           src={playbackUrl}
+          title="Lesson video"
           className="absolute inset-0 w-full h-full border-0"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
         />
       )}
       {status === "hls" && (
-        <video ref={onVideoMounted} controls playsInline className="absolute inset-0 w-full h-full" />
+        <video
+          ref={onVideoMounted}
+          controls
+          playsInline
+          className="absolute inset-0 w-full h-full"
+        />
       )}
       {status === "loading" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3">
@@ -88,8 +113,12 @@ export default function VideoPlayer({ videoId }: VideoPlayerProps) {
             <p className="text-white font-medium mb-1">Could not load video</p>
             <p className="text-white/60 text-sm">{errorMsg}</p>
           </div>
-          <Button variant="outline" size="sm" onClick={loadToken}
-            className="border-white/30 text-white hover:bg-white/10 cursor-pointer">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadToken}
+            className="border-white/30 text-white hover:bg-white/10 cursor-pointer"
+          >
             <RefreshCw className="h-4 w-4 mr-2" />
             Try again
           </Button>

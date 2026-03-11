@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import axios from "axios";
 
 import { Button } from "@/shared/ui/button";
-import { Checkbox } from "@/shared/ui/checkbox";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { useAuth } from "@/app/providers/useAuth";
@@ -17,7 +17,6 @@ const LoginForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,8 +42,10 @@ const LoginForm = () => {
       });
     } catch (err) {
       console.error("Login error:", err);
-      const errorMessage =
-        err instanceof Error ? err.message : t("auth.login.loginFailed");
+      const is401 = axios.isAxiosError(err) && err.response?.status === 401;
+      const errorMessage = is401
+        ? t("auth.login.invalidCredentials")
+        : t("auth.login.loginFailed");
       setError(errorMessage);
       toast.error(t("auth.login.loginFailed"), {
         description: errorMessage,
@@ -112,25 +113,14 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {/* Remember Me and Forgot Password */}
-      <div className="flex items-center justify-between gap-y-2">
-        <div className="flex items-center gap-3">
-          <Checkbox
-            id="rememberMe"
-            className="size-6"
-            checked={rememberMe}
-            onCheckedChange={(checked) => setRememberMe(checked === true)}
-            disabled={isLoading}
-          />
-          <Label htmlFor="rememberMe" className="text-muted-foreground">
-            {" "}
-            {t("auth.login.rememberMe")}
-          </Label>
-        </div>
-
-        <a href="#" className="hover:underline">
+      {/* Forgot Password */}
+      <div className="flex justify-end">
+        <Link
+          to="/auth/forgot-password"
+          className="text-primary text-sm font-medium hover:underline"
+        >
           {t("auth.login.forgotPassword")}
-        </a>
+        </Link>
       </div>
 
       <Button className="w-full" type="submit" disabled={isLoading}>

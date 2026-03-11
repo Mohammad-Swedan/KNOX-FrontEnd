@@ -5,6 +5,7 @@ import {
   Video,
   HelpCircle,
   FileText,
+  ExternalLink,
   CheckCircle2,
   Circle,
   Play,
@@ -56,10 +57,10 @@ export default function EnrolledCourseOutline({
         {sortedTopics.map((topic) => {
           const isExpanded = expandedTopics.has(topic.id);
           const sortedLessons = [...topic.lessons].sort(
-            (a, b) => a.order - b.order
+            (a, b) => a.order - b.order,
           );
           const completedCount = sortedLessons.filter(
-            (l) => l.isCompleted
+            (l) => l.isCompleted,
           ).length;
 
           return (
@@ -133,6 +134,8 @@ function SidebarLessonRow({
       <Video className="h-3.5 w-3.5" />
     ) : lesson.type === LessonType.Quiz ? (
       <HelpCircle className="h-3.5 w-3.5" />
+    ) : lesson.type === LessonType.ExternalVideo ? (
+      <ExternalLink className="h-3.5 w-3.5" />
     ) : (
       <FileText className="h-3.5 w-3.5" />
     );

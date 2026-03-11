@@ -36,7 +36,10 @@ export default function QuizLessonViewer({ quiz }: QuizLessonViewerProps) {
     setSelectedChoices((prev) => {
       const existing = prev[questionId] ?? [];
       if (existing.includes(choiceId)) {
-        return { ...prev, [questionId]: existing.filter((c) => c !== choiceId) };
+        return {
+          ...prev,
+          [questionId]: existing.filter((c) => c !== choiceId),
+        };
       }
       // For single-choice (type 1) or true/false (type 3), allow only one
       if (current?.type === 1 || current?.type === 3) {
@@ -76,9 +79,7 @@ export default function QuizLessonViewer({ quiz }: QuizLessonViewerProps) {
     let correct = 0;
     for (const q of questions) {
       const selected = selectedChoices[q.id] ?? [];
-      const correctIds = q.choices
-        .filter((c) => c.isCorrect)
-        .map((c) => c.id);
+      const correctIds = q.choices.filter((c) => c.isCorrect).map((c) => c.id);
       const isCorrect =
         selected.length === correctIds.length &&
         selected.every((id) => correctIds.includes(id));
@@ -231,11 +232,11 @@ export default function QuizLessonViewer({ quiz }: QuizLessonViewerProps) {
                         : "border-muted-foreground/40"
                     } ${
                       isRevealed && isCorrectChoice
-                        ? "!border-emerald-500 !bg-emerald-500 !text-white"
+                        ? "border-emerald-500! bg-emerald-500! text-white!"
                         : ""
                     } ${
                       isRevealed && isSelected && !isCorrectChoice
-                        ? "!border-red-500 !bg-red-500 !text-white"
+                        ? "border-red-500! bg-red-500! text-white!"
                         : ""
                     }`}
                   >
@@ -280,11 +281,7 @@ export default function QuizLessonViewer({ quiz }: QuizLessonViewerProps) {
                   Check Answer
                 </Button>
               )}
-              <Button
-                size="sm"
-                onClick={handleNext}
-                className="cursor-pointer"
-              >
+              <Button size="sm" onClick={handleNext} className="cursor-pointer">
                 {currentIndex === total - 1 ? "Finish" : "Next"}
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>

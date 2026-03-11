@@ -10,7 +10,8 @@ export const ProductCourseStatus = {
   Published: 2,
   Archived: 3,
 } as const;
-export type ProductCourseStatus = (typeof ProductCourseStatus)[keyof typeof ProductCourseStatus];
+export type ProductCourseStatus =
+  (typeof ProductCourseStatus)[keyof typeof ProductCourseStatus];
 
 export const ProductCourseStatusLabel: Record<number, string> = {
   [ProductCourseStatus.Draft]: "Draft",
@@ -23,6 +24,7 @@ export const LessonType = {
   Video: "Video",
   Quiz: "Quiz",
   Document: "Document",
+  ExternalVideo: "ExternalVideo",
 } as const;
 export type LessonType = (typeof LessonType)[keyof typeof LessonType];
 
@@ -30,6 +32,7 @@ export const LessonTypeLabel: Record<string, string> = {
   [LessonType.Video]: "Video",
   [LessonType.Quiz]: "Quiz",
   [LessonType.Document]: "Document",
+  [LessonType.ExternalVideo]: "External Video",
 };
 
 export const VideoStatus = {
@@ -57,7 +60,8 @@ export const ProductEnrollmentStatus = {
   Completed: 1,
   Refunded: 2,
 } as const;
-export type ProductEnrollmentStatus = (typeof ProductEnrollmentStatus)[keyof typeof ProductEnrollmentStatus];
+export type ProductEnrollmentStatus =
+  (typeof ProductEnrollmentStatus)[keyof typeof ProductEnrollmentStatus];
 
 export const ProductEnrollmentStatusLabel: Record<number, string> = {
   [ProductEnrollmentStatus.Active]: "Active",
@@ -71,7 +75,8 @@ export const PrepaidCodeScopeType = {
   University: 2,
   Global: 3,
 } as const;
-export type PrepaidCodeScopeType = (typeof PrepaidCodeScopeType)[keyof typeof PrepaidCodeScopeType];
+export type PrepaidCodeScopeType =
+  (typeof PrepaidCodeScopeType)[keyof typeof PrepaidCodeScopeType];
 
 // ── Product Course ─────────────────────────────────────────
 
@@ -176,9 +181,35 @@ export interface Lesson {
 export interface AddLessonRequest {
   title: string;
   order: number;
-  type: 0 | 1 | 2; // 0=Video, 1=Quiz, 2=Document
+  type: 0 | 1 | 2 | 3; // 0=Video, 1=Quiz, 2=Document, 3=ExternalVideo
   isFreePreview?: boolean;
   referenceId?: number;
+  directUrl?: string;
+}
+
+export interface UpdateTopicRequest {
+  title?: string;
+  order?: number;
+}
+
+export interface UpdateLessonRequest {
+  title?: string;
+  order?: number;
+  isFreePreview?: boolean;
+  referenceId?: number;
+  directUrl?: string;
+}
+
+export interface TogglePublishResponse {
+  newStatus: "Published" | "Draft";
+  message: string;
+}
+
+export interface PermanentUploadResponse {
+  fileUrl: string;
+  fileName: string;
+  fileSize: number;
+  uploadedAt: string;
 }
 
 // ── Public Outline ─────────────────────────────────────────
@@ -189,6 +220,7 @@ export interface LessonOutlineDto {
   order: number;
   type: LessonType;
   isFreePreview: boolean;
+  directUrl?: string | null;
 }
 
 export interface TopicOutlineDto {
@@ -215,6 +247,7 @@ export interface LessonProgressDto {
   isFreePreview: boolean;
   referenceId: number | null;
   isCompleted: boolean;
+  directUrl?: string | null;
 }
 
 export interface TopicWithProgressDto {
@@ -339,6 +372,8 @@ export interface CourseContentLessonDto {
   referenceId: number | null;
   /** Only meaningful when the student is enrolled. */
   isCompleted: boolean;
+  /** Direct URL for ExternalVideo lessons. */
+  directUrl?: string | null;
 }
 
 export interface CourseContentTopicDto {
@@ -397,9 +432,11 @@ export interface LessonQuizContent {
 
 /** Material/Document lesson content returned by GET /lessons/{lessonId}/material */
 export interface LessonMaterialContent {
-  playbackUrl: string;
-  expiresInSeconds: number;
-  videoStatus: VideoStatus;
+  id: number;
+  title: string;
+  contentUrl: string;
+  description?: string | null;
+  tags: string[];
 }
 
 /** Video lesson content returned by GET /lessons/{lessonId}/video */
@@ -407,6 +444,11 @@ export interface LessonVideoContent {
   playbackUrl: string;
   expiresInSeconds: number;
   videoStatus: VideoStatus;
+}
+
+/** External video lesson content returned by GET /lessons/{lessonId}/external-video */
+export interface LessonExternalVideoContent {
+  directUrl: string | null;
 }
 
 /** Video status labels for user-facing messages */
@@ -437,7 +479,8 @@ export interface ProductCourseFilterParams {
 
 export const ENROLLMENT_ERROR_MESSAGES: Record<string, string> = {
   "PrepaidCode.NotFound": "This code does not exist.",
-  "PrepaidCode.InsufficientValue": "This code's value does not cover the course price.",
+  "PrepaidCode.InsufficientValue":
+    "This code's value does not cover the course price.",
   "PrepaidCode.ScopeInvalid": "This code is not valid for this course.",
   "PrepaidCode.Inactive": "This code is no longer active.",
   "PrepaidCode.Expired": "This code has expired.",

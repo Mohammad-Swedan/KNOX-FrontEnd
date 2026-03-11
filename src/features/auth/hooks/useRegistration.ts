@@ -16,8 +16,23 @@ export const useRegistration = () => {
 
   const handleRegistration = async (data: RegistrationData) => {
     try {
-      await register(data);
+      const result = await register(data);
 
+      // Backend requires email verification
+      if (result.requiresVerification) {
+        toast.info("Verify your email", {
+          description:
+            result.message ||
+            "A 6-digit OTP has been sent to your email. Please verify your account.",
+          duration: 5000,
+        });
+        navigate(
+          `/auth/verify-account?email=${encodeURIComponent(data.email)}`,
+        );
+        return;
+      }
+
+      // No verification required — attempt auto-login
       try {
         await login(data.email, data.password);
         toast.success("Welcome to Uni-Hub!", {
@@ -39,9 +54,16 @@ export const useRegistration = () => {
 
       if (error && typeof error === "object" && "response" in error) {
         const axiosError = error as {
-          response?: { data?: { message?: string } };
+          response?: {
+            data?: { message?: string; errors?: { description: string }[] };
+          };
         };
-        errorMessage = axiosError.response?.data?.message || errorMessage;
+        const errors = axiosError.response?.data?.errors;
+        if (errors && errors.length > 0) {
+          errorMessage = errors.map((e) => e.description).join(" ");
+        } else {
+          errorMessage = axiosError.response?.data?.message || errorMessage;
+        }
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }

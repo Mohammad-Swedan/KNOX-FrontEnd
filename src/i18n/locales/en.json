@@ -113,6 +113,7 @@
       "success": "Login successful!",
       "welcomeBack": "Welcome back to Uni-Hub",
       "loginFailed": "Login failed. Please try again.",
+      "invalidCredentials": "Wrong email or password.",
       "showPassword": "Show password",
       "hidePassword": "Hide password"
     },
