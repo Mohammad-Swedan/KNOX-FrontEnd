@@ -203,7 +203,7 @@ export default function CourseCard({
             )}
             {course.hasProductCourse && (
               <Button
-                className="col-span-2 relative overflow-hidden text-xs h-10 cursor-pointer bg-linear-to-r from-violet-600 via-purple-600 to-indigo-600 text-white border-0 hover:shadow-lg hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300"
+                className="col-span-2 relative overflow-hidden text-xs h-10 cursor-pointer bg-linear-to-r from-secondary via-secondary/90 to-primary text-white border-0 hover:shadow-lg hover:shadow-secondary/25 hover:scale-[1.02] transition-all duration-300"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -400,7 +400,7 @@ export default function CourseCard({
           {course.hasProductCourse && (
             <Button
               size="sm"
-              className="relative overflow-hidden cursor-pointer bg-linear-to-r from-violet-600 via-purple-600 to-indigo-600 text-white border-0 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+              className="relative overflow-hidden cursor-pointer bg-linear-to-r from-secondary via-secondary/90 to-primary text-white border-0 hover:shadow-lg hover:shadow-secondary/25 transition-all duration-300"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
                 navigate(`/browse/product-courses`);

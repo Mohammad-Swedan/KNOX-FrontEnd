@@ -344,9 +344,9 @@ function ContentLessonRow({
 
   const typeColors =
     lesson.type === LessonType.Video
-      ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+      ? "bg-primary/10 text-primary dark:text-primary"
       : lesson.type === LessonType.Quiz
-        ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
+        ? "bg-secondary/10 text-secondary dark:text-secondary-foreground"
         : lesson.type === LessonType.ExternalVideo
           ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
           : "bg-amber-500/10 text-amber-600 dark:text-amber-400";

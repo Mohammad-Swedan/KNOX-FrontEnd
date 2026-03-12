@@ -22,12 +22,12 @@ export const AccountDetailsCard = ({ user }: AccountDetailsCardProps) => {
   return (
     <Card className="relative overflow-hidden border-slate-200/50 dark:border-slate-800/50 shadow-lg hover:shadow-xl transition-shadow">
       {/* Gradient top border */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-violet-500 to-purple-500" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-secondary to-primary" />
 
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-3 text-lg font-semibold">
-          <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-linear-to-br from-violet-500/10 to-purple-500/10 dark:from-violet-500/20 dark:to-purple-500/20">
-            <Clock className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+          <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-secondary/10 dark:bg-secondary/15">
+            <Clock className="h-5 w-5 text-secondary dark:text-secondary-foreground" />
           </div>
           Account Details
         </CardTitle>
@@ -100,7 +100,7 @@ export const AccountDetailsCard = ({ user }: AccountDetailsCardProps) => {
               {user.isVerfied ? (
                 <Badge
                   variant="outline"
-                  className="text-xs bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800"
+                  className="text-xs bg-primary/10 text-primary dark:text-primary border-primary/20 dark:border-primary/30"
                 >
                   Verified
                 </Badge>

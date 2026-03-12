@@ -40,8 +40,8 @@ interface CoursesTableProps {
 
 const getRequirementTypeBadgeColor = (type: string) => {
   const colors: Record<string, string> = {
-    Specialist: "bg-purple-500/10 text-purple-700 border-purple-300",
-    "Core Course": "bg-blue-500/10 text-blue-700 border-blue-300",
+    Specialist: "bg-secondary/10 text-secondary border-secondary/30",
+    "Core Course": "bg-primary/10 text-primary border-primary/30",
     "Free Course": "bg-green-500/10 text-green-700 border-green-300",
     Elective: "bg-orange-500/10 text-orange-700 border-orange-300",
     "Lab Course": "bg-pink-500/10 text-pink-700 border-pink-300",

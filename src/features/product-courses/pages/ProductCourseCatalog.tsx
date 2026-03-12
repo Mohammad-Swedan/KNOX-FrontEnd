@@ -80,7 +80,7 @@ const ProductCourseCatalog = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero section */}
-      <div className="relative bg-linear-to-br from-primary/5 via-background to-violet-500/5 border-b">
+      <div className="relative bg-linear-to-br from-primary/5 via-background to-secondary/5 border-b">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="relative container mx-auto px-4 py-12 max-w-7xl">
           <div className="flex items-center gap-3 mb-4">

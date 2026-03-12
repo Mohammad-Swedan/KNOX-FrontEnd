@@ -252,7 +252,7 @@ export default function MaterialExplorerPage({
         description={t("materials.explorer.description")}
       />
       <Card className="relative overflow-hidden border-border/50 bg-card/90 p-4 sm:p-6">
-        <div className="absolute inset-0 -z-10 bg-linear-to-br from-primary/5 via-transparent to-purple-500/10" />
+        <div className="absolute inset-0 -z-10 bg-linear-to-br from-primary/5 via-transparent to-secondary/10" />
         <div className="absolute right-8 top-6 hidden h-32 w-32 rounded-full bg-primary/20 blur-3xl sm:block" />
 
         <div className="flex flex-col gap-4 sm:gap-6">

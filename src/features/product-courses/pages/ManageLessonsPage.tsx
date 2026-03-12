@@ -72,9 +72,9 @@ import type { CourseContentTopicDto, CourseContentLessonDto } from "../types";
 const LessonTypeIcon = ({ type }: { type: string }) => {
   switch (type) {
     case "Video":
-      return <Video className="h-3.5 w-3.5 text-blue-600" />;
+      return <Video className="h-3.5 w-3.5 text-primary" />;
     case "Quiz":
-      return <HelpCircle className="h-3.5 w-3.5 text-violet-600" />;
+      return <HelpCircle className="h-3.5 w-3.5 text-secondary" />;
     case "Document":
       return <FileText className="h-3.5 w-3.5 text-amber-600" />;
     case "ExternalVideo":
@@ -87,9 +87,9 @@ const LessonTypeIcon = ({ type }: { type: string }) => {
 const LessonTypeBg = ({ type }: { type: string }) => {
   switch (type) {
     case "Video":
-      return "bg-blue-500/10";
+      return "bg-primary/10";
     case "Quiz":
-      return "bg-violet-500/10";
+      return "bg-secondary/10";
     case "Document":
       return "bg-amber-500/10";
     case "ExternalVideo":
@@ -258,7 +258,7 @@ const ManageLessonsPage = () => {
                   : course.status === "Draft"
                     ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
                     : course.status === "InReview"
-                      ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
+                      ? "bg-primary/10 text-primary dark:text-primary border-primary/20"
                       : "bg-muted text-muted-foreground border-border",
               ].join(" ")}
             >
@@ -792,8 +792,8 @@ function TopicSection({
                     )
                   }
                 >
-                  <div className="w-6 h-6 rounded-md bg-blue-500/10 flex items-center justify-center shrink-0">
-                    <Video className="h-3.5 w-3.5 text-blue-600" />
+                  <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                    <Video className="h-3.5 w-3.5 text-primary" />
                   </div>
                   Video Lesson
                 </DropdownMenuItem>
@@ -805,8 +805,8 @@ function TopicSection({
                     )
                   }
                 >
-                  <div className="w-6 h-6 rounded-md bg-violet-500/10 flex items-center justify-center shrink-0">
-                    <HelpCircle className="h-3.5 w-3.5 text-violet-600" />
+                  <div className="w-6 h-6 rounded-md bg-secondary/10 flex items-center justify-center shrink-0">
+                    <HelpCircle className="h-3.5 w-3.5 text-secondary" />
                   </div>
                   Quiz Lesson
                 </DropdownMenuItem>

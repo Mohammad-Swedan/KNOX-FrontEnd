@@ -21,7 +21,7 @@ interface QuizQuestionCardProps {
   onMultipleChoice: (
     questionId: number,
     choiceId: number,
-    checked: boolean
+    checked: boolean,
   ) => void;
   onShortAnswer: (questionId: number, answer: string) => void;
   isHighlighted?: boolean;
@@ -30,12 +30,12 @@ interface QuizQuestionCardProps {
 const questionTypeLabels: Record<string, { label: string; color: string }> = {
   SingleChoice: {
     label: "Single Choice",
-    color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    color: "bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary",
   },
   MultipleChoice: {
     label: "Multiple Choice",
     color:
-      "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      "bg-secondary/10 text-secondary dark:bg-secondary/15 dark:text-secondary-foreground",
   },
   TrueFalse: {
     label: "True / False",
@@ -162,8 +162,8 @@ export const QuizQuestionCard = ({
           isHighlighted
             ? "border-2 border-orange-500 ring-4 ring-orange-500/20 animate-pulse"
             : isAnswered
-            ? "border-2 border-green-500/40 bg-linear-to-br from-green-50/50 to-transparent dark:from-green-950/20"
-            : "border-2 border-muted hover:border-muted-foreground/20"
+              ? "border-2 border-green-500/40 bg-linear-to-br from-green-50/50 to-transparent dark:from-green-950/20"
+              : "border-2 border-muted hover:border-muted-foreground/20"
         }`}
       >
         {/* Answered indicator bar */}

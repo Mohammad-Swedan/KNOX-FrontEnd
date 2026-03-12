@@ -1,4 +1,12 @@
-import { FileText, HelpCircle, Eye, Play, CheckCircle2, Lock, Video } from "lucide-react";
+import {
+  FileText,
+  HelpCircle,
+  Eye,
+  Play,
+  CheckCircle2,
+  Lock,
+  Video,
+} from "lucide-react";
 import type { Lesson } from "../types";
 
 interface LessonListProps {
@@ -6,7 +14,10 @@ interface LessonListProps {
   onLessonClick?: (lesson: Lesson) => void;
 }
 
-export default function LessonList({ lessons, onLessonClick }: LessonListProps) {
+export default function LessonList({
+  lessons,
+  onLessonClick,
+}: LessonListProps) {
   if (lessons.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
@@ -14,7 +25,9 @@ export default function LessonList({ lessons, onLessonClick }: LessonListProps) 
           <FileText className="h-8 w-8 opacity-40" />
         </div>
         <p className="text-base font-medium">No lessons yet</p>
-        <p className="text-sm mt-1 opacity-70">Add your first lesson to get started.</p>
+        <p className="text-sm mt-1 opacity-70">
+          Add your first lesson to get started.
+        </p>
       </div>
     );
   }
@@ -47,10 +60,19 @@ function LessonRow({ lesson, index, onClick }: RowProps) {
   const isClickable = !!lesson.referenceId;
 
   const iconConfig = isVideo
-    ? { icon: <Video className="h-4 w-4" />, bg: "bg-blue-500/10 text-blue-600 dark:text-blue-400" }
+    ? {
+        icon: <Video className="h-4 w-4" />,
+        bg: "bg-primary/10 text-primary dark:text-primary",
+      }
     : isQuiz
-    ? { icon: <HelpCircle className="h-4 w-4" />, bg: "bg-violet-500/10 text-violet-600 dark:text-violet-400" }
-    : { icon: <FileText className="h-4 w-4" />, bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400" };
+      ? {
+          icon: <HelpCircle className="h-4 w-4" />,
+          bg: "bg-secondary/10 text-secondary dark:text-secondary-foreground",
+        }
+      : {
+          icon: <FileText className="h-4 w-4" />,
+          bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        };
 
   return (
     <div
@@ -68,7 +90,9 @@ function LessonRow({ lesson, index, onClick }: RowProps) {
       </span>
 
       {/* Type icon */}
-      <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${iconConfig.bg}`}>
+      <div
+        className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${iconConfig.bg}`}
+      >
         {iconConfig.icon}
       </div>
 
@@ -78,7 +102,9 @@ function LessonRow({ lesson, index, onClick }: RowProps) {
           {lesson.title}
         </p>
         <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[11px] text-muted-foreground/70 capitalize">{lesson.type}</span>
+          <span className="text-[11px] text-muted-foreground/70 capitalize">
+            {lesson.type}
+          </span>
           {lesson.isFreePreview && (
             <span className="inline-flex items-center gap-1 text-[10px] font-semibold tracking-wide bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5">
               <Eye className="h-2.5 w-2.5" />
@@ -107,4 +133,3 @@ function LessonRow({ lesson, index, onClick }: RowProps) {
     </div>
   );
 }
-

@@ -260,23 +260,21 @@ const AnalyticsPage = () => {
       title: t("dashboard.heroMetrics.totalUsers.title"),
       value: analyticsData.totalUsers,
       subtitle: t("dashboard.heroMetrics.totalUsers.subtitle"),
-      icon: (
-        <UsersIcon className="size-5 md:size-6 lg:size-7 text-violet-600" />
-      ),
+      icon: <UsersIcon className="size-5 md:size-6 lg:size-7 text-secondary" />,
       trend: usersGrowth,
-      gradient: "bg-gradient-to-br from-violet-500 to-purple-600",
-      iconBg: "bg-violet-100 dark:bg-violet-500/20",
+      gradient: "bg-gradient-to-br from-secondary to-secondary/80",
+      iconBg: "bg-secondary/10 dark:bg-secondary/20",
     },
     {
       title: t("dashboard.heroMetrics.totalQuizzes.title"),
       value: analyticsData.totalQuizzes,
       subtitle: t("dashboard.heroMetrics.totalQuizzes.subtitle"),
       icon: (
-        <ClipboardListIcon className="size-5 md:size-6 lg:size-7 text-blue-600" />
+        <ClipboardListIcon className="size-5 md:size-6 lg:size-7 text-primary" />
       ),
       trend: quizzesGrowth,
-      gradient: "bg-gradient-to-br from-blue-500 to-cyan-600",
-      iconBg: "bg-blue-100 dark:bg-blue-500/20",
+      gradient: "bg-gradient-to-br from-primary to-amber-600",
+      iconBg: "bg-primary/10 dark:bg-primary/20",
     },
     {
       title: t("dashboard.heroMetrics.totalMaterials.title"),
@@ -308,8 +306,8 @@ const AnalyticsPage = () => {
       label: t("dashboard.platformOverview.universities.label"),
       value: analyticsData.totalUniversities,
       description: t("dashboard.platformOverview.universities.description"),
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-100 dark:bg-indigo-500/20",
+      color: "text-secondary",
+      bgColor: "bg-secondary/10 dark:bg-secondary/20",
     },
     {
       icon: <GraduationCapIcon className="size-4 md:size-5" />,
@@ -324,8 +322,8 @@ const AnalyticsPage = () => {
       label: t("dashboard.platformOverview.majors.label"),
       value: analyticsData.totalMajors,
       description: t("dashboard.platformOverview.majors.description"),
-      color: "text-cyan-600",
-      bgColor: "bg-cyan-100 dark:bg-cyan-500/20",
+      color: "text-primary",
+      bgColor: "bg-primary/10 dark:bg-primary/20",
     },
     {
       icon: <FileTextIcon className="size-4 md:size-5" />,
@@ -423,7 +421,7 @@ const AnalyticsPage = () => {
                 value={analyticsData.activeQuizAttemptsLast30Days}
                 max={5000}
                 label={t("dashboard.engagement.quizCompletion")}
-                color="stroke-violet-500"
+                color="stroke-primary"
               />
               <EngagementRing
                 value={analyticsData.averageMaterialsPerCourse * 100}
@@ -467,8 +465,8 @@ const AnalyticsPage = () => {
         <CardHeader className="border-b bg-muted/30 p-3 md:p-4 lg:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 md:gap-3">
-              <div className="flex size-7 md:size-8 lg:size-9 items-center justify-center rounded-lg bg-blue-500/10">
-                <TrendingUpIcon className="size-3.5 md:size-4 text-blue-600" />
+              <div className="flex size-7 md:size-8 lg:size-9 items-center justify-center rounded-lg bg-primary/10">
+                <TrendingUpIcon className="size-3.5 md:size-4 text-primary" />
               </div>
               <div>
                 <CardTitle className="text-sm md:text-base lg:text-lg">
@@ -516,18 +514,18 @@ const AnalyticsPage = () => {
       {/* Quick Insights Grid */}
       <div className="grid grid-cols-1 gap-3 md:gap-4 lg:gap-5 md:grid-cols-3">
         <QuickInsightCard
-          icon={<BookOpenIcon className="size-4 md:size-5 text-cyan-600" />}
+          icon={<BookOpenIcon className="size-4 md:size-5 text-primary" />}
           title={t("dashboard.quickInsights.totalMajors.title")}
           value={analyticsData.totalMajors.toString()}
           subtext={t("dashboard.quickInsights.totalMajors.subtext")}
-          accentColor="bg-cyan-500"
+          accentColor="bg-primary"
         />
         <QuickInsightCard
-          icon={<TargetIcon className="size-4 md:size-5 text-violet-600" />}
+          icon={<TargetIcon className="size-4 md:size-5 text-secondary" />}
           title={t("dashboard.quickInsights.quizToCourseRatio.title")}
           value={analyticsData.averageQuizzesPerCourse.toFixed(2)}
           subtext={t("dashboard.quickInsights.quizToCourseRatio.subtext")}
-          accentColor="bg-violet-500"
+          accentColor="bg-secondary"
         />
         <QuickInsightCard
           icon={<ActivityIcon className="size-4 md:size-5 text-emerald-600" />}

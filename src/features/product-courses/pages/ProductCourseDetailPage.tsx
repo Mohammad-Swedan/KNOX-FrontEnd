@@ -277,7 +277,7 @@ const ProductCourseDetailPage = () => {
         <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
           {/* Decorative blobs */}
           <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-violet-500/10 blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-primary/10 blur-3xl" />
 
           <div className="relative container mx-auto px-4 py-8 max-w-6xl">
             <Button
@@ -380,7 +380,7 @@ const ProductCourseDetailPage = () => {
                         className="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
                       />
                     ) : (
-                      <div className="w-full h-full bg-linear-to-br from-primary/25 via-slate-900 to-violet-700/30" />
+                      <div className="w-full h-full bg-linear-to-br from-primary/25 via-slate-900 to-secondary/30" />
                     )}
                     {/* Gradient overlays */}
                     <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-black/10" />

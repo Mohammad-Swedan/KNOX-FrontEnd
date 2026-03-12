@@ -103,7 +103,7 @@ export const Feature = () => {
       icon: <BookOpen />,
       title: t("home.features.studyMaterials.title"),
       description: t("home.features.studyMaterials.description"),
-      gradient: "from-blue-500/20 to-cyan-500/20",
+      gradient: "from-primary/20 to-amber-500/20",
       span: "wide",
     },
     {
@@ -117,7 +117,7 @@ export const Feature = () => {
       icon: <Brain />,
       title: t("home.features.aiSupervisor.title"),
       description: t("home.features.aiSupervisor.description"),
-      gradient: "from-purple-500/20 to-pink-500/20",
+      gradient: "from-secondary/20 to-slate-500/20",
       span: "tall",
     },
     {
@@ -138,7 +138,7 @@ export const Feature = () => {
       icon: <Globe />,
       title: t("home.features.universityNetwork.title"),
       description: t("home.features.universityNetwork.description"),
-      gradient: "from-indigo-500/20 to-blue-500/20",
+      gradient: "from-secondary/20 to-primary/20",
       span: "wide",
     },
   ];

@@ -261,7 +261,7 @@ export const FilterDesktop = ({
                   {selectedCollege && (
                     <Badge
                       variant="secondary"
-                      className="h-5 px-1.5 text-[10px] bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 border-violet-200/50 dark:border-violet-800/30"
+                      className="h-5 px-1.5 text-[10px] bg-secondary/5 dark:bg-secondary/10 text-secondary dark:text-secondary-foreground border-secondary/20 dark:border-secondary/30"
                     >
                       <School className="h-2.5 w-2.5" />
                     </Badge>

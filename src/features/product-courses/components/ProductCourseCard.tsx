@@ -42,8 +42,7 @@ interface ProductCourseCardProps {
 const statusColors: Record<string, string> = {
   Draft:
     "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-400/30",
-  InReview:
-    "bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-400/30",
+  InReview: "bg-primary/15 text-primary border-primary/30",
   Published:
     "bg-green-500/15 text-green-700 dark:text-green-400 border-green-400/30",
   Archived:
@@ -124,7 +123,7 @@ export default function ProductCourseCard({
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/5 via-muted to-violet-500/5">
+            <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/5 via-muted to-secondary/5">
               <Image className="h-10 w-10 text-muted-foreground/25" />
             </div>
           )}
@@ -285,7 +284,7 @@ export default function ProductCourseCard({
                 /* Not enrolled: two buttons */
                 <div className="grid grid-cols-2 gap-2">
                   <Button
-                    className="w-full cursor-pointer h-9 text-xs font-semibold bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0 shadow-sm"
+                    className="w-full cursor-pointer h-9 text-xs font-semibold bg-linear-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-white border-0 shadow-sm"
                     size="sm"
                     onClick={handleEnrollClick}
                     disabled={enrolling}

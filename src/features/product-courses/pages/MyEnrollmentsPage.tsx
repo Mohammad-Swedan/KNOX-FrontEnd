@@ -13,14 +13,15 @@ const MyEnrollmentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  const { items: enrollments, totalPages, loading } = useMyEnrollments(
-    currentPage,
-    pageSize
-  );
+  const {
+    items: enrollments,
+    totalPages,
+    loading,
+  } = useMyEnrollments(currentPage, pageSize);
 
   const statusColors: Record<string, string> = {
     Active: "bg-green-500/10 text-green-700",
-    Completed: "bg-blue-500/10 text-blue-700",
+    Completed: "bg-secondary/10 text-secondary",
     Refunded: "bg-red-500/10 text-red-700",
   };
 
@@ -52,12 +53,16 @@ const MyEnrollmentsPage = () => {
       ) : (
         <div className="space-y-4">
           {enrollments.map((enrollment) => (
-            <Card key={enrollment.id} className="hover:shadow-md transition-shadow">
+            <Card
+              key={enrollment.id}
+              className="hover:shadow-md transition-shadow"
+            >
               <CardContent className="py-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h3 className="font-semibold text-lg">
-                      {enrollment.courseTitle ?? `Course #${enrollment.productCourseId}`}
+                      {enrollment.courseTitle ??
+                        `Course #${enrollment.productCourseId}`}
                     </h3>
                     <p className="text-xs text-muted-foreground">
                       Enrolled on{" "}
@@ -84,7 +89,7 @@ const MyEnrollmentsPage = () => {
                     className="cursor-pointer"
                     onClick={() =>
                       navigate(
-                        `/dashboard/product-courses/${enrollment.productCourseId}/lessons`
+                        `/dashboard/product-courses/${enrollment.productCourseId}/lessons`,
                       )
                     }
                   >

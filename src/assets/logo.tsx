@@ -12,12 +12,8 @@ const Logo = (props: SVGAttributes<SVGElement>) => {
     >
       <defs>
         <linearGradient id="knoxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
-          <stop
-            offset="100%"
-            stopColor="hsl(var(--primary))"
-            stopOpacity="0.8"
-          />
+          <stop offset="0%" stopColor="#003450" stopOpacity="1" />
+          <stop offset="100%" stopColor="#f58f03" stopOpacity="1" />
         </linearGradient>
         <filter id="shadow">
           <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.2" />

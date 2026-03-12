@@ -95,7 +95,7 @@ const RESOURCE_TYPE_CONFIG: Record<
   ECampusCourse: {
     label: "ECampus Course",
     icon: GraduationCap,
-    color: "bg-blue-500",
+    color: "bg-primary",
   },
   YouTubeVideo: { label: "YouTube Video", icon: Youtube, color: "bg-red-500" },
   YouTubePlaylist: {
@@ -108,22 +108,22 @@ const RESOURCE_TYPE_CONFIG: Record<
   UdemyCourse: {
     label: "Udemy Course",
     icon: GraduationCap,
-    color: "bg-purple-500",
+    color: "bg-secondary",
   },
   CourseraCourse: {
     label: "Coursera Course",
     icon: GraduationCap,
-    color: "bg-blue-600",
+    color: "bg-primary/90",
   },
   EdXCourse: {
     label: "edX Course",
     icon: GraduationCap,
-    color: "bg-indigo-500",
+    color: "bg-secondary/90",
   },
   LinkedInLearning: {
     label: "LinkedIn Learning",
     icon: GraduationCap,
-    color: "bg-blue-700",
+    color: "bg-secondary/80",
   },
   PluralSight: {
     label: "Pluralsight",
@@ -174,7 +174,7 @@ const ResourceCard = ({
     <Card
       className={`group overflow-hidden transition-all duration-300 hover:shadow-xl ${
         isECampus
-          ? "border-2 border-blue-500/50 bg-linear-to-br from-blue-50 via-background to-background dark:from-blue-950/20 dark:via-background dark:to-background"
+          ? "border-2 border-primary/50 bg-linear-to-br from-primary/5 via-background to-background dark:from-primary/10 dark:via-background dark:to-background"
           : "hover:border-primary/50 border"
       }`}
     >
@@ -183,7 +183,7 @@ const ResourceCard = ({
         <div
           className={`p-3 sm:p-4 ${
             isECampus
-              ? "bg-linear-to-r from-blue-500/10 via-blue-500/5 to-transparent"
+              ? "bg-linear-to-r from-primary/10 via-primary/5 to-transparent"
               : "bg-linear-to-r from-muted/50 to-transparent"
           }`}
         >
@@ -193,7 +193,7 @@ const ResourceCard = ({
               className={`flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg ${
                 config.color
               } shadow-md transition-transform duration-300 group-hover:scale-105 ${
-                isECampus ? "ring-2 ring-blue-400/50 ring-offset-2" : ""
+                isECampus ? "ring-2 ring-primary/50 ring-offset-2" : ""
               }`}
             >
               <IconComponent className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -206,13 +206,13 @@ const ResourceCard = ({
                   {resource.title}
                 </h4>
                 {isECampus && (
-                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 shrink-0 animate-pulse" />
+                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0 animate-pulse" />
                 )}
               </div>
               <Badge
                 variant="secondary"
                 className={`text-[10px] sm:text-xs ${
-                  isECampus ? "bg-blue-500 text-white hover:bg-blue-600" : ""
+                  isECampus ? "bg-primary text-white hover:bg-primary/90" : ""
                 }`}
               >
                 {config.label}
@@ -252,7 +252,7 @@ const ResourceCard = ({
             variant={isECampus ? "default" : "outline"}
             className={`w-full justify-center gap-2 font-medium transition-all text-xs sm:text-sm h-8 sm:h-9 md:h-10 ${
               isECampus
-                ? "bg-blue-500 hover:bg-blue-600 text-white shadow-lg hover:shadow-xl"
+                ? "bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl"
                 : "border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground"
             }`}
             onClick={() => window.open(resource.url, "_blank")}

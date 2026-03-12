@@ -55,8 +55,8 @@ export default function VideoLessonViewer({
   > = {
     [VideoStatus.Uploading]: {
       icon: <Upload className="h-8 w-8" />,
-      color: "text-blue-500",
-      bgColor: "bg-blue-50 dark:bg-blue-950/30",
+      color: "text-primary",
+      bgColor: "bg-primary/5 dark:bg-primary/10",
     },
     [VideoStatus.Queued]: {
       icon: <Clock className="h-8 w-8" />,
@@ -65,8 +65,8 @@ export default function VideoLessonViewer({
     },
     [VideoStatus.Processing]: {
       icon: <Loader2 className="h-8 w-8 animate-spin" />,
-      color: "text-violet-500",
-      bgColor: "bg-violet-50 dark:bg-violet-950/30",
+      color: "text-secondary",
+      bgColor: "bg-secondary/5 dark:bg-secondary/10",
     },
     [VideoStatus.Encoding]: {
       icon: <Film className="h-8 w-8" />,

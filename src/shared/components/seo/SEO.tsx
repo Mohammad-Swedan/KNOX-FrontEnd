@@ -76,7 +76,7 @@ const SEO = ({
 
       {/* Additional Meta */}
       {/* 'theme-color' is not supported by Firefox, Firefox for Android, Opera, but is safe to include for supported browsers */}
-      <meta name="theme-color" content="#6366f1" />
+      <meta name="theme-color" content="#003450" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content={siteName} />

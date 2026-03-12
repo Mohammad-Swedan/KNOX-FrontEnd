@@ -34,11 +34,11 @@ type Props = {
 const chartConfig = {
   quizzes: {
     label: "Quizzes",
-    color: "#8b5cf6",
+    color: "#f58f03",
   },
   materials: {
     label: "Materials",
-    color: "#3b82f6",
+    color: "#003450",
   },
   users: {
     label: "Users",

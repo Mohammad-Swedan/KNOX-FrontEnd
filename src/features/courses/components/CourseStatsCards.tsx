@@ -35,8 +35,8 @@ export const CourseStatsCards = ({
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-center gap-4">
-            <div className="flex size-12 items-center justify-center rounded-lg bg-blue-500/10">
-              <FileText className="size-6 text-blue-600" />
+            <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
+              <FileText className="size-6 text-primary" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Materials</p>

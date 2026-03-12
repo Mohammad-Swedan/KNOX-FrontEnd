@@ -178,7 +178,7 @@ export const ProfileHeader = ({
               {user.isVerfied && (
                 <Badge
                   variant="outline"
-                  className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
+                  className="bg-primary/10 text-primary dark:text-primary border-primary/20 dark:border-primary/30 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
                 >
                   <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
                   {t("profile.status.verified")}

@@ -57,7 +57,7 @@ export default function CourseOutline({
         {sortedTopics.map((topic) => {
           const isExpanded = expandedTopics.has(topic.id);
           const sortedLessons = [...topic.lessons].sort(
-            (a, b) => a.order - b.order
+            (a, b) => a.order - b.order,
           );
           const freeCount = sortedLessons.filter((l) => l.isFreePreview).length;
 
@@ -134,10 +134,10 @@ function OutlineLessonRow({
 
   const typeColors =
     lesson.type === LessonType.Video
-      ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+      ? "bg-primary/10 text-primary dark:text-primary"
       : lesson.type === LessonType.Quiz
-      ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
-      : "bg-amber-500/10 text-amber-600 dark:text-amber-400";
+        ? "bg-secondary/10 text-secondary dark:text-secondary-foreground"
+        : "bg-amber-500/10 text-amber-600 dark:text-amber-400";
 
   const handleClick = () => {
     if (lesson.isFreePreview) {
@@ -166,8 +166,8 @@ function OutlineLessonRow({
           {lesson.type === LessonType.Video
             ? "Video"
             : lesson.type === LessonType.Quiz
-            ? "Quiz"
-            : "Document"}
+              ? "Quiz"
+              : "Document"}
         </span>
       </div>
 

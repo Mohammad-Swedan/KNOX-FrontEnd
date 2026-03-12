@@ -176,10 +176,10 @@ const AddQuizPage = () => {
 
         {/* Product Course Fields */}
         {productCourseId && (
-          <div className="mb-6 p-4 rounded-xl border bg-blue-500/5 border-blue-200 dark:border-blue-900 space-y-3">
+          <div className="mb-6 p-4 rounded-xl border bg-primary/5 border-primary/20 dark:border-primary/20 space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-blue-500" />
-              <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <p className="text-sm font-semibold text-primary dark:text-primary">
                 Product Course Quiz
               </p>
             </div>

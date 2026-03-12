@@ -31,8 +31,8 @@ const PlatformOverviewCard = ({
       icon: <GraduationCapIcon className="size-3.5 md:size-4" />,
       label: t("dashboard.platformOverview.majors.label"),
       value: totalMajors.toLocaleString(),
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10",
+      color: "text-primary",
+      bgColor: "bg-primary/10",
     },
     {
       icon: <BookOpenIcon className="size-3.5 md:size-4" />,
@@ -45,8 +45,8 @@ const PlatformOverviewCard = ({
       icon: <ClipboardListIcon className="size-3.5 md:size-4" />,
       label: t("dashboard.totalQuizzes"),
       value: totalQuizzes.toLocaleString(),
-      color: "text-purple-500",
-      bgColor: "bg-purple-500/10",
+      color: "text-secondary",
+      bgColor: "bg-secondary/10",
     },
     {
       icon: <FileTextIcon className="size-3.5 md:size-4" />,

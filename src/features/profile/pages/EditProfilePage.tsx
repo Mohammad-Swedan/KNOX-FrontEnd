@@ -205,11 +205,11 @@ const EditProfilePage = () => {
 
           {/* Personal Info Card */}
           <Card className="relative overflow-hidden border-slate-200/50 dark:border-slate-800/50 shadow-lg">
-            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 to-cyan-500" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-primary to-secondary" />
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-lg font-semibold">
-                <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-linear-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20">
-                  <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary/10 dark:bg-primary/15">
+                  <User className="h-5 w-5 text-primary" />
                 </div>
                 Personal Information
               </CardTitle>
