@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Plus, Loader2 } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { toast } from "sonner";
-import { useProductCoursesByAcademic } from "../hooks/useProductCourses";
+import { useMyProductCourses } from "../hooks/useProductCourses";
 import { publishProductCourse } from "../api";
 import { fetchCourseById } from "@/features/courses/api";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -25,7 +25,7 @@ const ProductCourseListPage = () => {
   const courseIdNum = parseInt(academicCourseId || "0");
   const canManage = hasRole(["SuperAdmin", "Admin", "Instructor"]);
 
-  const { courses, loading, refetch } = useProductCoursesByAcademic(courseIdNum);
+  const { courses, loading, refetch } = useMyProductCourses();
   const [courseName, setCourseName] = useState("");
   const [publishDialog, setPublishDialog] = useState<number | null>(null);
   const [publishing, setPublishing] = useState(false);
@@ -78,7 +78,7 @@ const ProductCourseListPage = () => {
               className="cursor-pointer"
               onClick={() =>
                 navigate(
-                  `/dashboard/courses/${academicCourseId}/product-courses/create`
+                  `/dashboard/courses/${academicCourseId}/product-courses/create`,
                 )
               }
             >
@@ -93,7 +93,9 @@ const ProductCourseListPage = () => {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-16">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="mt-3 text-muted-foreground">Loading product courses...</p>
+          <p className="mt-3 text-muted-foreground">
+            Loading product courses...
+          </p>
         </div>
       ) : courses.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16">
@@ -137,7 +139,11 @@ const ProductCourseListPage = () => {
             >
               Cancel
             </Button>
-            <Button onClick={handlePublish} disabled={publishing} className="cursor-pointer">
+            <Button
+              onClick={handlePublish}
+              disabled={publishing}
+              className="cursor-pointer"
+            >
               {publishing ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

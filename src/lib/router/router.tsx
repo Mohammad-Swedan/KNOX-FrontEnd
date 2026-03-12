@@ -15,6 +15,7 @@ import FolderPage from "@/features/materials/pages/FolderPage";
 import QuizzesPage from "@/features/quizzes/pages/QuizzesPage";
 import QuizQuestionsPage from "@/features/quizzes/pages/QuizQuestionPage";
 import AddQuizPage from "@/features/quizzes/pages/AddQuizPage";
+import EditQuizPage from "@/features/quizzes/pages/EditQuizPage";
 import ProfilePage from "@/features/profile/pages/ProfilePage";
 import EditProfilePage from "@/features/profile/pages/EditProfilePage";
 import { ProtectedRoute } from "@/lib/router/ProtectedRoute";
@@ -41,6 +42,7 @@ import AddMaterialLessonPage from "@/features/product-courses/pages/AddMaterialL
 import PrepaidCodesPage from "@/features/product-courses/pages/PrepaidCodesPage";
 import ProductCourseCatalog from "@/features/product-courses/pages/ProductCourseCatalog";
 import MyEnrollmentsPage from "@/features/product-courses/pages/MyEnrollmentsPage";
+import MyCoursesPage from "@/features/product-courses/pages/MyCoursesPage";
 import CertificateVerifyPage from "@/features/product-courses/pages/CertificateVerifyPage";
 import CoursePlayerPage from "@/features/product-courses/pages/CoursePlayerPage";
 
@@ -65,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: "courses/:courseId/quizzes/:quizId",
         element: <QuizQuestionsPage />,
+      },
+      {
+        path: "courses/:courseId/quizzes/:quizId/edit",
+        element: <EditQuizPage />,
       },
       // Product Courses — Public routes
       {
@@ -92,6 +98,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MyEnrollmentsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "my-courses",
+        element: (
+          <ProtectedRoute>
+            <MyCoursesPage />
           </ProtectedRoute>
         ),
       },
@@ -144,7 +158,9 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <ProtectedRoute requiredRoles={["SuperAdmin"]}>
+          <ProtectedRoute
+            requiredRoles={["Writer", "Instructor", "Admin", "SuperAdmin"]}
+          >
             <AnalyticsPage />
           </ProtectedRoute>
         ),
@@ -189,6 +205,10 @@ export const router = createBrowserRouter([
       {
         path: "courses/:courseId/quizzes/add",
         element: <AddQuizPage />,
+      },
+      {
+        path: "courses/:courseId/quizzes/:quizId/edit",
+        element: <EditQuizPage />,
       },
       {
         path: "courses/:courseId/resources",

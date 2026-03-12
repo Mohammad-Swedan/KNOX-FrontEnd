@@ -52,6 +52,22 @@ const AddQuizPage = () => {
     handleQuestionTypeChange,
   } = useQuizForm();
 
+  // Tags state
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+
+  const addTag = () => {
+    const trimmed = tagInput.trim().toLowerCase();
+    if (trimmed && !tags.includes(trimmed)) {
+      setTags((prev) => [...prev, trimmed]);
+    }
+    setTagInput("");
+  };
+
+  const removeTag = (tag: string) => {
+    setTags((prev) => prev.filter((t) => t !== tag));
+  };
+
   const {
     handleQuestionImageUpload,
     handleChoiceImageUpload,
@@ -79,6 +95,7 @@ const AddQuizPage = () => {
         writerId,
         courseId: parseInt(courseId!),
         description: description.trim() || null,
+        tags: tags.length > 0 ? tags : undefined,
         questions: questions.map((q) => ({
           text: q.text.trim(),
           quizId: 0,
@@ -104,7 +121,9 @@ const AddQuizPage = () => {
           isFreePreview: isFree,
           referenceId: quizId,
         });
-        navigate(returnTo ?? `/dashboard/product-courses/${productCourseId}/lessons`);
+        navigate(
+          returnTo ?? `/dashboard/product-courses/${productCourseId}/lessons`,
+        );
       } else {
         // Default: navigate back to quizzes page
         navigate(`/courses/${courseId}/quizzes`);
@@ -146,8 +165,13 @@ const AddQuizPage = () => {
         <QuizDetailsForm
           title={title}
           description={description}
+          tags={tags}
+          tagInput={tagInput}
           onTitleChange={setTitle}
           onDescriptionChange={setDescription}
+          onTagInputChange={setTagInput}
+          onAddTag={addTag}
+          onRemoveTag={removeTag}
         />
 
         {/* Product Course Fields */}
@@ -155,11 +179,16 @@ const AddQuizPage = () => {
           <div className="mb-6 p-4 rounded-xl border bg-blue-500/5 border-blue-200 dark:border-blue-900 space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-blue-500" />
-              <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">Product Course Quiz</p>
+              <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">
+                Product Course Quiz
+              </p>
             </div>
             {lessonTitle && (
               <p className="text-xs text-muted-foreground">
-                Will be saved as lesson: <span className="font-medium text-foreground">"{lessonTitle}"</span>
+                Will be saved as lesson:{" "}
+                <span className="font-medium text-foreground">
+                  "{lessonTitle}"
+                </span>
               </p>
             )}
             <div className="flex items-center gap-2">

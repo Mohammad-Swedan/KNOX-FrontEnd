@@ -19,7 +19,7 @@ export const useUserRole = () => {
    * @returns true if user has content management permissions
    */
   const canManageContent = (): boolean => {
-    return hasRole(["Writer", "Admin", "SuperAdmin"]);
+    return hasRole(["Writer", "Instructor", "Admin", "SuperAdmin"]);
   };
 
   /**

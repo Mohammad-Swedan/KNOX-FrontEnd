@@ -30,7 +30,7 @@ const ProductCourseCatalog = () => {
   const [appliedSearch, setAppliedSearch] = useState("");
   const [isFree, setIsFree] = useState<boolean | undefined>(undefined);
   const [universityId, setUniversityId] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(12);
@@ -80,7 +80,7 @@ const ProductCourseCatalog = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero section */}
-      <div className="relative bg-gradient-to-br from-primary/5 via-background to-violet-500/5 border-b">
+      <div className="relative bg-linear-to-br from-primary/5 via-background to-violet-500/5 border-b">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="relative container mx-auto px-4 py-12 max-w-7xl">
           <div className="flex items-center gap-3 mb-4">
@@ -96,10 +96,7 @@ const ProductCourseCatalog = () => {
           </div>
 
           {/* Search bar */}
-          <form
-            onSubmit={handleSearch}
-            className="flex gap-2 max-w-xl mt-6"
-          >
+          <form onSubmit={handleSearch} className="flex gap-2 max-w-xl mt-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -151,6 +148,7 @@ const ProductCourseCatalog = () => {
                     setIsFree(undefined);
                     setCurrentPage(1);
                   }}
+                  title="Remove free filter"
                   className="ml-1 cursor-pointer"
                 >
                   <X className="h-3 w-3" />
@@ -176,9 +174,7 @@ const ProductCourseCatalog = () => {
               <Select
                 value={universityId?.toString() ?? "all"}
                 onValueChange={(val) => {
-                  setUniversityId(
-                    val === "all" ? undefined : parseInt(val)
-                  );
+                  setUniversityId(val === "all" ? undefined : parseInt(val));
                   setCurrentPage(1);
                 }}
               >
@@ -216,9 +212,7 @@ const ProductCourseCatalog = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">
-              Loading courses...
-            </p>
+            <p className="text-sm text-muted-foreground">Loading courses...</p>
           </div>
         ) : courses.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">

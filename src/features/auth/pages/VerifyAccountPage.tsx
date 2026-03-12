@@ -12,10 +12,13 @@ import {
 import Logo from "@/assets/logo";
 import AuthBackgroundShape from "@/assets/svg/auth-background-shape";
 import VerifyAccountForm from "@/features/auth/components/verify-account-form";
+import { useAuth } from "@/app/providers/useAuth";
 
 const VerifyAccountPage = () => {
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email") ?? "";
+  const { isAuthenticated } = useAuth();
+  const fromProfile = isAuthenticated;
 
   // Guard: if no email param, show a helpful message
   if (!email) {
@@ -75,14 +78,14 @@ const VerifyAccountPage = () => {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <VerifyAccountForm email={email} />
+          <VerifyAccountForm email={email} fromProfile={fromProfile} />
 
           <Link
-            to="/auth/login"
+            to={fromProfile ? "/profile" : "/auth/login"}
             className="group mx-auto flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
           >
             <ChevronLeftIcon className="size-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
-            Back to login
+            {fromProfile ? "Back to profile" : "Back to login"}
           </Link>
         </CardContent>
       </Card>

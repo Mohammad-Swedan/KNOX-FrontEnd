@@ -14,16 +14,21 @@ const OTP_LENGTH = 6;
 
 interface VerifyAccountFormProps {
   email: string;
+  /** Whether the user came from the profile (already logged in) */
+  fromProfile?: boolean;
 }
 
-const VerifyAccountForm = ({ email }: VerifyAccountFormProps) => {
+const VerifyAccountForm = ({
+  email,
+  fromProfile = false,
+}: VerifyAccountFormProps) => {
   const navigate = useNavigate();
-  const { loginWithTokens } = useAuth();
+  const { loginWithTokens, isAuthenticated } = useAuth();
 
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState(RESEND_COOLDOWN);
   const [error, setError] = useState<string | null>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -43,13 +48,32 @@ const VerifyAccountForm = ({ email }: VerifyAccountFormProps) => {
     }, 1000);
   }, []);
 
+  // Auto-send OTP when the page loads
+  const hasSentInitialOtp = useRef(false);
   useEffect(() => {
-    // Start initial cooldown since OTP was just sent on registration
-    startCountdown();
+    if (hasSentInitialOtp.current) return;
+    hasSentInitialOtp.current = true;
+
+    const sendInitialOtp = async () => {
+      try {
+        await sendVerificationOtp({ email });
+        toast.success("OTP sent", {
+          description: "A verification code has been sent to your email.",
+          duration: 3000,
+        });
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Failed to send OTP.";
+        toast.error("Could not send OTP", { description: msg });
+      }
+      startCountdown();
+    };
+
+    sendInitialOtp();
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [startCountdown]);
+  }, [email, startCountdown]);
 
   const handleOtpChange = (index: number, value: string) => {
     // Accept only digits
@@ -123,9 +147,11 @@ const VerifyAccountForm = ({ email }: VerifyAccountFormProps) => {
       // Use returned tokens to log the user in
       if (result.accessToken && result.refreshToken) {
         await loginWithTokens(result.accessToken, result.refreshToken);
-        navigate("/", { replace: true });
+        navigate(fromProfile ? "/profile" : "/", { replace: true });
       } else {
-        navigate("/auth/login", { replace: true });
+        navigate(isAuthenticated ? "/profile" : "/auth/login", {
+          replace: true,
+        });
       }
     } catch (err: unknown) {
       const msg =
@@ -164,7 +190,7 @@ const VerifyAccountForm = ({ email }: VerifyAccountFormProps) => {
       description: "You can verify your account later from your profile page.",
       duration: 4000,
     });
-    navigate("/auth/login", { replace: true });
+    navigate(isAuthenticated ? "/profile" : "/auth/login", { replace: true });
   };
 
   return (

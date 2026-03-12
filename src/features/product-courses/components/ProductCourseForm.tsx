@@ -30,6 +30,7 @@ interface ProductCourseFormProps {
   initialData?: ProductCourse | null;
   academicCourseId?: number;
   courseId?: number;
+  hideLocationSelectors?: boolean;
   onSubmit: (
     data: CreateProductCourseRequest | UpdateProductCourseRequest,
   ) => Promise<void>;
@@ -41,6 +42,7 @@ export default function ProductCourseForm({
   initialData,
   academicCourseId,
   courseId,
+  hideLocationSelectors = false,
   onSubmit,
   isSubmitting,
   submitLabel = "Save",
@@ -51,6 +53,11 @@ export default function ProductCourseForm({
   );
   const [price, setPrice] = useState(initialData?.price ?? 0);
   const [isFree, setIsFree] = useState(initialData?.isFree ?? false);
+  const [discountPercentage, setDiscountPercentage] = useState<string>(
+    initialData?.discountPercentage != null
+      ? String(initialData.discountPercentage)
+      : "",
+  );
   const [thumbnailUrl, setThumbnailUrl] = useState(
     initialData?.thumbnailUrl ?? "",
   );
@@ -74,13 +81,15 @@ export default function ProductCourseForm({
 
   // Load universities on mount
   useEffect(() => {
+    if (hideLocationSelectors) return;
     fetchUniversities(1, 100)
       .then((res) => setUniversities(res.items))
       .catch(console.error);
-  }, []);
+  }, [hideLocationSelectors]);
 
   // Load faculties when university changes
   useEffect(() => {
+    if (hideLocationSelectors) return;
     if (universityId) {
       fetchFacultiesByUniversity(universityId, 1, 100)
         .then((res) => setFaculties(res.items))
@@ -89,10 +98,11 @@ export default function ProductCourseForm({
       setFaculties([]);
       setFacultyId(undefined);
     }
-  }, [universityId]);
+  }, [universityId, hideLocationSelectors]);
 
   // Load majors when faculty changes
   useEffect(() => {
+    if (hideLocationSelectors) return;
     if (facultyId) {
       fetchMajorsByFaculty(facultyId, 1, 100)
         .then((res) => setMajors(res.items))
@@ -101,19 +111,30 @@ export default function ProductCourseForm({
       setMajors([]);
       setMajorId(undefined);
     }
-  }, [facultyId]);
+  }, [facultyId, hideLocationSelectors]);
 
-  // Auto-set price to 0 when isFree
+  // Auto-set price to 0 and clear discount when isFree
   useEffect(() => {
-    if (isFree) setPrice(0);
+    if (isFree) {
+      setPrice(0);
+      setDiscountPercentage("");
+    }
   }, [isFree]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const parsedDiscount =
+      !isFree && discountPercentage !== ""
+        ? parseFloat(discountPercentage)
+        : null;
     const data: CreateProductCourseRequest = {
       title: title.trim(),
       price,
       isFree,
+      discountPercentage:
+        parsedDiscount != null && !isNaN(parsedDiscount)
+          ? parsedDiscount
+          : null,
       description: description.trim() || undefined,
       academicCourseId: academicCourseId ?? undefined,
       universityId,
@@ -153,8 +174,8 @@ export default function ProductCourseForm({
         />
       </div>
 
-      {/* Price & Free toggle */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Price, Discount & Free toggle */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="price">Price *</Label>
           <Input
@@ -166,6 +187,20 @@ export default function ProductCourseForm({
             onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
             disabled={isFree}
             required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="discountPercentage">Discount (%)</Label>
+          <Input
+            id="discountPercentage"
+            type="number"
+            step="1"
+            min="0"
+            max="100"
+            placeholder="e.g. 20"
+            value={discountPercentage}
+            onChange={(e) => setDiscountPercentage(e.target.value)}
+            disabled={isFree}
           />
         </div>
         <div className="flex items-end gap-2 pb-2">
@@ -195,69 +230,73 @@ export default function ProductCourseForm({
         onChange={setTrialVideoUrl}
       />
 
-      {/* University / Faculty / Major dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label>University</Label>
-          <Select
-            value={universityId?.toString() ?? ""}
-            onValueChange={(val) =>
-              setUniversityId(val ? parseInt(val) : undefined)
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select university" />
-            </SelectTrigger>
-            <SelectContent>
-              {universities.map((u) => (
-                <SelectItem key={u.id} value={u.id.toString()}>
-                  {u.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      {/* University / Faculty / Major dropdowns – hidden when hideLocationSelectors */}
+      {!hideLocationSelectors && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label>University</Label>
+            <Select
+              value={universityId?.toString() ?? ""}
+              onValueChange={(val) =>
+                setUniversityId(val ? parseInt(val) : undefined)
+              }
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select university" />
+              </SelectTrigger>
+              <SelectContent>
+                {universities.map((u) => (
+                  <SelectItem key={u.id} value={u.id.toString()}>
+                    {u.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Faculty</Label>
+            <Select
+              value={facultyId?.toString() ?? ""}
+              onValueChange={(val) =>
+                setFacultyId(val ? parseInt(val) : undefined)
+              }
+              disabled={!universityId}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select faculty" />
+              </SelectTrigger>
+              <SelectContent>
+                {faculties.map((f) => (
+                  <SelectItem key={f.id} value={f.id.toString()}>
+                    {f.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Major</Label>
+            <Select
+              value={majorId?.toString() ?? ""}
+              onValueChange={(val) =>
+                setMajorId(val ? parseInt(val) : undefined)
+              }
+              disabled={!facultyId}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select major" />
+              </SelectTrigger>
+              <SelectContent>
+                {majors.map((m) => (
+                  <SelectItem key={m.id} value={m.id.toString()}>
+                    {m.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label>Faculty</Label>
-          <Select
-            value={facultyId?.toString() ?? ""}
-            onValueChange={(val) =>
-              setFacultyId(val ? parseInt(val) : undefined)
-            }
-            disabled={!universityId}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select faculty" />
-            </SelectTrigger>
-            <SelectContent>
-              {faculties.map((f) => (
-                <SelectItem key={f.id} value={f.id.toString()}>
-                  {f.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label>Major</Label>
-          <Select
-            value={majorId?.toString() ?? ""}
-            onValueChange={(val) => setMajorId(val ? parseInt(val) : undefined)}
-            disabled={!facultyId}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select major" />
-            </SelectTrigger>
-            <SelectContent>
-              {majors.map((m) => (
-                <SelectItem key={m.id} value={m.id.toString()}>
-                  {m.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      )}
 
       {/* Submit */}
       <Button

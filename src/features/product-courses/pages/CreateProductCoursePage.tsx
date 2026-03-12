@@ -5,7 +5,10 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { toast } from "sonner";
 import { createProductCourse } from "../api";
-import type { CreateProductCourseRequest, UpdateProductCourseRequest } from "../types";
+import type {
+  CreateProductCourseRequest,
+  UpdateProductCourseRequest,
+} from "../types";
 import ProductCourseForm from "../components/ProductCourseForm";
 
 const CreateProductCoursePage = () => {
@@ -13,14 +16,14 @@ const CreateProductCoursePage = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (data: CreateProductCourseRequest | UpdateProductCourseRequest) => {
+  const handleSubmit = async (
+    data: CreateProductCourseRequest | UpdateProductCourseRequest,
+  ) => {
     setIsSubmitting(true);
     try {
       await createProductCourse(data as CreateProductCourseRequest);
       toast.success("Product course created!");
-      navigate(
-        `/dashboard/courses/${academicCourseId}/product-courses`
-      );
+      navigate(`/dashboard/courses/${academicCourseId}/product-courses`);
     } catch (err) {
       console.error("Failed to create product course:", err);
       toast.error("Failed to create product course");
@@ -49,6 +52,7 @@ const CreateProductCoursePage = () => {
             academicCourseId={
               academicCourseId ? parseInt(academicCourseId) : undefined
             }
+            hideLocationSelectors
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
             submitLabel="Create Course"

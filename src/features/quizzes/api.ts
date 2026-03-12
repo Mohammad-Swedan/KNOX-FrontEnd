@@ -9,7 +9,7 @@ import type { QuizDetails, CreateQuizPayload, QuizListItem } from "./types";
  * @returns The URL of the uploaded file or null if failed
  */
 export const uploadTemporaryFile = async (
-  file: File
+  file: File,
 ): Promise<string | null> => {
   try {
     const formData = new FormData();
@@ -33,9 +33,14 @@ export const uploadTemporaryFile = async (
  * @param payload - The quiz data to create
  * @returns The ID of the created quiz
  */
-export const createQuiz = async (payload: CreateQuizPayload): Promise<number> => {
+export const createQuiz = async (
+  payload: CreateQuizPayload,
+): Promise<number> => {
   try {
-    const response = await apiClient.post<{ id: number } | number>("/quizzes", payload);
+    const response = await apiClient.post<{ id: number } | number>(
+      "/quizzes",
+      payload,
+    );
     // Backend may return { id } or just the id as a number
     const data = response.data;
     return typeof data === "number" ? data : (data as { id: number }).id;
@@ -48,7 +53,7 @@ export const createQuiz = async (payload: CreateQuizPayload): Promise<number> =>
     throw new Error(
       error.response?.data?.message ||
         error.message ||
-        "Failed to create quiz. Please try again."
+        "Failed to create quiz. Please try again.",
     );
   }
 };
@@ -79,18 +84,69 @@ export const fetchQuizById = async (quizId: string): Promise<QuizDetails> => {
 export const fetchQuizzesByCourse = async (
   courseId: string,
   page: number,
-  pageSize: number
+  pageSize: number,
 ): Promise<PaginatedResponse<QuizListItem>> => {
   try {
     return await getPaginated<QuizListItem>(
       `/quizzes/by-course/${courseId}`,
       page,
-      pageSize
+      pageSize,
     );
   } catch (err) {
     console.error("Failed to fetch quizzes:", err);
     const error = err instanceof Error ? err.message : "Failed to load quizzes";
     throw new Error(error);
+  }
+};
+
+/**
+ * Update a quiz (title, description, tags)
+ * @param quizId - The ID of the quiz to update
+ * @param payload - The updated quiz data
+ * @returns Updated quiz details
+ */
+export const updateQuiz = async (
+  quizId: number,
+  payload: import("./types").UpdateQuizPayload,
+): Promise<import("./types").QuizDetails> => {
+  try {
+    const response = await apiClient.put<import("./types").QuizDetails>(
+      `/quizzes/${quizId}`,
+      payload,
+    );
+    return response.data;
+  } catch (err) {
+    console.error("Failed to update quiz:", err);
+    const error = err as {
+      response?: { data?: { message?: string } };
+      message?: string;
+    };
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to update quiz. Please try again.",
+    );
+  }
+};
+
+/**
+ * Delete a quiz by ID
+ * @param quizId - The ID of the quiz to delete
+ */
+export const deleteQuiz = async (quizId: number): Promise<void> => {
+  try {
+    await apiClient.delete(`/quizzes/${quizId}`);
+  } catch (err) {
+    console.error("Failed to delete quiz:", err);
+    const error = err as {
+      response?: { data?: { message?: string } };
+      message?: string;
+    };
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to delete quiz. Please try again.",
+    );
   }
 };
 
@@ -131,7 +187,7 @@ export const dislikeQuiz = async (quizId: string): Promise<void> => {
  */
 export const submitQuizScore = async (
   quizId: string,
-  score: number
+  score: number,
 ): Promise<void> => {
   try {
     await apiClient.post("/quizzes/submit", {
@@ -157,7 +213,7 @@ export const getUserIdFromToken = (): number => {
     return parseInt(
       tokenPayload[
         "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-      ] || "1"
+      ] || "1",
     );
   } catch (e) {
     console.error("Failed to parse auth token:", e);

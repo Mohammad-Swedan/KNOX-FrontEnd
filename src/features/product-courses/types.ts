@@ -85,6 +85,8 @@ export interface ProductCourseSummary {
   title: string;
   slug: string;
   price: number;
+  discountPercentage: number | null;
+  discountedPrice: number | null;
   isFree: boolean;
   thumbnailUrl: string | null;
   trialVideoUrl: string | null;
@@ -103,6 +105,8 @@ export interface ProductCourse {
   slug: string;
   description: string | null;
   price: number;
+  discountPercentage: number | null;
+  discountedPrice: number | null;
   isFree: boolean;
   instructorId: number;
   instructorName: string | null;
@@ -127,6 +131,7 @@ export interface CreateProductCourseRequest {
   title: string;
   price: number;
   isFree: boolean;
+  discountPercentage?: number | null;
   description?: string;
   academicCourseId?: number;
   universityId?: number;
@@ -142,6 +147,7 @@ export interface UpdateProductCourseRequest {
   description?: string;
   price?: number;
   isFree?: boolean;
+  discountPercentage?: number | null;
   thumbnailUrl?: string;
   trialVideoUrl?: string;
   academicCourseId?: number;
@@ -149,6 +155,11 @@ export interface UpdateProductCourseRequest {
   facultyId?: number;
   majorId?: number;
   categoryIds?: number[];
+}
+
+export interface UpdateDiscountRequest {
+  /** 0–100, or null to remove the discount */
+  discountPercentage: number | null;
 }
 
 // ── Topics ─────────────────────────────────────────────────

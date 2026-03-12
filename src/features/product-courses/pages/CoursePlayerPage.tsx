@@ -52,7 +52,9 @@ const CoursePlayerPage = () => {
       )) {
         if (!lesson.isCompleted) {
           setActiveLesson(lesson);
-          fetchLessonContent(lesson.id, lesson.type);
+          if (lesson.type !== LessonType.ExternalVideo) {
+            fetchLessonContent(lesson.id, lesson.type);
+          }
           return;
         }
       }
@@ -65,7 +67,9 @@ const CoursePlayerPage = () => {
       )[0];
       if (lastLesson) {
         setActiveLesson(lastLesson);
-        fetchLessonContent(lastLesson.id, lastLesson.type);
+        if (lastLesson.type !== LessonType.ExternalVideo) {
+          fetchLessonContent(lastLesson.id, lastLesson.type);
+        }
       }
     }
   }, [outline, fetchLessonContent]);
@@ -74,7 +78,10 @@ const CoursePlayerPage = () => {
   const handleLessonClick = useCallback(
     (lesson: LessonProgressDto) => {
       setActiveLesson(lesson);
-      fetchLessonContent(lesson.id, lesson.type);
+      // ExternalVideo: directUrl already present in the outline response — no API call needed
+      if (lesson.type !== LessonType.ExternalVideo) {
+        fetchLessonContent(lesson.id, lesson.type);
+      }
     },
     [fetchLessonContent],
   );
@@ -280,13 +287,9 @@ const CoursePlayerPage = () => {
                   <MaterialLessonViewer material={lessonContent.data} />
                 )}
 
-              {!lessonContentLoading &&
-                !lessonContentError &&
-                lessonContent?.kind === "external" &&
-                (lessonContent.data.directUrl ? (
-                  <ExternalVideoViewer
-                    directUrl={lessonContent.data.directUrl}
-                  />
+              {activeLesson.type === LessonType.ExternalVideo &&
+                (activeLesson.directUrl ? (
+                  <ExternalVideoViewer directUrl={activeLesson.directUrl} />
                 ) : (
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
@@ -299,7 +302,8 @@ const CoursePlayerPage = () => {
 
               {!lessonContentLoading &&
                 !lessonContentError &&
-                !lessonContent && (
+                !lessonContent &&
+                activeLesson.type !== LessonType.ExternalVideo && (
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center py-12 gap-2">
                       <p className="text-muted-foreground text-sm">

@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
 import type { QuizListItem } from "../types";
 import { formatDate, getTimeAgo } from "../types";
+import { QuizTagsBadge } from "./QuizTagsBadge";
 
 interface QuizCardGridProps {
   quiz: QuizListItem;
@@ -96,6 +97,9 @@ export const QuizCardGrid = ({
       </CardHeader>
 
       <CardContent className="pt-0 space-y-3">
+        {/* Tags */}
+        <QuizTagsBadge tags={quiz.tags ?? []} />
+
         {/* Author */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <User className="h-4 w-4" />

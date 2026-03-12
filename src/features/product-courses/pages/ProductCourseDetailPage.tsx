@@ -131,7 +131,6 @@ const ProductCourseDetailPage = () => {
     content: lessonContent,
     loading: lessonContentLoading,
     error: lessonContentError,
-    activeLessonId,
     fetchContent: fetchLessonContent,
     clear: clearLessonContent,
   } = useLessonContent();
@@ -153,7 +152,9 @@ const ProductCourseDetailPage = () => {
 
     if (nextLesson) {
       setSelectedLesson(nextLesson);
-      fetchLessonContent(nextLesson.id, nextLesson.type);
+      if (nextLesson.type !== LessonType.ExternalVideo) {
+        fetchLessonContent(nextLesson.id, nextLesson.type);
+      }
     }
     setAutoOpenDone(true);
   }, [isEnrolledFinal, courseContent, autoOpenDone, fetchLessonContent]);
@@ -184,9 +185,11 @@ const ProductCourseDetailPage = () => {
       return;
     }
 
-    // If the lesson is accessible (enrolled OR free preview), fetch its content
     setSelectedLesson(lesson);
-    fetchLessonContent(lesson.id, lesson.type);
+    // ExternalVideo: directUrl already present in lesson object — no API call needed
+    if (lesson.type !== LessonType.ExternalVideo) {
+      fetchLessonContent(lesson.id, lesson.type);
+    }
   };
 
   const handleCloseLessonContent = () => {
@@ -224,7 +227,9 @@ const ProductCourseDetailPage = () => {
 
         if (nextLesson) {
           setSelectedLesson(nextLesson);
-          fetchLessonContent(nextLesson.id, nextLesson.type);
+          if (nextLesson.type !== LessonType.ExternalVideo) {
+            fetchLessonContent(nextLesson.id, nextLesson.type);
+          }
         } else {
           // Last lesson — close the viewer
           handleCloseLessonContent();
@@ -365,31 +370,53 @@ const ProductCourseDetailPage = () => {
               <div className="lg:col-span-2">
                 {trialVideoUrl && !showTrialVideo ? (
                   <div
-                    className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/40 cursor-pointer group aspect-video bg-black"
+                    className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/50 cursor-pointer group aspect-video bg-slate-900 ring-1 ring-white/10 hover:ring-primary/40 transition-all duration-300"
                     onClick={() => setShowTrialVideo(true)}
                   >
                     {course.thumbnailUrl ? (
                       <img
                         src={course.thumbnailUrl}
                         alt={course.title}
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                        className="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-violet-600/20" />
+                      <div className="w-full h-full bg-linear-to-br from-primary/25 via-slate-900 to-violet-700/30" />
                     )}
-                    {/* Animated overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    {/* Gradient overlays */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-black/10" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    {/* Animated play button */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      {/* Pulse ring */}
-                      <div className="absolute w-20 h-20 rounded-full bg-white/20 animate-ping [animation-duration:2s]" />
-                      <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-                        <Play className="h-7 w-7 text-primary fill-primary ml-1" />
+                      <div className="relative flex items-center justify-center">
+                        {/* Outer ping */}
+                        <div className="absolute w-32 h-32 rounded-full bg-white/10 animate-ping animation-duration-[3s]" />
+                        {/* Middle ping */}
+                        <div className="absolute w-24 h-24 rounded-full bg-primary/20 animate-ping animation-duration-[2.2s] animation-delay-[0.4s]" />
+                        {/* Inner ping */}
+                        <div className="absolute w-16 h-16 rounded-full bg-white/15 animate-ping animation-duration-[1.8s] animation-delay-[0.9s]" />
+                        {/* Glow ring */}
+                        <div className="absolute w-[76px] h-[76px] rounded-full ring-2 ring-white/30" />
+                        {/* Play button */}
+                        <div className="relative z-10 w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center shadow-2xl shadow-black/60 group-hover:scale-110 group-hover:shadow-primary/60 transition-all duration-300">
+                          <Play className="h-8 w-8 text-primary fill-primary ml-1" />
+                        </div>
                       </div>
                     </div>
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                      <Badge className="bg-black/60 text-white border-0 text-xs backdrop-blur-sm">
-                        Preview this course
+
+                    {/* FREE PREVIEW badge — top left */}
+                    <div className="absolute top-3 left-3">
+                      <Badge className="bg-primary text-white border-0 text-[11px] font-bold shadow-lg shadow-primary/30 gap-1.5">
+                        <Sparkles className="h-3 w-3" />
+                        FREE PREVIEW
                       </Badge>
+                    </div>
+
+                    {/* Hover hint — bottom right */}
+                    <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-white/80 text-xs bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                        Click to play ▶
+                      </span>
                     </div>
                   </div>
                 ) : trialVideoUrl && showTrialVideo ? (
@@ -468,7 +495,7 @@ const ProductCourseDetailPage = () => {
                 instructorProfilePictureUrl={instructorPicture}
                 trialVideoUrl={trialVideoUrl}
                 onLessonClick={handleContentLessonClick}
-                activeLessonId={activeLessonId}
+                activeLessonId={selectedLesson?.id ?? null}
                 selectedLesson={selectedLesson}
                 lessonContent={lessonContent}
                 lessonContentLoading={lessonContentLoading}
@@ -520,10 +547,28 @@ const ProductCourseDetailPage = () => {
                           Full access, no payment needed
                         </p>
                       </div>
+                    ) : course.discountPercentage &&
+                      course.discountedPrice != null ? (
+                      <div>
+                        <div className="flex items-center justify-center gap-2">
+                          <p className="text-3xl font-bold text-primary">
+                            {course.discountedPrice.toFixed(2)} JD
+                          </p>
+                          <Badge className="bg-primary/10 text-primary border-primary/20 border font-bold">
+                            -{course.discountPercentage}%
+                          </Badge>
+                        </div>
+                        <p className="text-base text-muted-foreground line-through mt-0.5">
+                          {course.price.toFixed(2)} JD
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          One-time purchase
+                        </p>
+                      </div>
                     ) : (
                       <div>
                         <p className="text-3xl font-bold">
-                          ${course.price.toFixed(2)}
+                          {course.price.toFixed(2)} JD
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
                           One-time purchase

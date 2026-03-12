@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { MenuIcon, LogOut, User } from "lucide-react";
+import { MenuIcon, LogOut, User, ShieldAlert, BookMarked } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import {
@@ -60,7 +60,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
       <header
         className={cn(
           "bg-background/80 backdrop-blur-md sticky top-0 z-50 h-16 border-b border-border/40 shadow-sm transition-all duration-300",
-          className
+          className,
         )}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -115,6 +115,12 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                         {user ? getInitials(displayName) : "U"}
                       </AvatarFallback>
                     </Avatar>
+                    {user?.isVerfied === false && (
+                      <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500 border-2 border-background" />
+                      </span>
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -161,7 +167,40 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                       {user.universityName}
                     </p>
                   )}
+                  {user?.isVerfied === false && (
+                    <DropdownMenuItem
+                      asChild
+                      className="rounded-lg cursor-pointer bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 border border-red-200 dark:border-red-800 my-1"
+                    >
+                      <a
+                        href={`/auth/verify-account?email=${encodeURIComponent(user?.email || "")}`}
+                        className="flex items-center gap-2 px-3 py-2 text-red-700 dark:text-red-400"
+                      >
+                        <ShieldAlert className="h-4 w-4" />
+                        <div className="flex flex-col">
+                          <span className="text-xs font-semibold">
+                            Account not verified
+                          </span>
+                          <span className="text-[10px] opacity-80">
+                            Tap to verify now
+                          </span>
+                        </div>
+                      </a>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator className="my-2" />
+                  <DropdownMenuItem
+                    asChild
+                    className="rounded-lg cursor-pointer"
+                  >
+                    <a
+                      href="/my-courses"
+                      className="flex items-center gap-2 px-3 py-2"
+                    >
+                      <BookMarked className="h-4 w-4 text-primary" />
+                      My Courses
+                    </a>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
                     className="rounded-lg cursor-pointer"
@@ -215,6 +254,12 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                         {user ? getInitials(displayName) : "U"}
                       </AvatarFallback>
                     </Avatar>
+                    {user?.isVerfied === false && (
+                      <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-background" />
+                      </span>
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -262,6 +307,40 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     </p>
                   )}
                   <DropdownMenuSeparator className="my-2" />
+                  {user?.isVerfied === false && (
+                    <DropdownMenuItem
+                      asChild
+                      className="rounded-lg cursor-pointer bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-950/50 border border-red-200 dark:border-red-800 my-1"
+                    >
+                      <a
+                        href={`/auth/verify-account?email=${encodeURIComponent(user?.email || "")}`}
+                        className="flex items-center gap-2 px-3 py-2 text-red-700 dark:text-red-400"
+                      >
+                        <ShieldAlert className="h-4 w-4" />
+                        <div className="flex flex-col">
+                          <span className="text-xs font-semibold">
+                            Account not verified
+                          </span>
+                          <span className="text-[10px] opacity-80">
+                            Tap to verify now
+                          </span>
+                        </div>
+                      </a>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator className="my-2" />
+                  <DropdownMenuItem
+                    asChild
+                    className="rounded-lg cursor-pointer"
+                  >
+                    <a
+                      href="/my-courses"
+                      className="flex items-center gap-2 px-3 py-2"
+                    >
+                      <BookMarked className="h-4 w-4 text-primary" />
+                      My Courses
+                    </a>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
                     className="rounded-lg cursor-pointer"

@@ -74,15 +74,12 @@ const DashboardLayout = () => {
   // Redirect non-SuperAdmin users to their faculty page
   useEffect(() => {
     if (!isSuperAdmin && user) {
-      // Redirect from /dashboard root or /dashboard/universities to their faculty
-      if (
-        location.pathname === "/dashboard" ||
-        location.pathname === "/dashboard/universities"
-      ) {
+      // Redirect from /dashboard/universities to their faculty
+      if (location.pathname === "/dashboard/universities") {
         if (user.universityId && user.facultyId) {
           navigate(
             `/dashboard/universities/${user.universityId}/faculties/${user.facultyId}`,
-            { replace: true }
+            { replace: true },
           );
         }
       }
@@ -226,8 +223,8 @@ const DashboardLayout = () => {
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {/* Platform Statistics - SuperAdmin only */}
-                  {isSuperAdmin && (
+                  {/* Platform Statistics - Writer, Instructor, Admin, SuperAdmin */}
+                  {hasRole(["Writer", "Instructor", "Admin", "SuperAdmin"]) && (
                     <SidebarMenuItem>
                       <SidebarMenuButton
                         isActive={getActivePage() === "analytics"}
@@ -249,7 +246,7 @@ const DashboardLayout = () => {
                             navigate("/dashboard/universities");
                           } else if (user?.universityId && user?.facultyId) {
                             navigate(
-                              `/dashboard/universities/${user.universityId}/faculties/${user.facultyId}`
+                              `/dashboard/universities/${user.universityId}/faculties/${user.facultyId}`,
                             );
                           }
                         }}
@@ -273,8 +270,8 @@ const DashboardLayout = () => {
                     </SidebarMenuItem>
                   )}
 
-                  {/* Writer Statistics - Writer, Admin, SuperAdmin */}
-                  {hasRole(["Writer", "Admin", "SuperAdmin"]) && (
+                  {/* Writer Statistics - Writer, Instructor, Admin, SuperAdmin */}
+                  {hasRole(["Writer", "Instructor", "Admin", "SuperAdmin"]) && (
                     <SidebarMenuItem>
                       <SidebarMenuButton
                         isActive={getActivePage() === "writer-statistics"}

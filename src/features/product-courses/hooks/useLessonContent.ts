@@ -3,25 +3,18 @@
 // ============================================================
 
 import { useState, useCallback } from "react";
-import {
-  fetchLessonQuiz,
-  fetchLessonVideo,
-  fetchLessonMaterial,
-  fetchLessonExternalVideo,
-} from "../api";
+import { fetchLessonQuiz, fetchLessonVideo, fetchLessonMaterial } from "../api";
 import { LessonType } from "../types";
 import type {
   LessonQuizContent,
   LessonVideoContent,
   LessonMaterialContent,
-  LessonExternalVideoContent,
 } from "../types";
 
 export type LessonContentData =
   | { kind: "quiz"; data: LessonQuizContent }
   | { kind: "video"; data: LessonVideoContent }
   | { kind: "material"; data: LessonMaterialContent }
-  | { kind: "external"; data: LessonExternalVideoContent }
   | null;
 
 /**
@@ -50,9 +43,6 @@ export const useLessonContent = () => {
         } else if (lessonType === LessonType.Video) {
           const data = await fetchLessonVideo(lessonId);
           setContent({ kind: "video", data });
-        } else if (lessonType === LessonType.ExternalVideo) {
-          const data = await fetchLessonExternalVideo(lessonId);
-          setContent({ kind: "external", data });
         } else {
           // Document type
           const data = await fetchLessonMaterial(lessonId);

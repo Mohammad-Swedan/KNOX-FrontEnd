@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   fetchProductCoursesByAcademic,
+  fetchMyProductCourses,
   fetchProductCourseById,
   filterProductCourses,
   fetchLessons,
@@ -46,6 +47,35 @@ export const useProductCoursesByAcademic = (academicCourseId: number) => {
       setLoading(false);
     }
   }, [academicCourseId]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { courses, loading, error, refetch: fetch };
+};
+
+// ── My Product Courses (instructor-scoped) ─────────────────
+
+export const useMyProductCourses = () => {
+  const [courses, setCourses] = useState<ProductCourseSummary[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchMyProductCourses();
+      setCourses(data);
+    } catch (err) {
+      console.error("Failed to fetch my product courses:", err);
+      setError("Failed to load your product courses");
+      setCourses([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetch();
@@ -222,7 +252,10 @@ export const useProductCourseCatalog = (params: ProductCourseFilterParams) => {
 
 // ── Course Content (unified) ───────────────────────────────
 
-export const useCourseContent = (courseId: number | undefined, isEnrolled?: boolean) => {
+export const useCourseContent = (
+  courseId: number | undefined,
+  isEnrolled?: boolean,
+) => {
   const [content, setContent] = useState<CourseContentDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -25,7 +25,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   // Only show Dashboard link if user is authenticated and has Writer or above permissions
   const canAccessDashboard =
-    isAuthenticated && hasRole(["Writer", "Admin", "SuperAdmin"]);
+    isAuthenticated && hasRole(["Writer", "Instructor", "Admin", "SuperAdmin"]);
 
   const navigationData: NavigationSection[] = [
     {
@@ -74,8 +74,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       routedToast.type === "error"
         ? toast.error
         : routedToast.type === "info"
-        ? toast.info
-        : toast.success;
+          ? toast.info
+          : toast.success;
 
     presenter(routedToast.title, {
       description: routedToast.description,
@@ -93,7 +93,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       {
         replace: true,
         state: Object.keys(rest).length ? rest : null,
-      }
+      },
     );
   }, [location, navigate]);
   //

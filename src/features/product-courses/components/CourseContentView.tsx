@@ -5,6 +5,7 @@ import {
   Video,
   HelpCircle,
   FileText,
+  ExternalLink,
   Lock,
   Eye,
   Play,
@@ -80,7 +81,7 @@ export default function CourseContentView({
   useEffect(() => {
     if (!activeLessonId) return;
     const topicWithLesson = content.topics.find((t) =>
-      t.lessons.some((l) => l.id === activeLessonId)
+      t.lessons.some((l) => l.id === activeLessonId),
     );
     if (topicWithLesson && !expandedTopics.has(topicWithLesson.id)) {
       setExpandedTopics((prev) => new Set([...prev, topicWithLesson.id]));
@@ -99,11 +100,6 @@ export default function CourseContentView({
     return () => clearTimeout(timer);
   }, [activeLessonId]);
 
-  const resolvedTrialUrl = trialVideoUrl || content.trialVideoUrl || null;
-  const isBunnyEmbed = (url: string) =>
-    url.includes("iframe.mediadelivery.net") || url.includes("/embed/");
-  const [showTrialVideo, setShowTrialVideo] = useState(false);
-
   return (
     <div className="space-y-4">
       {/* Instructor & Course info card */}
@@ -112,7 +108,10 @@ export default function CourseContentView({
           {instructorName && (
             <Avatar className="h-16 w-16 shrink-0 border-2 border-primary/20 shadow-md">
               {instructorProfilePictureUrl ? (
-                <AvatarImage src={instructorProfilePictureUrl} alt={instructorName} />
+                <AvatarImage
+                  src={instructorProfilePictureUrl}
+                  alt={instructorName}
+                />
               ) : null}
               <AvatarFallback className="text-xl font-bold bg-primary/10 text-primary">
                 {instructorName
@@ -125,10 +124,15 @@ export default function CourseContentView({
             </Avatar>
           )}
           <div className="flex-1 min-w-0">
-            <h2 className="text-lg font-bold truncate">{content.courseTitle}</h2>
+            <h2 className="text-lg font-bold truncate">
+              {content.courseTitle}
+            </h2>
             {instructorName && (
               <p className="text-sm text-muted-foreground mt-0.5">
-                by <span className="font-medium text-foreground">{instructorName}</span>
+                by{" "}
+                <span className="font-medium text-foreground">
+                  {instructorName}
+                </span>
               </p>
             )}
             {content.isEnrolled && (
@@ -146,54 +150,6 @@ export default function CourseContentView({
         </div>
       </div>
 
-      {/* Trial video */}
-      {resolvedTrialUrl && (
-        <div className="rounded-xl border bg-card overflow-hidden">
-          <div className="px-5 py-3 border-b bg-muted/30">
-            <div className="flex items-center gap-2">
-              <Play className="h-4 w-4 text-primary fill-primary" />
-              <span className="text-sm font-semibold">Free Course Preview</span>
-            </div>
-          </div>
-          {!showTrialVideo ? (
-            <div
-              className="relative aspect-video bg-black cursor-pointer group"
-              onClick={() => setShowTrialVideo(true)}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <Play className="h-7 w-7 text-primary fill-primary ml-1" />
-                </div>
-              </div>
-              <div className="absolute bottom-3 left-3">
-                <span className="text-white text-xs bg-black/60 px-2 py-1 rounded">
-                  Click to play preview
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="aspect-video bg-black">
-              {isBunnyEmbed(resolvedTrialUrl) ? (
-                <iframe
-                  src={resolvedTrialUrl}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <video
-                  src={resolvedTrialUrl}
-                  controls
-                  autoPlay
-                  className="w-full h-full"
-                />
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Progress bar for enrolled users */}
       {content.isEnrolled && (
         <div className="rounded-xl border bg-card p-4 space-y-3">
@@ -205,19 +161,14 @@ export default function CourseContentView({
                 <CheckCircle2 className="h-5 w-5 text-primary" />
               )}
               <span className="font-medium text-sm">
-                {content.isCompleted
-                  ? "Course Completed!"
-                  : "Your Progress"}
+                {content.isCompleted ? "Course Completed!" : "Your Progress"}
               </span>
             </div>
             <span className="text-sm text-muted-foreground">
               {content.completedLessons}/{content.totalLessons} lessons
             </span>
           </div>
-          <Progress
-            value={content.progressPercentage}
-            className="h-2"
-          />
+          <Progress value={content.progressPercentage} className="h-2" />
           <p className="text-xs text-muted-foreground">
             {Math.round(content.progressPercentage)}% complete
           </p>
@@ -350,7 +301,11 @@ function ContentTopic({
                     onClose={onCloseLessonContent ?? (() => {})}
                     onRetry={onRetryLessonContent ?? (() => {})}
                     isCompleted={selectedLesson.isCompleted}
-                    onMarkCompleted={isEnrolled && onMarkCompleted ? () => onMarkCompleted(lesson.id) : undefined}
+                    onMarkCompleted={
+                      isEnrolled && onMarkCompleted
+                        ? () => onMarkCompleted(lesson.id)
+                        : undefined
+                    }
                     markCompletedLoading={markCompletedLoading}
                   />
                 </div>
@@ -381,6 +336,8 @@ function ContentLessonRow({
       <Video className="h-4 w-4" />
     ) : lesson.type === LessonType.Quiz ? (
       <HelpCircle className="h-4 w-4" />
+    ) : lesson.type === LessonType.ExternalVideo ? (
+      <ExternalLink className="h-4 w-4" />
     ) : (
       <FileText className="h-4 w-4" />
     );
@@ -389,15 +346,19 @@ function ContentLessonRow({
     lesson.type === LessonType.Video
       ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
       : lesson.type === LessonType.Quiz
-      ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
-      : "bg-amber-500/10 text-amber-600 dark:text-amber-400";
+        ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
+        : lesson.type === LessonType.ExternalVideo
+          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+          : "bg-amber-500/10 text-amber-600 dark:text-amber-400";
 
   const typeLabel =
     lesson.type === LessonType.Video
       ? "Video"
       : lesson.type === LessonType.Quiz
-      ? "Quiz"
-      : "Document";
+        ? "Quiz"
+        : lesson.type === LessonType.ExternalVideo
+          ? "External Video"
+          : "Document";
 
   const isAccessible = !lesson.isLocked;
 
@@ -426,7 +387,9 @@ function ContentLessonRow({
 
       {/* Title + type label */}
       <div className="flex-1 min-w-0">
-        <p className={`text-sm font-medium truncate ${isEnrolled && lesson.isCompleted ? "text-muted-foreground" : ""}`}>
+        <p
+          className={`text-sm font-medium truncate ${isEnrolled && lesson.isCompleted ? "text-muted-foreground" : ""}`}
+        >
           {lesson.title}
         </p>
         <span className="text-[11px] text-muted-foreground capitalize">
@@ -454,11 +417,13 @@ function ContentLessonRow({
           </div>
         )}
 
-        {isAccessible && lesson.type === LessonType.Video && !lesson.isLocked && (
-          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-            <Play className="h-3.5 w-3.5 text-primary fill-primary ml-0.5" />
-          </div>
-        )}
+        {isAccessible &&
+          lesson.type === LessonType.Video &&
+          !lesson.isLocked && (
+            <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+              <Play className="h-3.5 w-3.5 text-primary fill-primary ml-0.5" />
+            </div>
+          )}
       </div>
     </button>
   );

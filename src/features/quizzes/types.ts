@@ -58,10 +58,19 @@ export type QuizDetails = {
   writerName: string;
   title: string;
   description: string;
+  tags: string[];
   likes: number;
   dislikes: number;
   createdAt: string;
   questions: QuizQuestion[];
+};
+
+// Update Quiz Payload
+export type UpdateQuizPayload = {
+  id: number;
+  title: string;
+  description: string | null;
+  tags: string[] | null;
 };
 
 export type UserAnswer = {
@@ -77,6 +86,7 @@ export type QuizListItem = {
   likes: number;
   writerName: string;
   createdAt: string;
+  tags: string[];
 };
 
 // Create Quiz Payload Types
@@ -102,6 +112,7 @@ export type CreateQuizPayload = {
   questions: CreateQuizQuestionPayload[];
   isFree?: boolean;
   productCourseId?: number;
+  tags?: string[];
 };
 
 // Helper function to get question type label

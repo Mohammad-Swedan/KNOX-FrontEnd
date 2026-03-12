@@ -3,6 +3,7 @@ import { File as FileIcon, Edit, Trash2 } from "lucide-react";
 import ShareButton from "@/shared/ui/ShareButton";
 import type { MaterialItem } from "../types";
 import { getFileExtension, openFile, downloadFile } from "../utils";
+import { QuizTagsBadge } from "@/features/quizzes/components/QuizTagsBadge";
 
 interface MaterialCardProps {
   material: MaterialItem;
@@ -26,22 +27,20 @@ export function MaterialCard({
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <div className="flex items-center gap-2">
-          <p className="truncate font-medium text-foreground group-hover:text-primary">
-            {material.title}
-          </p>
-          {!isManagementMode && material.tags?.[0] && (
-            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
-              {material.tags[0]}
-            </span>
-          )}
-        </div>
+        <p className="truncate font-medium text-foreground group-hover:text-primary">
+          {material.title}
+        </p>
         {material.description && (
           <p className="truncate text-xs text-muted-foreground">
             {material.description}
           </p>
         )}
         <p className="text-xs text-muted-foreground">.{ext}</p>
+        {material.tags && material.tags.length > 0 && (
+          <div className="mt-1.5">
+            <QuizTagsBadge tags={material.tags} />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2">

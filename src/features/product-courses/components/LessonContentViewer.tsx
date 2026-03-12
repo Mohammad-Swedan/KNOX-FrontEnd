@@ -1,14 +1,12 @@
-import {
-  Loader2,
-  AlertCircle,
-  X,
-  CheckCircle,
-} from "lucide-react";
+import { Loader2, AlertCircle, X, CheckCircle } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import type { CourseContentLessonDto } from "../types";
+import { LessonType } from "../types";
 import type { LessonContentData } from "../hooks/useLessonContent";
 import QuizLessonViewer from "./QuizLessonViewer";
+import VideoLessonViewer from "./VideoLessonViewer";
 import MaterialLessonViewer from "./MaterialLessonViewer";
+import ExternalVideoViewer from "./ExternalVideoViewer";
 
 interface LessonContentViewerProps {
   lesson?: CourseContentLessonDto;
@@ -23,6 +21,7 @@ interface LessonContentViewerProps {
 }
 
 export default function LessonContentViewer({
+  lesson,
   content,
   loading,
   error,
@@ -86,8 +85,12 @@ export default function LessonContentViewer({
           <div className="flex flex-col items-center justify-center py-10 sm:py-14 gap-4">
             <AlertCircle className="h-8 w-8 sm:h-10 sm:w-10 text-red-400" />
             <div className="text-center space-y-1">
-              <p className="font-medium text-sm sm:text-base">Could not load content</p>
-              <p className="text-xs sm:text-sm text-muted-foreground">{error}</p>
+              <p className="font-medium text-sm sm:text-base">
+                Could not load content
+              </p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                {error}
+              </p>
             </div>
             <Button
               variant="outline"
@@ -105,12 +108,24 @@ export default function LessonContentViewer({
         )}
 
         {!loading && !error && content?.kind === "video" && (
-          <MaterialLessonViewer material={content.data} onRefresh={onRetry} />
+          <VideoLessonViewer video={content.data} onRefresh={onRetry} />
         )}
 
         {!loading && !error && content?.kind === "material" && (
-          <MaterialLessonViewer material={content.data} onRefresh={onRetry} />
+          <MaterialLessonViewer material={content.data} />
         )}
+
+        {/* ExternalVideo: directUrl is already in the lesson object — no API fetch */}
+        {!loading &&
+          !error &&
+          lesson?.type === LessonType.ExternalVideo &&
+          (lesson?.directUrl ? (
+            <ExternalVideoViewer directUrl={lesson.directUrl} />
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">
+              No URL set for this lesson.
+            </p>
+          ))}
       </div>
     </div>
   );

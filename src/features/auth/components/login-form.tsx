@@ -71,6 +71,8 @@ const LoginForm = () => {
         <Input
           type="email"
           id="userEmail"
+          name="email"
+          autoComplete="email"
           placeholder={t("auth.login.emailPlaceholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -87,6 +89,8 @@ const LoginForm = () => {
         <div className="relative">
           <Input
             id="password"
+            name="password"
+            autoComplete="current-password"
             type={isVisible ? "text" : "password"}
             placeholder={t("auth.login.passwordPlaceholder")}
             className="pr-9"

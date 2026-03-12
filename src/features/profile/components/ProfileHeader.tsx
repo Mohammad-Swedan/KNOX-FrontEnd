@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   LogOut,
   ShieldCheck,
+  ShieldAlert,
   Edit3,
   Hash,
   Copy,
@@ -182,6 +183,21 @@ export const ProfileHeader = ({
                   <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
                   {t("profile.status.verified")}
                 </Badge>
+              )}
+              {user.isVerfied === false && (
+                <Link
+                  to={`/auth/verify-account?email=${encodeURIComponent(user.email)}`}
+                >
+                  <Badge
+                    variant="outline"
+                    className="bg-red-500/10 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs cursor-pointer hover:bg-red-500/20 transition-colors animate-pulse"
+                  >
+                    <ShieldAlert className="h-3 w-3 sm:h-3.5 sm:w-3.5 me-1 sm:me-1.5" />
+                    {t("profile.status.notVerified", {
+                      defaultValue: "Not Verified",
+                    })}
+                  </Badge>
+                </Link>
               )}
             </div>
           </div>

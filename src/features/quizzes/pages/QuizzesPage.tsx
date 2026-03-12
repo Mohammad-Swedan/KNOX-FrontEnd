@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useUserRole } from "@/hooks/useUserRole";
 import SEO from "@/shared/components/seo/SEO";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
+import { DeleteConfirmDialog } from "@/shared/components/crud";
+import { deleteQuiz } from "../api";
 import { useQuizzesList } from "../hooks/useQuizzesList";
 import { QuizzesHeader } from "../components/QuizzesHeader";
 import { QuizzesToolbar } from "../components/QuizzesToolbar";
@@ -23,6 +25,9 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
   const { t } = useTranslation();
   const { canManageContent } = useUserRole();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [quizToDelete, setQuizToDelete] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   // Check if user can see management UI
   const isManagementMode = mode === "manage" && canManageContent();
@@ -57,13 +62,29 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
   };
 
   const handleEditQuiz = (quizId: number) => {
-    // TODO: Implement edit functionality
-    console.log("Edit quiz:", quizId);
+    navigate(`/courses/${courseId}/quizzes/${quizId}/edit`);
   };
 
   const handleDeleteQuiz = (quizId: number) => {
-    // TODO: Implement delete functionality
-    console.log("Delete quiz:", quizId);
+    setDeleteError(null);
+    setQuizToDelete(quizId);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!quizToDelete) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteQuiz(quizToDelete);
+      setQuizToDelete(null);
+      loadQuizzes(currentPage, pageSize);
+    } catch (err) {
+      setDeleteError(
+        err instanceof Error ? err.message : "Failed to delete quiz.",
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -160,6 +181,26 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmDialog
+        open={quizToDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setQuizToDelete(null);
+            setDeleteError(null);
+          }
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Quiz?"
+        description={
+          deleteError
+            ? deleteError
+            : "This action cannot be undone. The quiz and all its questions will be permanently deleted."
+        }
+        entityName="quiz"
+        isLoading={isDeleting}
+      />
     </div>
   );
 };

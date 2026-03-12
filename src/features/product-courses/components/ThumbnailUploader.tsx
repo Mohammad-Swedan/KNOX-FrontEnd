@@ -1,5 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { CloudUpload, ImageIcon, Loader2, Upload, X } from "lucide-react";
+import {
+  CloudUpload,
+  ImageIcon,
+  Loader2,
+  Upload,
+  X,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Label } from "@/shared/ui/label";
 import { toast } from "sonner";
@@ -10,6 +18,10 @@ interface ThumbnailUploaderProps {
   onChange: (url: string) => void;
   label?: string;
 }
+
+const MIN_ZOOM = 1.0;
+const MAX_ZOOM = 4.0;
+const ZOOM_STEP = 0.1;
 
 /** Returns the scale factor to make the image cover the container (object-fit: cover) */
 function coverScale(nW: number, nH: number, cW: number, cH: number) {
@@ -24,6 +36,7 @@ export default function ThumbnailUploader({
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [natSize, setNatSize] = useState({ w: 0, h: 0 });
+  const [zoom, setZoom] = useState(1.0);
   // Pan offset in display-space pixels (0,0 = centred)
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDraggingImg, setIsDraggingImg] = useState(false);
@@ -48,6 +61,7 @@ export default function ThumbnailUploader({
     setFile(f);
     setNatSize({ w: 0, h: 0 });
     setPan({ x: 0, y: 0 });
+    setZoom(1.0);
   };
 
   const handleFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,13 +78,15 @@ export default function ThumbnailUploader({
 
   // ── Drag-to-pan ───────────────────────────────────────────
 
-  /** Clamp pan so the image never shows a gap */
+  /** Clamp pan so the image never shows a gap.
+   *  Pass `z` explicitly when calling from inside a zoom setter to avoid stale closure. */
   const clampPan = useCallback(
-    (x: number, y: number): { x: number; y: number } => {
+    (x: number, y: number, z?: number): { x: number; y: number } => {
       if (!containerRef.current || !natSize.w) return { x, y };
+      const zFactor = z !== undefined ? z : zoom;
       const cW = containerRef.current.offsetWidth;
       const cH = containerRef.current.offsetHeight;
-      const sc = coverScale(natSize.w, natSize.h, cW, cH);
+      const sc = coverScale(natSize.w, natSize.h, cW, cH) * zFactor;
       const maxX = Math.max(0, (natSize.w * sc - cW) / 2);
       const maxY = Math.max(0, (natSize.h * sc - cH) / 2);
       return {
@@ -78,7 +94,7 @@ export default function ThumbnailUploader({
         y: Math.max(-maxY, Math.min(maxY, y)),
       };
     },
-    [natSize],
+    [natSize, zoom],
   );
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -110,6 +126,40 @@ export default function ThumbnailUploader({
     };
   }, [isDraggingImg, clampPan]);
 
+  // ── Zoom ──────────────────────────────────────────────────
+
+  const applyZoom = useCallback(
+    (newZoom: number) => {
+      const clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
+      setZoom(clamped);
+      setPan((prev) => clampPan(prev.x, prev.y, clamped));
+    },
+    [clampPan],
+  );
+
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+      setZoom((prev) => {
+        const next = Math.max(
+          MIN_ZOOM,
+          Math.min(MAX_ZOOM, Math.round((prev + delta) * 10) / 10),
+        );
+        setPan((p) => clampPan(p.x, p.y, next));
+        return next;
+      });
+    },
+    [clampPan],
+  );
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !blobUrl) return;
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [handleWheel, blobUrl]);
+
   // ── Upload ────────────────────────────────────────────────
 
   const handleUpload = async () => {
@@ -125,7 +175,7 @@ export default function ThumbnailUploader({
     try {
       const cW = containerRef.current.offsetWidth;
       const cH = containerRef.current.offsetHeight;
-      const sc = coverScale(natSize.w, natSize.h, cW, cH);
+      const sc = coverScale(natSize.w, natSize.h, cW, cH) * zoom;
       const dW = natSize.w * sc;
       const dH = natSize.h * sc;
 
@@ -185,6 +235,8 @@ export default function ThumbnailUploader({
     setFile(null);
     if (blobUrl) URL.revokeObjectURL(blobUrl);
     setBlobUrl(null);
+    setZoom(1.0);
+    setPan({ x: 0, y: 0 });
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -210,7 +262,7 @@ export default function ThumbnailUploader({
         /* ── Crop preview ── */
         <div className="space-y-3">
           <p className="text-xs text-muted-foreground">
-            Drag to reposition · 16:9 (YouTube ratio)
+            Drag to reposition · Scroll or use ± buttons to zoom · 16:9 ratio
           </p>
           <div
             ref={containerRef}
@@ -230,6 +282,34 @@ export default function ThumbnailUploader({
               ))}
             </div>
 
+            {/* Zoom controls overlay */}
+            <div
+              className="absolute top-2 right-2 z-20 flex items-center gap-1 bg-black/55 backdrop-blur-sm rounded-lg px-2 py-1 pointer-events-auto"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => applyZoom(zoom - ZOOM_STEP)}
+                disabled={zoom <= MIN_ZOOM}
+                className="text-white disabled:opacity-40 hover:text-primary transition-colors p-0.5 cursor-pointer"
+                aria-label="Zoom out"
+              >
+                <ZoomOut className="h-4 w-4" />
+              </button>
+              <span className="text-white text-xs w-10 text-center font-mono select-none">
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                type="button"
+                onClick={() => applyZoom(zoom + ZOOM_STEP)}
+                disabled={zoom >= MAX_ZOOM}
+                className="text-white disabled:opacity-40 hover:text-primary transition-colors p-0.5 cursor-pointer"
+                aria-label="Zoom in"
+              >
+                <ZoomIn className="h-4 w-4" />
+              </button>
+            </div>
+
             <img
               ref={imgRef}
               src={blobUrl!}
@@ -239,7 +319,7 @@ export default function ThumbnailUploader({
               style={{
                 top: "50%",
                 left: "50%",
-                transform: `translate(calc(-50% + ${pan.x}px), calc(-50% + ${pan.y}px))`,
+                transform: `translate(calc(-50% + ${pan.x}px), calc(-50% + ${pan.y}px)) scale(${zoom})`,
                 maxWidth: "none",
                 ...imgCoverStyle,
               }}

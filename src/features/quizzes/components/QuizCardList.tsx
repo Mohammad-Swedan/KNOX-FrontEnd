@@ -13,6 +13,7 @@ import { Card } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
 import type { QuizListItem } from "../types";
 import { formatDate, getTimeAgo } from "../types";
+import { QuizTagsBadge } from "./QuizTagsBadge";
 
 interface QuizCardListProps {
   quiz: QuizListItem;
@@ -73,6 +74,11 @@ export const QuizCardList = ({
               <Clock className="h-4 w-4" />
               <span>{getTimeAgo(quiz.createdAt)}</span>
             </div>
+          </div>
+
+          {/* Tags */}
+          <div className="mt-2">
+            <QuizTagsBadge tags={quiz.tags ?? []} />
           </div>
         </div>
 

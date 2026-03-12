@@ -6,9 +6,10 @@ import { useState, useEffect, useCallback } from "react";
 import {
   enrollInCourse,
   fetchMyEnrollments,
+  fetchEnrolledCourses,
   completeLesson,
 } from "../api";
-import type { ProductEnrollment } from "../types";
+import type { ProductEnrollment, ProductCourseSummary } from "../types";
 import type { PaginatedResponse } from "@/lib/api/types";
 
 // ── Enroll action ──────────────────────────────────────────
@@ -22,18 +23,20 @@ export const useEnroll = () => {
       setLoading(true);
       setError(null);
       try {
-        const enrollment = await enrollInCourse({ productCourseId, prepaidCode });
+        const enrollment = await enrollInCourse({
+          productCourseId,
+          prepaidCode,
+        });
         return enrollment;
       } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to enroll";
+        const message = err instanceof Error ? err.message : "Failed to enroll";
         setError(message);
         throw err;
       } finally {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { enroll, loading, error };
@@ -76,6 +79,34 @@ export const useMyEnrollments = (pageNumber = 1, pageSize = 10) => {
   return { ...data, loading, error, refetch: fetch };
 };
 
+// ── Enrolled Courses (for "My Courses" quick access) ───────
+
+export const useEnrolledCourses = () => {
+  const [courses, setCourses] = useState<ProductCourseSummary[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetchEnrolledCourses();
+      setCourses(result);
+    } catch (err) {
+      console.error("Failed to fetch enrolled courses:", err);
+      setError("Failed to load courses");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { courses, loading, error, refetch: fetch };
+};
+
 // ── Complete lesson ────────────────────────────────────────
 
 export const useCompleteLesson = () => {
@@ -93,7 +124,7 @@ export const useCompleteLesson = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { complete, loading };

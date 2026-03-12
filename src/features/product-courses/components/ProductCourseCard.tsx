@@ -142,18 +142,17 @@ export default function ProductCourseCard({
             </div>
           )}
 
-          {/* Price badge — top-left */}
-          <div className="absolute top-2.5 left-2.5">
-            {course.isFree ? (
-              <Badge className="bg-emerald-600 hover:bg-emerald-600 text-white border-0 shadow-lg text-[11px] font-bold px-2 py-0.5">
-                FREE
-              </Badge>
-            ) : (
-              <Badge className="bg-black/80 hover:bg-black/80 text-white border-0 shadow-lg font-bold text-[11px] px-2 py-0.5 backdrop-blur-sm">
-                ${course.price.toFixed(2)}
-              </Badge>
+          {/* Discount ribbon — top-left */}
+          {!course.isFree &&
+            course.discountPercentage &&
+            course.discountedPrice != null && (
+              <div className="absolute -top-1 -left-1 z-10">
+                <div className="relative bg-linear-to-r from-rose-600 to-pink-500 text-white font-extrabold text-xs px-3 py-1 rounded-br-lg shadow-lg">
+                  -{course.discountPercentage}% OFF
+                  <div className="absolute bottom-0 left-0 w-0 h-0 border-l-4 border-l-transparent border-t-4 border-t-rose-800 -mb-1" />
+                </div>
+              </div>
             )}
-          </div>
 
           {/* Status badge (manage view) */}
           {showManageActions && (
@@ -176,10 +175,10 @@ export default function ProductCourseCard({
           )}
         </div>
 
-        <CardContent className="pt-3.5 pb-4 px-4 flex-1 flex flex-col gap-2">
+        <CardContent className="pt-3.5 pb-4 px-4 flex-1 flex flex-col gap-2.5">
           {/* Title */}
           <div className="min-h-10">
-            <h3 className="font-semibold text-[14px] leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+            <h3 className="font-bold text-[15px] leading-snug line-clamp-2 group-hover:text-primary transition-colors">
               {course.title}
             </h3>
           </div>
@@ -214,7 +213,7 @@ export default function ProductCourseCard({
             {course.averageRating > 0 && (
               <div className="flex items-center gap-1">
                 <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                <span className="font-medium text-foreground">
+                <span className="font-semibold text-foreground">
                   {course.averageRating.toFixed(1)}
                 </span>
               </div>
@@ -231,10 +230,37 @@ export default function ProductCourseCard({
             )}
           </div>
 
+          {/* Price section — in card body */}
+          <div className="flex items-end justify-between pt-1 border-t border-border/50">
+            {course.isFree ? (
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">
+                  FREE
+                </span>
+                <Badge className="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700 text-[10px] font-semibold px-1.5 py-0">
+                  No cost
+                </Badge>
+              </div>
+            ) : course.discountPercentage && course.discountedPrice != null ? (
+              <div className="flex items-end gap-2">
+                <span className="text-xl font-extrabold text-primary tracking-tight leading-none">
+                  {course.discountedPrice.toFixed(2)} JD
+                </span>
+                <span className="text-sm text-muted-foreground line-through decoration-rose-400 decoration-2 leading-none mb-0.5">
+                  {course.price.toFixed(2)} JD
+                </span>
+              </div>
+            ) : (
+              <span className="text-xl font-extrabold text-foreground tracking-tight leading-none">
+                {course.price.toFixed(2)} JD
+              </span>
+            )}
+          </div>
+
           {/* Enrollment / CTA buttons */}
           {!showManageActions && (
             <div
-              className="pt-2 space-y-2"
+              className="pt-1 space-y-2"
               onClick={(e) => e.stopPropagation()}
             >
               {isEnrolled ? (

@@ -61,7 +61,11 @@ export default function EnrollButton({
 
   return (
     <>
-      <Button className="w-full cursor-pointer" onClick={handleClick} disabled={loading}>
+      <Button
+        className="w-full cursor-pointer"
+        onClick={handleClick}
+        disabled={loading}
+      >
         {loading ? (
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -70,7 +74,9 @@ export default function EnrollButton({
         ) : (
           <>
             <ShoppingCart className="h-4 w-4 mr-2" />
-            {course.isFree ? "Enroll for Free" : `Enroll — $${course.price.toFixed(2)}`}
+            {course.isFree
+              ? "Enroll for Free"
+              : `Enroll — ${(course.discountedPrice ?? course.price).toFixed(2)} JD`}
           </>
         )}
       </Button>
@@ -94,9 +100,7 @@ export default function EnrollButton({
                 placeholder="Enter your prepaid code"
               />
             </div>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
           <DialogFooter>
             <Button

@@ -12,6 +12,7 @@ import type {
   ProductCourse,
   CreateProductCourseRequest,
   UpdateProductCourseRequest,
+  UpdateDiscountRequest,
   Lesson,
   AddLessonRequest,
   TopicDto,
@@ -45,10 +46,24 @@ import type {
 export const fetchProductCoursesByAcademic = async (
   academicCourseId: number,
 ): Promise<ProductCourseSummary[]> => {
-  const response = await apiClient.get<ProductCourseSummary[]>(
-    `/product-courses/by-academic/${academicCourseId}`,
-  );
-  return response.data;
+  const response = await apiClient.get<
+    ProductCourseSummary[] | { items: ProductCourseSummary[] }
+  >(`/product-courses/by-academic/${academicCourseId}`);
+  return Array.isArray(response.data)
+    ? response.data
+    : ((response.data as { items: ProductCourseSummary[] }).items ?? []);
+};
+
+/** Get product courses belonging to the currently authenticated instructor */
+export const fetchMyProductCourses = async (): Promise<
+  ProductCourseSummary[]
+> => {
+  const response = await apiClient.get<
+    ProductCourseSummary[] | { items: ProductCourseSummary[] }
+  >(`/product-courses/my`);
+  return Array.isArray(response.data)
+    ? response.data
+    : ((response.data as { items: ProductCourseSummary[] }).items ?? []);
 };
 
 /** Get a single product course by ID */
@@ -77,6 +92,18 @@ export const updateProductCourse = async (
 ): Promise<ProductCourse> => {
   const response = await apiClient.put<ProductCourse>(
     `/product-courses/${id}`,
+    data,
+  );
+  return response.data;
+};
+
+/** Update only the discount on a product course (0–100, or null to remove) */
+export const updateProductCourseDiscount = async (
+  id: number,
+  data: UpdateDiscountRequest,
+): Promise<ProductCourse> => {
+  const response = await apiClient.patch<ProductCourse>(
+    `/product-courses/${id}/discount`,
     data,
   );
   return response.data;
@@ -364,6 +391,18 @@ export const fetchMyEnrollments = async (
     pageNumber,
     pageSize,
   );
+};
+
+/** Get all product courses the current user is enrolled in */
+export const fetchEnrolledCourses = async (): Promise<
+  ProductCourseSummary[]
+> => {
+  const response = await apiClient.get<
+    ProductCourseSummary[] | { items: ProductCourseSummary[] }
+  >("/product-courses/enrolled");
+  return Array.isArray(response.data)
+    ? response.data
+    : ((response.data as { items: ProductCourseSummary[] }).items ?? []);
 };
 
 /** Mark a lesson as completed */
