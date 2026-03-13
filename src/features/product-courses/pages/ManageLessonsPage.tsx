@@ -67,6 +67,7 @@ import QuizLessonViewer from "../components/QuizLessonViewer";
 import VideoLessonViewer from "../components/VideoLessonViewer";
 import MaterialLessonViewer from "../components/MaterialLessonViewer";
 import ExternalVideoViewer from "../components/ExternalVideoViewer";
+import ReuploadVideoModal from "../components/ReuploadVideoModal";
 import type { CourseContentTopicDto, CourseContentLessonDto } from "../types";
 
 const LessonTypeIcon = ({ type }: { type: string }) => {
@@ -611,6 +612,10 @@ function TopicSection({
     useState<CourseContentLessonDto | null>(null);
   const [deletingLesson, setDeletingLesson] = useState(false);
 
+  // ── Re-upload video lesson ───────────────────────────────
+  const [reuploadLesson, setReuploadLesson] =
+    useState<CourseContentLessonDto | null>(null);
+
   // ── Add external video lesson ────────────────────────────
   const [addExternalVideoOpen, setAddExternalVideoOpen] = useState(false);
   const [externalVideoTitle, setExternalVideoTitle] = useState("");
@@ -880,6 +885,17 @@ function TopicSection({
                     </button>
                     {canManage && (
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        {lesson.type === "Video" && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-primary"
+                            onClick={() => setReuploadLesson(lesson)}
+                            title="Re-upload video"
+                          >
+                            <RefreshCw className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
                         <Button
                           variant="ghost"
                           size="icon"
@@ -1094,6 +1110,22 @@ function TopicSection({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* ── Re-upload Video Modal ──────────────────────────── */}
+      {reuploadLesson && (
+        <ReuploadVideoModal
+          open={reuploadLesson !== null}
+          onOpenChange={(open) => {
+            if (!open) setReuploadLesson(null);
+          }}
+          lessonId={reuploadLesson.id}
+          currentTitle={reuploadLesson.title}
+          onSuccess={() => {
+            setReuploadLesson(null);
+            onRefetch();
+          }}
+        />
+      )}
 
       {/* ── Add External Video Dialog ─────────────────────── */}
       <Dialog

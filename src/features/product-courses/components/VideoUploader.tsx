@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { useVideoUpload } from "../hooks/useVideoUpload";
+import { toast } from "sonner";
 
 interface VideoUploaderProps {
   productCourseId: number;
@@ -45,6 +46,10 @@ export default function VideoUploader({
   const isDisabled = state !== "idle" && state !== "error";
 
   const applyFile = (selected: File | null) => {
+    if (selected && !selected.type.startsWith("video/")) {
+      toast.error("Please select a valid video file.");
+      return;
+    }
     setFile(selected);
     if (selected && !title) {
       setTitle(selected.name.replace(/\.[^/.]+$/, ""));

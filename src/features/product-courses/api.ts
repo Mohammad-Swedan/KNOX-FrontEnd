@@ -3,6 +3,7 @@
 // ============================================================
 
 import axios from "axios";
+import * as tus from "tus-js-client";
 import { apiClient } from "@/lib/api/apiClient";
 import { BASE_URL } from "@/lib/api/apiClient";
 import { getPaginated } from "@/lib/api/pagination";
@@ -308,37 +309,66 @@ export const createVideo = async (
   return response.data;
 };
 
-/** Upload video file directly to Bunny.net */
+/** Re-upload a video for an existing lesson (returns fresh Bunny upload credentials) */
+export const reuploadVideo = async (
+  lessonId: number,
+  data: { title: string },
+): Promise<CreateVideoResult> => {
+  const response = await apiClient.post<CreateVideoResult>(
+    `/product-courses/lessons/${lessonId}/reupload-video`,
+    data,
+  );
+  return response.data;
+};
+
+/** Upload video file to Bunny.net using TUS protocol */
 export const uploadVideoToBunny = (
   file: File,
-  uploadUrl: string,
-  libraryApiKey: string,
+  credentials: CreateVideoResult,
   onProgress: (percent: number) => void,
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.upload.addEventListener("progress", (e) => {
-      if (e.lengthComputable) {
-        onProgress((e.loaded / e.total) * 100);
-      }
-    });
-
-    xhr.addEventListener("load", () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
+    const tusUpload = new tus.Upload(file, {
+      endpoint: "https://video.bunnycdn.com/tusupload",
+      retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+      headers: {
+        AuthorizationSignature: credentials.authorizationSignature,
+        AuthorizationExpire: credentials.authorizationExpire.toString(),
+        VideoId: credentials.videoId,
+        LibraryId: credentials.libraryId.toString(),
+      },
+      metadata: {
+        filetype: file.type,
+        title: file.name,
+      },
+      onError: function (error) {
+        console.error("TUS upload failed:", error);
+        reject(error);
+      },
+      onProgress: function (bytesUploaded, bytesTotal) {
+        const percentage = (bytesUploaded / bytesTotal) * 100;
+        onProgress(percentage);
+      },
+      onSuccess: function () {
+        console.log("TUS upload complete!");
         resolve();
-      } else {
-        reject(new Error(`Upload failed with status ${xhr.status}`));
-      }
+      },
     });
 
-    xhr.addEventListener("error", () => reject(new Error("Network error")));
-    xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
-
-    xhr.open("PUT", uploadUrl);
-    xhr.setRequestHeader("AccessKey", libraryApiKey);
-    xhr.setRequestHeader("Content-Type", "application/octet-stream");
-    xhr.send(file);
+    // Check for previous uploads to resume
+    tusUpload
+      .findPreviousUploads()
+      .then(function (previousUploads) {
+        if (previousUploads.length) {
+          tusUpload.resumeFromPreviousUpload(previousUploads[0]);
+        }
+        tusUpload.start();
+      })
+      .catch((error) => {
+        console.error("Error finding previous uploads:", error);
+        // Continue with new upload if resumption check fails
+        tusUpload.start();
+      });
   });
 };
 

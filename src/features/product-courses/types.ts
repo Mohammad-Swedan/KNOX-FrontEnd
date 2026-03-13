@@ -289,11 +289,11 @@ export interface CreateVideoRequest {
 }
 
 export interface CreateVideoResult {
-  videoId: number;
-  videoGuid: string;
-  uploadUrl: string;
+  id: number;
+  authorizationSignature: string;
+  authorizationExpire: number;
   libraryId: number;
-  libraryApiKey: string;
+  videoId: string;
 }
 
 export interface VideoToken {
