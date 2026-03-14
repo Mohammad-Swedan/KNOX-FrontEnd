@@ -198,6 +198,18 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                   <DropdownMenuSeparator className="my-2" />
                   <DropdownMenuItem
                     asChild
+                    className="rounded-lg cursor-pointer "
+                  >
+                    <a
+                      href="/profile"
+                      className="flex items-center gap-2 px-3 py-2"
+                    >
+                      <User className="h-4 w-4 animate-ping" />
+                      {t("header.userMenu.profile")}
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
                     className="rounded-lg cursor-pointer"
                   >
                     <a
@@ -218,18 +230,6 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     >
                       <Award className="h-4 w-4 text-amber-500" />
                       My Certificates
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    asChild
-                    className="rounded-lg cursor-pointer"
-                  >
-                    <a
-                      href="/profile"
-                      className="flex items-center gap-2 px-3 py-2"
-                    >
-                      <User className="h-4 w-4" />
-                      {t("header.userMenu.profile")}
                     </a>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="my-2" />

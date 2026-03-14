@@ -11,8 +11,10 @@ import {
   Play,
   CheckCircle2,
   Trophy,
+  Award,
 } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import { Progress } from "@/shared/ui/progress";
 import { Avatar, AvatarImage, AvatarFallback } from "@/shared/ui/avatar";
 import type {
@@ -41,6 +43,8 @@ interface CourseContentViewProps {
   // Mark lesson as completed
   onMarkCompleted?: (lessonId: number) => void;
   markCompletedLoading?: boolean;
+  // Certificate callback
+  onShowCertificate?: () => void;
 }
 
 export default function CourseContentView({
@@ -58,6 +62,7 @@ export default function CourseContentView({
   onRetryLessonContent,
   onMarkCompleted,
   markCompletedLoading,
+  onShowCertificate,
 }: CourseContentViewProps) {
   const [expandedTopics, setExpandedTopics] = useState<Set<number>>(() => {
     return new Set(content.topics.length > 0 ? [content.topics[0].id] : []);
@@ -169,9 +174,21 @@ export default function CourseContentView({
             </span>
           </div>
           <Progress value={content.progressPercentage} className="h-2" />
-          <p className="text-xs text-muted-foreground">
-            {Math.round(content.progressPercentage)}% complete
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">
+              {Math.round(content.progressPercentage)}% complete
+            </p>
+            {content.isCompleted && onShowCertificate && (
+              <Button
+                size="sm"
+                className="gap-1.5 bg-amber-500 hover:bg-amber-600 text-white shadow-sm cursor-pointer"
+                onClick={onShowCertificate}
+              >
+                <Award className="h-4 w-4" />
+                Certificate
+              </Button>
+            )}
+          </div>
         </div>
       )}
 

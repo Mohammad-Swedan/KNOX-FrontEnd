@@ -19,6 +19,11 @@ import {
   Sparkles,
   GraduationCap,
   CirclePlay,
+  Award,
+  BadgeCheck,
+  Download,
+  ExternalLink,
+  PartyPopper,
 } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
@@ -37,10 +42,15 @@ import {
   useCourseOutline,
   useCourseContent,
 } from "../hooks/useProductCourses";
-import { useMyEnrollments, useCompleteLesson } from "../hooks/useEnrollment";
+import {
+  useMyEnrollments,
+  useCompleteLesson,
+  useMyCertificates,
+} from "../hooks/useEnrollment";
 import { useAuth } from "@/app/providers/useAuth";
 import CourseOutline from "../components/CourseOutline";
 import CourseContentView from "../components/CourseContentView";
+import ConfettiOverlay from "../components/ConfettiOverlay";
 import EnrollButton from "../components/EnrollButton";
 import VideoPlayer from "../components/VideoPlayer";
 import { useLessonContent } from "../hooks/useLessonContent";
@@ -130,6 +140,11 @@ const ProductCourseDetailPage = () => {
   // Enrollment prompt
   const [showEnrollPrompt, setShowEnrollPrompt] = useState(false);
 
+  // Certificate celebration state
+  const [showCongrats, setShowCongrats] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { certificates, refetch: refetchCertificates } = useMyCertificates();
+
   // Lesson content viewer
   const {
     content: lessonContent,
@@ -218,6 +233,11 @@ const ProductCourseDetailPage = () => {
     try {
       await completeLessonAction(enrollmentId, lessonId);
 
+      // Detect if this was the last lesson (course will be 100% after this)
+      const willBeComplete =
+        courseContent &&
+        courseContent.completedLessons + 1 >= courseContent.totalLessons;
+
       // Move to the next accessible lesson
       if (courseContent) {
         const allLessons = [...courseContent.topics]
@@ -241,7 +261,20 @@ const ProductCourseDetailPage = () => {
       }
 
       // Refetch content to get updated completion status
-      refetchContent();
+      await refetchContent();
+
+      // If course just completed → celebrate!
+      if (willBeComplete) {
+        setShowCongrats(true);
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 5500);
+        // Fetch certificates (backend auto-generates one)
+        await refetchCertificates();
+        // Poll once more for PDF generation
+        setTimeout(() => {
+          void refetchCertificates();
+        }, 2500);
+      }
     } catch {
       // Error is logged inside the hook
     }
@@ -537,6 +570,11 @@ const ProductCourseDetailPage = () => {
                   onRetryLessonContent={handleRetryLessonContent}
                   onMarkCompleted={handleMarkCompleted}
                   markCompletedLoading={completeLessonLoading}
+                  onShowCertificate={
+                    courseContent?.isCompleted
+                      ? () => setShowCongrats(true)
+                      : undefined
+                  }
                 />
               )}
 
@@ -742,6 +780,121 @@ const ProductCourseDetailPage = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* 🎉 Course completion celebration dialog */}
+        <Dialog open={showCongrats} onOpenChange={setShowCongrats}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-xl">
+                <PartyPopper className="h-6 w-6 text-amber-500" />
+                Congratulations! 🎉
+              </DialogTitle>
+              <DialogDescription>
+                You've completed{" "}
+                <span className="font-semibold text-foreground">
+                  {course.title}
+                </span>
+                . Your certificate has been issued!
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="flex flex-col items-center gap-5 py-2">
+              <div className="relative">
+                <div className="award-pop-in h-24 w-24 rounded-full bg-linear-to-br from-amber-100 to-amber-50 dark:from-amber-950/60 dark:to-amber-950/20 border-4 border-amber-300 dark:border-amber-700 flex items-center justify-center shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30">
+                  <Award className="h-12 w-12 text-amber-500" />
+                </div>
+                <div className="absolute -top-1 -right-1 h-7 w-7 rounded-full bg-emerald-500 border-2 border-background flex items-center justify-center shadow-sm">
+                  <BadgeCheck className="h-4 w-4 text-white" />
+                </div>
+              </div>
+
+              <div className="text-center space-y-1">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+                  Certificate of Completion
+                </p>
+                <p className="font-bold text-base leading-snug">
+                  {course.title}
+                </p>
+              </div>
+
+              {(() => {
+                const cert = courseContent?.certificateId
+                  ? certificates.find(
+                      (c) => c.id === courseContent.certificateId,
+                    )
+                  : certificates.length > 0
+                    ? certificates[certificates.length - 1]
+                    : null;
+                const pdfUrl = cert?.pdfUrl;
+
+                return pdfUrl ? (
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                    onClick={() => setShowCongrats(false)}
+                  >
+                    <Button
+                      size="lg"
+                      className="w-full gap-2 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-200 dark:shadow-emerald-900/40"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open PDF Certificate
+                    </Button>
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 rounded-lg px-4 py-2.5 w-full justify-center">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="font-medium">
+                      PDF is being generated…
+                    </span>
+                  </div>
+                );
+              })()}
+
+              <div className="flex flex-col sm:flex-row gap-2 w-full">
+                {courseContent?.certificateId ? (
+                  <Button
+                    className="flex-1 gap-2 cursor-pointer"
+                    variant="outline"
+                    onClick={() => {
+                      setShowCongrats(false);
+                      navigate(
+                        `/certificates/${courseContent.certificateId}`,
+                      );
+                    }}
+                  >
+                    <Download className="h-4 w-4" />
+                    View Certificate
+                  </Button>
+                ) : (
+                  <Button
+                    className="flex-1 gap-2 cursor-pointer"
+                    variant="outline"
+                    onClick={() => {
+                      setShowCongrats(false);
+                      navigate("/my-certificates");
+                    }}
+                  >
+                    <Award className="h-4 w-4" />
+                    My Certificates
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  className="flex-1 cursor-pointer text-muted-foreground"
+                  onClick={() => setShowCongrats(false)}
+                >
+                  Keep Reviewing
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Full-screen confetti */}
+        <ConfettiOverlay active={showConfetti} />
       </div>
     </>
   );

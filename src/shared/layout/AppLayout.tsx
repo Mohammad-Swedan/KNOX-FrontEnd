@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -64,11 +64,16 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const shownToastKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
     const state = location.state as { toast?: RoutedToast } | null;
     const routedToast = state?.toast;
     if (!routedToast) return;
+
+    // Guard against React Strict Mode double-invocation: don't show the same toast twice
+    if (shownToastKeyRef.current === location.key) return;
+    shownToastKeyRef.current = location.key;
 
     const presenter =
       routedToast.type === "error"
