@@ -56,7 +56,7 @@ const FacultyDetailsPage = () => {
 
   const handleMajorClick = (majorId: number) => {
     navigate(
-      `/dashboard/universities/${universityId}/faculties/${facultyId}/majors/${majorId}`
+      `/dashboard/universities/${universityId}/faculties/${facultyId}/majors/${majorId}`,
     );
   };
 
@@ -64,6 +64,12 @@ const FacultyDetailsPage = () => {
   const handleEditClick = (major: Major) => {
     setEditingMajor(major);
     setIsEditDialogOpen(true);
+  };
+
+  const handleCurriculumClick = (major: Major) => {
+    navigate(
+      `/dashboard/universities/${universityId}/faculties/${facultyId}/majors/${major.id}/curriculum`,
+    );
   };
 
   // const handleDeleteClick = (major: Major) => {
@@ -104,6 +110,7 @@ const FacultyDetailsPage = () => {
         facultyName={faculty?.name}
         onMajorClick={handleMajorClick}
         onEditClick={handleEditClick}
+        onCurriculumClick={handleCurriculumClick}
         onDeleteClick={undefined} // Disable delete functionality
         onAddClick={() => setIsAddDialogOpen(true)}
         showActions={isSuperAdmin}

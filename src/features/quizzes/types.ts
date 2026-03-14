@@ -65,12 +65,26 @@ export type QuizDetails = {
   questions: QuizQuestion[];
 };
 
-// Update Quiz Payload
+// Update Quiz Payload — choice / question sub-types
+export type UpdateQuizChoicePayload = {
+  text: string;
+  isCorrect: boolean;
+  imageUrl: string | null;
+};
+
+export type UpdateQuizQuestionPayload = {
+  text: string;
+  imageUrl: string | null;
+  type: QuestionTypeValue;
+  choices: UpdateQuizChoicePayload[];
+};
+
 export type UpdateQuizPayload = {
   id: number;
   title: string;
   description: string | null;
   tags: string[] | null;
+  questions: UpdateQuizQuestionPayload[];
 };
 
 export type UserAnswer = {

@@ -33,6 +33,7 @@ interface MajorTableProps {
   onMajorClick: (majorId: number) => void;
   onEditClick: (major: Major) => void;
   onDeleteClick?: (major: Major) => void;
+  onCurriculumClick?: (major: Major) => void;
   onAddClick: () => void;
   showActions?: boolean;
 }
@@ -45,6 +46,7 @@ export const MajorTable = ({
   onMajorClick,
   onEditClick,
   onDeleteClick,
+  onCurriculumClick,
   onAddClick,
   showActions = true,
 }: MajorTableProps) => {
@@ -72,8 +74,8 @@ export const MajorTable = ({
             {searchTerm
               ? "Try adjusting your search terms"
               : showActions
-              ? "Get started by adding your first major"
-              : "No majors available in this faculty"}
+                ? "Get started by adding your first major"
+                : "No majors available in this faculty"}
           </p>
           {!searchTerm && showActions && (
             <Button onClick={onAddClick} className="mt-4">
@@ -148,6 +150,17 @@ export const MajorTable = ({
                           <Pencil className="mr-2 size-4" />
                           Edit
                         </Button>
+                        {onCurriculumClick && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onCurriculumClick(major)}
+                            className="hover:bg-primary/10 text-primary"
+                          >
+                            <FolderTree className="mr-2 size-4" />
+                            Curriculum
+                          </Button>
+                        )}
                         {onDeleteClick && (
                           <Button
                             variant="ghost"

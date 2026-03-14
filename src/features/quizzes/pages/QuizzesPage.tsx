@@ -46,7 +46,10 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
     totalPages,
     hasPreviousPage,
     hasNextPage,
-  } = useQuizzesList({ courseId });
+  } = useQuizzesList({
+    courseId,
+    fetchType: isManagementMode ? "my-quizzes" : "public",
+  });
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -58,11 +61,13 @@ const QuizzesPage = ({ mode = "public" }: QuizzesPageProps) => {
   };
 
   const handleAddQuiz = () => {
-    navigate(`/courses/${courseId}/quizzes/add`);
+    const base = isManagementMode ? "/dashboard" : "";
+    navigate(`${base}/courses/${courseId}/quizzes/add`);
   };
 
   const handleEditQuiz = (quizId: number) => {
-    navigate(`/courses/${courseId}/quizzes/${quizId}/edit`);
+    const base = isManagementMode ? "/dashboard" : "";
+    navigate(`${base}/courses/${courseId}/quizzes/${quizId}/edit`);
   };
 
   const handleDeleteQuiz = (quizId: number) => {

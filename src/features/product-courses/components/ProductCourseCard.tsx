@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BookOpen,
   Pencil,
@@ -8,22 +9,22 @@ import {
   Play,
   Loader2,
   CheckCircle,
-  Sparkles,
+  Zap,
+  BadgeCheck,
   ListTree,
   Star,
   Users,
+  GraduationCap,
+  MessageCircle,
 } from "lucide-react";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/shared/ui/avatar";
 import { Input } from "@/shared/ui/input";
-import { Label } from "@/shared/ui/label";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/shared/ui/dialog";
@@ -57,10 +58,18 @@ export default function ProductCourseCard({
 }: ProductCourseCardProps) {
   const isEnrolled = !!course.isEnrolled;
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
   const { enroll, loading: enrolling } = useEnroll();
   const [prepaidDialogOpen, setPrepaidDialogOpen] = useState(false);
   const [prepaidCode, setPrepaidCode] = useState("");
+
+  const finalPrice = course.isFree
+    ? t("productCourses.free")
+    : `${(course.discountedPrice ?? course.price).toFixed(2)} JD`;
+  // WhatsApp message is always in Arabic
+  const whatsappEnrollMessage = `مرحباً! أرغب في الاشتراك في دورة: "${course.title}". السعر النهائي: ${finalPrice}. يرجى إرسال كود مسبق الدفع 🎓`;
+  const whatsappEnrollLink = `https://wa.me/962795441474?text=${encodeURIComponent(whatsappEnrollMessage)}`;
 
   const handleCardClick = () => {
     if (showManageActions) return;
@@ -233,7 +242,7 @@ export default function ProductCourseCard({
           <div className="flex items-end justify-between pt-1 border-t border-border/50">
             {course.isFree ? (
               <div className="flex items-center gap-2">
-                <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">
+                <span className="text-base font-medium text-emerald-600 dark:text-emerald-400">
                   FREE
                 </span>
                 <Badge className="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700 text-[10px] font-semibold px-1.5 py-0">
@@ -242,15 +251,15 @@ export default function ProductCourseCard({
               </div>
             ) : course.discountPercentage && course.discountedPrice != null ? (
               <div className="flex items-end gap-2">
-                <span className="text-xl font-extrabold text-primary tracking-tight leading-none">
+                <span className="text-base font-medium text-primary leading-none">
                   {course.discountedPrice.toFixed(2)} JD
                 </span>
-                <span className="text-sm text-muted-foreground line-through decoration-rose-400 decoration-2 leading-none mb-0.5">
+                <span className="text-xs text-muted-foreground line-through leading-none mb-0.5">
                   {course.price.toFixed(2)} JD
                 </span>
               </div>
             ) : (
-              <span className="text-xl font-extrabold text-foreground tracking-tight leading-none">
+              <span className="text-base font-medium text-foreground leading-none">
                 {course.price.toFixed(2)} JD
               </span>
             )}
@@ -284,7 +293,7 @@ export default function ProductCourseCard({
                 /* Not enrolled: two buttons */
                 <div className="grid grid-cols-2 gap-2">
                   <Button
-                    className="w-full cursor-pointer h-9 text-xs font-semibold bg-linear-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-white border-0 shadow-sm"
+                    className="w-full cursor-pointer h-9 text-xs font-medium bg-primary hover:bg-primary/90 text-primary-foreground border-0"
                     size="sm"
                     onClick={handleEnrollClick}
                     disabled={enrolling}
@@ -292,7 +301,7 @@ export default function ProductCourseCard({
                     {enrolling ? (
                       <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
                     ) : (
-                      <Sparkles className="h-3.5 w-3.5 mr-1" />
+                      <BadgeCheck className="h-3.5 w-3.5 mr-1" />
                     )}
                     Enroll Now
                   </Button>
@@ -361,55 +370,129 @@ export default function ProductCourseCard({
         </CardContent>
       </Card>
 
-      {/* Prepaid code dialog for paid courses */}
+      {/* Enrollment CTA Dialog for paid courses */}
       <Dialog open={prepaidDialogOpen} onOpenChange={setPrepaidDialogOpen}>
-        <DialogContent onClick={(e) => e.stopPropagation()}>
-          <DialogHeader>
-            <DialogTitle>Enroll in {course.title}</DialogTitle>
-            <DialogDescription>
-              This is a paid course. Enter your prepaid code to enroll.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div className="space-y-2">
-              <Label htmlFor={`prepaid-${course.id}`}>Prepaid Code</Label>
-              <Input
-                id={`prepaid-${course.id}`}
-                value={prepaidCode}
-                onChange={(e) => setPrepaidCode(e.target.value)}
-                placeholder="Enter your prepaid code"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && prepaidCode.trim()) {
-                    handlePrepaidEnroll();
-                  }
-                }}
-              />
+        <DialogContent
+          className="sm:max-w-[440px] p-0 overflow-hidden gap-0"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="bg-linear-to-br from-primary/10 via-background to-secondary/10 px-6 pt-6 pb-5 border-b border-border/50">
+            <div className="flex items-start gap-4">
+              <div className="rounded-2xl bg-primary/15 p-3 shrink-0">
+                <GraduationCap className="h-6 w-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <DialogHeader>
+                  <DialogTitle className="text-base leading-snug text-start">
+                    {t("productCourses.enrollCta.title")}
+                  </DialogTitle>
+                </DialogHeader>
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  {course.title}
+                </p>
+                {/* Price display */}
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  {course.isFree ? (
+                    <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                      FREE
+                    </span>
+                  ) : course.discountedPrice != null ? (
+                    <>
+                      <span className="text-xl font-extrabold text-primary leading-none">
+                        {course.discountedPrice.toFixed(2)} JD
+                      </span>
+                      <span className="text-sm text-muted-foreground line-through leading-none">
+                        {course.price.toFixed(2)} JD
+                      </span>
+                      <span className="inline-flex items-center rounded-full bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 text-[10px] font-bold px-1.5 py-0.5">
+                        -{course.discountPercentage}%
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xl font-extrabold text-primary leading-none">
+                      {course.price.toFixed(2)} JD
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setPrepaidDialogOpen(false)}
-              disabled={enrolling}
-              className="cursor-pointer"
+
+          {/* Body: code input */}
+          <div className="px-6 py-5 space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-foreground">
+                {t("productCourses.enrollCta.step2Title")}
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                {t("productCourses.enrollCta.step2Desc")}
+              </p>
+              <Input
+                className="h-10 text-sm"
+                value={prepaidCode}
+                onChange={(e) => setPrepaidCode(e.target.value)}
+                placeholder={t("productCourses.enrollCta.codePlaceholder")}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && prepaidCode.trim())
+                    handlePrepaidEnroll();
+                }}
+                autoFocus
+              />
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-[11px] text-muted-foreground shrink-0">
+                {t("productCourses.enrollCta.noCode")}
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            {/* WhatsApp CTA */}
+            <a
+              href={whatsappEnrollLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full rounded-xl border-2 border-green-400/50 bg-green-50/60 dark:bg-green-950/20 hover:bg-green-50 dark:hover:bg-green-950/40 hover:border-green-500/70 text-green-700 dark:text-green-400 px-4 py-2.5 text-xs font-bold transition-all hover:scale-[1.01] shadow-sm"
+              onClick={(e) => e.stopPropagation()}
             >
-              Cancel
+              <MessageCircle className="h-4 w-4 shrink-0" />
+              {t("productCourses.enrollCta.getCode")}
+            </a>
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-end gap-3 px-6 pb-6 pt-0 border-t border-border/50">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setPrepaidDialogOpen(false);
+                setPrepaidCode("");
+              }}
+              disabled={enrolling}
+              className="cursor-pointer text-muted-foreground hover:text-foreground"
+            >
+              {t("productCourses.enrollCta.cancel")}
             </Button>
             <Button
+              size="sm"
               onClick={handlePrepaidEnroll}
               disabled={enrolling || !prepaidCode.trim()}
-              className="cursor-pointer"
+              className="cursor-pointer bg-linear-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold shadow-md shadow-primary/20 transition-all hover:scale-[1.03]"
             >
               {enrolling ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Enrolling...
+                  <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                  {t("common.actions.processing")}
                 </>
               ) : (
-                "Enroll"
+                t("productCourses.enrollCta.enrollBtn")
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </>

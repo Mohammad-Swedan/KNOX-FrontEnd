@@ -1,38 +1,73 @@
 import {
-  GraduationCap,
   Mail,
   Facebook,
-  Twitter,
   Instagram,
   Linkedin,
+  Youtube,
+  MessageCircle,
 } from "lucide-react";
 import { Separator } from "@/shared/ui/separator";
+import Logo from "@/assets/logo";
+import { Link } from "react-router-dom";
+
+const WHATSAPP_NUMBER = "962795441474";
+const WHATSAPP_BUY_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("مرحباً، أرغب في شراء بطاقة دورة. يرجى إرسال تفاصيل الأسعار.")}`;
+const WHATSAPP_CONTACT_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
-    product: [
-      { name: "Features", href: "#features" },
-      { name: "Quiz Bank", href: "#quizzes" },
-      { name: "Resources", href: "#resources" },
+    platform: [
+      {
+        name: "Browse Courses",
+        href: "/browse/product-courses",
+        internal: true,
+      },
+      { name: "Study Materials", href: "/courses", internal: true },
+      { name: "About Us", href: "/about", internal: true },
     ],
     support: [
-      { name: "Help Center", href: "#help" },
-      { name: "Contact Us", href: "#contact" },
-      { name: "FAQ", href: "#faq" },
+      { name: "Buy Prepaid Code", href: WHATSAPP_BUY_LINK, internal: false },
+      {
+        name: "Contact via WhatsApp",
+        href: WHATSAPP_CONTACT_LINK,
+        internal: false,
+      },
+      { name: "My Learning", href: "/my-learning", internal: true },
     ],
     legal: [
-      { name: "Privacy Policy", href: "#privacy" },
-      { name: "Terms of Service", href: "#terms" },
+      { name: "Privacy Policy", href: "#privacy", internal: false },
+      { name: "Terms of Service", href: "#terms", internal: false },
     ],
   };
 
   const socialLinks = [
-    { icon: <Facebook className="h-4 w-4" />, href: "#", label: "Facebook" },
-    { icon: <Twitter className="h-4 w-4" />, href: "#", label: "Twitter" },
-    { icon: <Instagram className="h-4 w-4" />, href: "#", label: "Instagram" },
-    { icon: <Linkedin className="h-4 w-4" />, href: "#", label: "LinkedIn" },
+    {
+      icon: <Instagram className="h-4 w-4" />,
+      href: "https://www.instagram.com/ecampusjo/",
+      label: "Instagram",
+    },
+    {
+      icon: <Facebook className="h-4 w-4" />,
+      href: "https://www.facebook.com/profile.php?id=61575006386806",
+      label: "Facebook",
+    },
+    {
+      icon: <Youtube className="h-4 w-4" />,
+      href: "https://www.youtube.com/@ecampusacademy_jo",
+      label: "YouTube",
+    },
+    {
+      icon: <Linkedin className="h-4 w-4" />,
+      href: "https://www.linkedin.com/company/ecampus-hub",
+      label: "LinkedIn",
+    },
+    {
+      icon: <MessageCircle className="h-4 w-4" />,
+      href: WHATSAPP_CONTACT_LINK,
+      label: "WhatsApp",
+    },
   ];
 
   return (
@@ -42,40 +77,58 @@ const Footer = () => {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <a href="#" className="flex items-center gap-2 mb-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <GraduationCap className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-bold">ScholAI</span>
-            </a>
+            <Link to="/" className="flex items-center gap-2 mb-3">
+              <Logo style={{ height: "36px" }} />
+              <span className="text-lg font-bold">eCampus</span>
+            </Link>
             <p className="mb-4 text-sm text-muted-foreground">
-              Your AI-powered platform for academic success.
+              Your gateway to academic excellence in Jordan.
             </p>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
               <Mail className="h-4 w-4" />
               <a
-                href="mailto:support@scholai.com"
+                href="mailto:support@ecampus.jo"
                 className="hover:text-primary transition-colors"
               >
-                support@scholai.com
+                support@ecampus.jo
               </a>
             </div>
+            <a
+              href={WHATSAPP_BUY_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-2 rounded-lg bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 text-sm font-medium transition-colors"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Buy Prepaid Code
+            </a>
           </div>
 
           {/* Links Columns */}
           <div className="grid grid-cols-3 gap-6 md:col-span-1 lg:col-span-3">
-            {/* Product */}
+            {/* Platform */}
             <div>
-              <h4 className="mb-3 text-sm font-semibold">Product</h4>
+              <h4 className="mb-3 text-sm font-semibold">Platform</h4>
               <ul className="space-y-2">
-                {footerLinks.product.map((link) => (
+                {footerLinks.platform.map((link) => (
                   <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                    >
-                      {link.name}
-                    </a>
+                    {link.internal ? (
+                      <Link
+                        to={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.name}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -87,12 +140,23 @@ const Footer = () => {
               <ul className="space-y-2">
                 {footerLinks.support.map((link) => (
                   <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                    >
-                      {link.name}
-                    </a>
+                    {link.internal ? (
+                      <Link
+                        to={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {link.name}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -121,27 +185,21 @@ const Footer = () => {
 
         {/* Bottom Footer */}
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+          <div className="flex flex-col gap-1">
             <p className="text-sm text-muted-foreground">
-              © {currentYear} ScholAI. All rights reserved.
+              © {currentYear} eCampus.jo — All rights reserved.
             </p>
-            <Separator orientation="vertical" className="hidden h-4 sm:block" />
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                Supported by
-              </span>
+            <p className="text-xs text-muted-foreground">
+              Made with ❤️ by{" "}
               <a
-                href="https://ecampus.com"
+                href="https://www.linkedin.com/in/mohammad-nour-aldeen-swedan-a985071b5"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-md border bg-background px-3 py-1 transition-all hover:border-primary hover:shadow-sm"
+                className="hover:text-primary underline transition-colors"
               >
-                <div className="flex h-5 w-5 items-center justify-center rounded bg-primary/10">
-                  <GraduationCap className="h-3 w-3 text-primary" />
-                </div>
-                <span className="text-sm font-semibold">eCampus</span>
+                Mohammad Swedan
               </a>
-            </div>
+            </p>
           </div>
 
           {/* Social Links */}
@@ -151,6 +209,8 @@ const Footer = () => {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-8 w-8 items-center justify-center rounded-md border bg-background transition-colors hover:bg-primary hover:text-primary-foreground hover:border-primary"
               >
                 {social.icon}

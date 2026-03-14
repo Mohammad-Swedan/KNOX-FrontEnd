@@ -30,16 +30,11 @@ const AddMaterialLessonPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { course, loading: courseLoading } = useProductCourse(courseId);
-  const { lessons } = useLessons(courseId);
-
-  const nextOrder =
-    lessons.length > 0 ? Math.max(...lessons.map((l) => l.order)) + 1 : 1;
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [order, setOrder] = useState(nextOrder);
   // Always default to false — instructor must explicitly enable free preview
   const [isFreePreview, setIsFreePreview] = useState(false);
 
@@ -107,13 +102,13 @@ const AddMaterialLessonPage = () => {
       });
       await addLesson(courseId, topicId, {
         title: title.trim(),
-        order,
+        order: 1,
         type: 2,
         isFreePreview,
         referenceId: material.id,
       });
       toast.success("Material lesson added!");
-      navigate(`/dashboard/product-courses/${id}/lessons`);
+      navigate(`/dashboard/product-courses/${id}/lessons`, { replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to add lesson");
     } finally {
@@ -284,22 +279,6 @@ const AddMaterialLessonPage = () => {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* Order */}
-          <div className="space-y-1.5">
-            <Label htmlFor="mat-order" className="text-sm font-medium">
-              Lesson Order <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="mat-order"
-              type="number"
-              min={1}
-              value={order}
-              onChange={(e) => setOrder(parseInt(e.target.value) || 1)}
-              className="w-28"
-              disabled={isBusy}
-            />
           </div>
 
           {/* Free Preview */}

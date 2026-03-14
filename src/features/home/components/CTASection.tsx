@@ -1,7 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui/button";
-import { ArrowRight, Sparkles, CheckCircle } from "lucide-react";
+import {
+  GraduationCap,
+  Sparkles,
+  CheckCircle,
+  MessageCircle,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+const WHATSAPP_BUY_LINK = `https://wa.me/962795441474?text=${encodeURIComponent("مرحباً، أرغب في شراء بطاقة دورة. يرجى إرسال تفاصيل الأسعار.")}`;
 
 const CTASection = () => {
   const navigate = useNavigate();
@@ -70,23 +77,47 @@ const CTASection = () => {
                 ))}
               </ul>
 
+              {/* Prepaid Code CTA */}
+              <div className="mb-5 md:mb-8 rounded-xl border border-green-500/30 bg-green-500/10 p-4 md:p-5 shadow-sm">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="flex-1">
+                    <p className="text-sm md:text-base font-bold text-foreground mb-1">
+                      {t("home.cta.prepaidCard.title")}
+                    </p>
+                    <p className="text-xs md:text-sm text-muted-foreground">
+                      {t("home.cta.prepaidCard.description")}
+                    </p>
+                  </div>
+                  <a
+                    href={WHATSAPP_BUY_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 shrink-0 rounded-lg bg-green-500 hover:bg-green-600 active:bg-green-700 text-white px-5 py-2.5 text-sm font-bold transition-all shadow-md shadow-green-500/30 hover:scale-[1.03]"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    {t("home.cta.prepaidCard.whatsappBtn")}
+                  </a>
+                </div>
+              </div>
+
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <Button
                   size="lg"
-                  className="group relative w-full sm:w-auto overflow-hidden bg-primary px-5 md:px-8 py-4 md:py-6 text-sm md:text-base lg:text-lg font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
-                  onClick={() => navigate("/register")}
+                  className="group relative w-full sm:w-auto overflow-hidden rounded-xl bg-linear-to-r from-primary via-primary/90 to-secondary px-6 md:px-10 py-4 md:py-6 text-sm md:text-base lg:text-lg font-bold text-white shadow-xl shadow-primary/40 ring-2 ring-primary/20 transition-all hover:shadow-2xl hover:shadow-primary/50 hover:scale-[1.04] hover:ring-primary/40 border-0"
+                  onClick={() => navigate("/browse/product-courses")}
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <span className="relative z-10 flex items-center justify-center gap-2.5">
+                    <GraduationCap className="h-5 w-5 md:h-6 md:w-6" />
                     {t("home.cta.getStarted")}
-                    <ArrowRight className="h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180" />
                   </span>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   className="w-full sm:w-auto px-5 md:px-8 py-4 md:py-6 text-sm md:text-base lg:text-lg font-semibold backdrop-blur-sm transition-all hover:bg-primary/5 hover:scale-105"
-                  onClick={() => navigate("/materials")}
+                  onClick={() => navigate("/about")}
                 >
                   {t("home.cta.browseMaterials")}
                 </Button>

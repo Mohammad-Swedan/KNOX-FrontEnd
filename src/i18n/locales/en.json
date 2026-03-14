@@ -1,14 +1,14 @@
 {
   "seo": {
     "home": {
-      "title": "Uni-Hub | Your Complete University Learning Platform",
+      "title": "eCampus | Your Complete University Learning Platform",
       "description": "A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance. Join thousands of successful students.",
       "keywords": "university education, study materials, quizzes, notes, university, students, learning, educational platform, interactive quizzes, academic resources"
     },
     "about": {
       "title": "About Us",
-      "description": "Learn about Uni-Hub's mission to revolutionize university education. Discover how we help students succeed with organized learning resources, interactive quizzes, and community support.",
-      "keywords": "about uni-hub, university learning platform, educational mission, student success, academic resources, learning community"
+      "description": "Learn about eCampus's mission to revolutionize university education. Discover how we help students succeed with organized learning resources, interactive quizzes, and community support.",
+      "keywords": "about eCampus, university learning platform, educational mission, student success, academic resources, learning community"
     },
     "courses": {
       "title": "Courses",
@@ -17,22 +17,22 @@
     },
     "login": {
       "title": "Login",
-      "description": "Sign in to your Uni-Hub account to access personalized study materials, track your progress, and connect with fellow students.",
+      "description": "Sign in to your eCampus account to access personalized study materials, track your progress, and connect with fellow students.",
       "keywords": "login, sign in, student portal, access account"
     },
     "register": {
       "title": "Create Account",
-      "description": "Join Uni-Hub today and get free access to thousands of study materials, interactive quizzes, and AI-powered academic guidance.",
-      "keywords": "register, sign up, create account, join uni-hub, student registration"
+      "description": "Join eCampus today and get free access to thousands of study materials, interactive quizzes, and AI-powered academic guidance.",
+      "keywords": "register, sign up, create account, join eCampus, student registration"
     },
     "profile": {
       "title": "My Profile",
-      "description": "Manage your Uni-Hub profile, track your learning progress, and customize your study preferences.",
+      "description": "Manage your eCampus profile, track your learning progress, and customize your study preferences.",
       "keywords": "user profile, student profile, account settings, learning progress"
     }
   },
   "common": {
-    "appName": "Uni-Hub",
+    "appName": "eCampus",
     "buttons": {
       "save": "Save",
       "cancel": "Cancel",
@@ -90,7 +90,7 @@
   },
   "auth": {
     "login": {
-      "title": "Sign in to Uni-Hub",
+      "title": "Sign in to eCampus",
       "description": "Access your courses, materials, and quizzes.",
       "emailLabel": "Email address",
       "emailPlaceholder": "Enter your email address",
@@ -98,7 +98,7 @@
       "passwordPlaceholder": "••••••••••••••••",
       "rememberMe": "Remember Me",
       "forgotPassword": "Forgot Password?",
-      "submitButton": "Sign in to Uni-Hub",
+      "submitButton": "Sign in to eCampus",
       "signingIn": "Signing in...",
       "loginWith": "Login with",
       "magicLink": "Magic Link",
@@ -111,7 +111,7 @@
       "or": "or",
       "signInWithGoogle": "Sign in with google",
       "success": "Login successful!",
-      "welcomeBack": "Welcome back to Uni-Hub",
+      "welcomeBack": "Welcome back to eCampus",
       "loginFailed": "Login failed. Please try again.",
       "invalidCredentials": "Wrong email or password.",
       "showPassword": "Show password",
@@ -119,7 +119,7 @@
     },
     "register": {
       "title": "Create Your Account",
-      "description": "Join Uni-Hub to access course materials and resources.",
+      "description": "Join eCampus to access course materials and resources.",
       "submitButton": "Create Account",
       "creating": "Creating...",
       "haveAccount": "Already have an account?",
@@ -162,8 +162,8 @@
   "home": {
     "hero": {
       "badge": {
-        "new": "New",
-        "text": "AI Academic Supervisor is now available"
+        "new": "Launch",
+        "text": "Your all-in-one student platform"
       },
       "title": {
         "part1": "Your Gateway to",
@@ -171,8 +171,8 @@
       },
       "subtitle": "The ultimate platform for university students. Access comprehensive study materials, smart quiz banks, and AI-powered academic guidance — all in one place.",
       "cta": {
-        "getStarted": "Get Started Free",
-        "watchDemo": "Watch Demo",
+        "getStarted": "Explore Courses",
+        "watchDemo": "About eCampus",
         "learnMore": "Learn More",
         "browseMaterials": "Browse Materials"
       }
@@ -181,7 +181,7 @@
       "sectionBadge": "Powerful Features",
       "sectionTitle": "Everything You Need to",
       "sectionTitleHighlight": "Excel in Your Studies",
-      "sectionDescription": "Uni-Hub combines all the tools you need for academic success into one seamless platform designed specifically for university students.",
+      "sectionDescription": "eCampus combines all the tools you need for academic success into one seamless platform designed specifically for university students.",
       "studyMaterials": {
         "title": "Study Materials",
         "description": "Access curated study materials, lecture notes, and resources organized by course and topic."
@@ -227,12 +227,12 @@
       "badge": "Simple Process",
       "title": "How It",
       "titleHighlight": "Works",
-      "description": "Get started with Uni-Hub in four simple steps and begin your journey to academic excellence.",
+      "description": "Get started with eCampus in four simple steps and begin your journey to academic excellence.",
       "steps": {
         "createAccount": {
           "number": "01",
           "title": "Create Account",
-          "description": "Sign up for free in seconds. No credit card required to get started with Uni-Hub."
+          "description": "Sign up for free in seconds. No credit card required to get started with eCampus."
         },
         "findCourses": {
           "number": "02",
@@ -253,51 +253,51 @@
     },
     "stats": {
       "studyMaterials": "Study Materials",
-      "quizQuestions": "Quiz Questions",
-      "activeStudents": "Active Students",
+      "quizQuestions": "Courses",
+      "activeStudents": "Registered Students",
       "universities": "Universities"
     },
     "testimonials": {
       "badge": "Student Stories",
       "title": "Loved by Students",
       "titleHighlight": "Worldwide",
-      "description": "Join thousands of students who have transformed their academic journey with Uni-Hub.",
+      "description": "Join thousands of students who have transformed their academic journey with eCampus.",
       "items": {
         "sarah": {
-          "name": "Sarah Chen",
+          "name": "Lina Khalil",
           "role": "Medical Student",
-          "university": "Stanford University",
-          "content": "Uni-Hub completely transformed how I study. The AI supervisor helped me understand complex anatomy concepts that I was struggling with for months. My grades improved significantly!"
+          "university": "University of Jordan",
+          "content": "eCampus completely transformed how I study. The organized materials helped me understand complex anatomy concepts I was struggling with for months. My grades improved significantly!"
         },
         "michael": {
-          "name": "Michael Roberts",
+          "name": "Omar Khalaf",
           "role": "Engineering Student",
-          "university": "MIT",
-          "content": "The quiz bank is incredible! I practiced with thousands of questions and felt fully prepared for my exams. The instant feedback feature is a game-changer."
+          "university": "Jordan University of Science & Technology",
+          "content": "The quiz bank is incredible! I practiced with hundreds of questions and felt fully prepared for my exams. The instant feedback feature is a game-changer for engineering students."
         },
         "emma": {
-          "name": "Emma Thompson",
+          "name": "Nour Saleh",
           "role": "Law Student",
-          "university": "Harvard Law School",
-          "content": "Having all my study materials organized in one place saved me countless hours. The platform is intuitive and the content quality is exceptional."
+          "university": "Yarmouk University",
+          "content": "Having all my study materials organized in one place saved me countless hours. The platform is intuitive and the content quality is exceptional for Jordanian curricula."
         },
         "david": {
-          "name": "David Park",
+          "name": "Ahmad Hamdan",
           "role": "Computer Science Student",
-          "university": "UC Berkeley",
-          "content": "The community feature helped me connect with other CS students. We share resources and help each other out. It's like having a study group available 24/7."
+          "university": "Princess Sumaya University",
+          "content": "eCampus helped me connect with other CS students. We share resources and help each other out. It's like having a study group available 24/7 right here in Jordan."
         },
         "lisa": {
-          "name": "Lisa Anderson",
-          "role": "Psychology Major",
-          "university": "Oxford University",
-          "content": "I was skeptical at first, but the AI Academic Supervisor genuinely understands my questions and provides detailed, accurate explanations. Worth every penny!"
+          "name": "Rasha Mansour",
+          "role": "Pharmacy Student",
+          "university": "University of Jordan",
+          "content": "I was skeptical at first, but the course materials genuinely match our university syllabus and provide detailed, accurate explanations. Absolutely worth it!"
         },
         "james": {
-          "name": "James Wilson",
-          "role": "Business Student",
-          "university": "Wharton School",
-          "content": "Uni-Hub helped me prepare for my MBA exams efficiently. The structured learning paths and progress tracking kept me motivated throughout my journey."
+          "name": "Kareem Nawas",
+          "role": "Business Administration Student",
+          "university": "Hashemite University",
+          "content": "eCampus helped me prepare for my exams efficiently. The structured learning paths and progress tracking kept me motivated throughout my academic journey."
         }
       }
     },
@@ -305,7 +305,7 @@
       "badge": "Start for free today",
       "title": "Ready to Transform Your",
       "titleHighlight": "Academic Journey?",
-      "description": "Join thousands of students who are already achieving their academic goals with Uni-Hub. Get started in seconds — no credit card required.",
+      "description": "Join thousands of students who are already achieving their academic goals with eCampus. Get started in seconds — no credit card required.",
       "benefits": {
         "materials": "Comprehensive study materials library",
         "quizzes": "Smart quiz bank with instant feedback",
@@ -313,14 +313,19 @@
         "community": "Connect with student community"
       },
       "getStarted": "Get Started Free",
-      "browseMaterials": "Browse Materials"
+      "browseMaterials": "Browse Materials",
+      "prepaidCard": {
+        "title": "Get Your Course Access Card",
+        "description": "Purchase a prepaid code via WhatsApp and unlock full course access instantly.",
+        "whatsappBtn": "Buy via WhatsApp"
+      }
     },
     "about": {
       "hero": {
-        "title": "Welcome to Uni-Hub",
+        "title": "Welcome to eCampus",
         "description": "Your all-in-one university learning management platform. Centralize your studies, collaborate with peers, and excel academically.",
-        "getStarted": "Get Started",
-        "learnMore": "Learn More"
+        "getStarted": "Get Started Free",
+        "learnMore": "Explore Courses"
       },
       "valueCards": {
         "allInOne": {
@@ -338,11 +343,11 @@
       },
       "mission": {
         "title": "Our Mission",
-        "description": "We're on a mission to eliminate the chaos of scattered educational resources. Uni-Hub provides students with a single, reliable destination for all their academic needs while empowering educators with powerful content management tools.",
+        "description": "We're on a mission to eliminate the chaos of scattered educational resources. eCampus provides students with a single, reliable destination for all their academic needs while empowering educators with powerful content management tools.",
         "highlight": "single, reliable destination"
       },
       "features": {
-        "title": "Why Choose Uni-Hub?",
+        "title": "Why Choose eCampus?",
         "centralizedLearning": {
           "title": "Centralized Learning",
           "description": "Access all your courses, materials, and resources in one unified platform"
@@ -388,7 +393,7 @@
         }
       },
       "whatYouCanDo": {
-        "title": "What You Can Do on Uni-Hub",
+        "title": "What You Can Do on eCampus",
         "access": {
           "title": "Access & Learn",
           "items": {
@@ -429,13 +434,10 @@
       },
       "contribute": {
         "title": "Become a Content Creator",
-        "description": "Share your expertise and help thousands of students succeed. Join our community of educators and content creators today!",
-        "phoneLabel": "Phone Number",
-        "phonePlaceholder": "Enter your phone number",
-        "phoneNote": "We'll contact you within 24-48 hours to discuss your application and provide creator access.",
-        "submitButton": "Apply to Become a Creator",
-        "submitting": "Submitting...",
-        "loginNote": "Note: You need to be logged in to submit your application",
+        "description": "Share your expertise and help thousands of students succeed. Reach out to us on WhatsApp to join our community of educators and content creators!",
+        "whatsappNote": "Tap the button below to chat with us on WhatsApp. We'll get back to you as soon as possible.",
+        "whatsappBtn": "Apply via WhatsApp",
+        "whatsappMessage": "Hello! I'm interested in becoming a content creator on eCampus 🎓",
         "benefits": {
           "title": "As a Creator, You'll Get:",
           "dashboard": "Full content management dashboard",
@@ -1313,7 +1315,7 @@
     }
   },
   "footer": {
-    "copyright": "© 2026 Uni-Hub. All rights reserved.",
+    "copyright": "© 2026 eCampus. All rights reserved.",
     "links": {
       "about": "About",
       "contact": "Contact",
@@ -1394,6 +1396,20 @@
     "free": "Free",
     "rating": "Rating",
     "students": "Students",
-    "enrolled": "Enrolled"
+    "enrolled": "Enrolled",
+    "enrollCta": {
+      "title": "Enroll in This Course",
+      "step1Title": "Step 1 — Get Your Prepaid Code",
+      "step1Desc": "Contact us on WhatsApp to purchase a prepaid code. We'll send it to you instantly.",
+      "whatsappBtn": "Order via WhatsApp",
+      "step2Title": "Activate with Your Code",
+      "step2Desc": "Enter the code below to instantly unlock full course access.",
+      "codePlaceholder": "Enter prepaid code...",
+      "enrollBtn": "Activate & Enroll",
+      "cancel": "Cancel",
+      "noCode": "Don't have a code yet?",
+      "getCode": "Get one via WhatsApp",
+      "whatsappMessage": "Hello! I'd like to enroll in: \"{{title}}\". Final price: {{price}}. Please send me a prepaid code 🎓"
+    }
   }
 }

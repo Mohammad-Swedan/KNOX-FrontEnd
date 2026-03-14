@@ -1,14 +1,7 @@
 import type { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {
-  UserIcon,
-  SettingsIcon,
-  CreditCardIcon,
-  UsersIcon,
-  SquarePenIcon,
-  CirclePlusIcon,
-  LogOutIcon,
-} from "lucide-react";
+import { UserIcon, LogOutIcon, Home } from "lucide-react";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/shared/ui/avatar";
 import {
@@ -29,7 +22,8 @@ type Props = {
 };
 
 const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   // Generate initials from user name
   const getInitials = (name: string) => {
@@ -71,34 +65,24 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
+          <DropdownMenuItem
+            className="px-4 py-2.5 text-base"
+            onClick={() => navigate("/profile")}
+          >
             <UserIcon className="text-foreground size-5" />
-            <span>My account</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <SettingsIcon className="text-foreground size-5" />
-            <span>Settings</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <CreditCardIcon className="text-foreground size-5" />
-            <span>Billing</span>
+            <span>Profile</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <UsersIcon className="text-foreground size-5" />
-            <span>Manage team</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <SquarePenIcon className="text-foreground size-5" />
-            <span>Customization</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="px-4 py-2.5 text-base">
-            <CirclePlusIcon className="text-foreground size-5" />
-            <span>Add team account</span>
+          <DropdownMenuItem
+            className="px-4 py-2.5 text-base"
+            onClick={() => navigate("/")}
+          >
+            <Home className="text-foreground size-5" />
+            <span>Exit Dashboard</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -107,6 +91,7 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
         <DropdownMenuItem
           variant="destructive"
           className="px-4 py-2.5 text-base"
+          onClick={logout}
         >
           <LogOutIcon className="size-5" />
           <span>Logout</span>

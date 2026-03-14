@@ -24,13 +24,17 @@ import { Badge } from "@/shared/ui/badge";
 import { Separator } from "@/shared/ui/separator";
 import ShareButton from "@/shared/ui/ShareButton";
 import SEO from "@/shared/components/seo/SEO";
+import SmartPagination from "@/shared/components/pagination/SmartPagination";
 import { fetchCourseInfo, fetchCourseById } from "@/features/courses/api";
+import { fetchProductCoursesByAcademic } from "@/features/product-courses/api";
+import ProductCourseCard from "@/features/product-courses/components/ProductCourseCard";
 import type {
   CourseInfo,
   CourseResource,
   ResourceType,
   CourseApiResponse,
 } from "@/features/courses/types";
+import type { ProductCourseSummary } from "@/features/product-courses/types";
 
 // Helper function to extract YouTube video ID
 const getYouTubeVideoId = (url: string): string | null => {
@@ -276,6 +280,12 @@ const CourseInfoPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [courseInfo, setCourseInfo] = useState<CourseInfo | null>(null);
   const [course, setCourse] = useState<CourseApiResponse | null>(null);
+  const [productCourses, setProductCourses] = useState<ProductCourseSummary[]>(
+    [],
+  );
+  const [loadingProductCourses, setLoadingProductCourses] = useState(false);
+  const [productCoursesPage, setProductCoursesPage] = useState(1);
+  const [productCoursesPageSize] = useState(4);
 
   useEffect(() => {
     // Scroll to top when component mounts
@@ -312,6 +322,27 @@ const CourseInfoPage = () => {
 
     loadData();
   }, [courseId]);
+
+  // Load product courses when course data is available
+  useEffect(() => {
+    const loadProductCourses = async () => {
+      if (!course) return;
+
+      setLoadingProductCourses(true);
+      try {
+        const courses = await fetchProductCoursesByAcademic(course.id);
+        setProductCourses(courses);
+      } catch (err) {
+        console.error("Failed to fetch product courses:", err);
+        // Don't set error state, this is optional
+        setProductCourses([]);
+      } finally {
+        setLoadingProductCourses(false);
+      }
+    };
+
+    loadProductCourses();
+  }, [course]);
 
   const difficultyConfig = courseInfo?.difficultyLevel
     ? DIFFICULTY_CONFIG[courseInfo.difficultyLevel]
@@ -453,6 +484,18 @@ const CourseInfoPage = () => {
                         {course.numberOfQuizzes}
                       </Badge>
                     </Button>
+                    <Button
+                      variant="default"
+                      className="transition-all hover:shadow-lg text-xs sm:text-sm h-8 sm:h-9 md:h-10 bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                      onClick={() =>
+                        navigate(
+                          `/browse/product-courses?academicCourseId=${courseId}`,
+                        )
+                      }
+                    >
+                      <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4 me-1.5 sm:me-2" />
+                      {t("courses.card.proLearning", "Pro Learning")}
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -487,6 +530,75 @@ const CourseInfoPage = () => {
               </Card>
             )}
 
+            {/* Pro Learning Courses Section */}
+            {productCourses && productCourses.length > 0 && (
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-base sm:text-lg md:text-xl font-semibold flex items-center gap-1.5 sm:gap-2">
+                    <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    {t("courses.info.proLearning", "Pro Learning Courses")}
+                    <Badge
+                      variant="secondary"
+                      className="ms-1 text-[10px] sm:text-xs"
+                    >
+                      {productCourses.length}
+                    </Badge>
+                  </h2>
+                </div>
+
+                <Separator />
+
+                {loadingProductCourses ? (
+                  <div className="flex flex-col items-center justify-center py-12 gap-3">
+                    <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-primary" />
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      {t("common.loading", "Loading courses...")}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {productCourses
+                        .slice(
+                          (productCoursesPage - 1) * productCoursesPageSize,
+                          productCoursesPage * productCoursesPageSize,
+                        )
+                        .map((productCourse) => (
+                          <ProductCourseCard
+                            key={productCourse.id}
+                            course={productCourse}
+                            onEnrollSuccess={() => {
+                              // Optionally refresh product courses if needed
+                            }}
+                          />
+                        ))}
+                    </div>
+
+                    {Math.ceil(productCourses.length / productCoursesPageSize) >
+                      1 && (
+                      <SmartPagination
+                        pageNumber={productCoursesPage}
+                        totalPages={Math.ceil(
+                          productCourses.length / productCoursesPageSize,
+                        )}
+                        hasPreviousPage={productCoursesPage > 1}
+                        hasNextPage={
+                          productCoursesPage <
+                          Math.ceil(
+                            productCourses.length / productCoursesPageSize,
+                          )
+                        }
+                        onPageChange={(page) => {
+                          setProductCoursesPage(page);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+
             {/* Resources Section */}
             {courseInfo.resources && courseInfo.resources.length > 0 && (
               <div className="space-y-3 sm:space-y-4">
@@ -498,7 +610,11 @@ const CourseInfoPage = () => {
                       variant="secondary"
                       className="ms-1 text-[10px] sm:text-xs"
                     >
-                      {courseInfo.resourceCount}
+                      {
+                        courseInfo.resources.filter(
+                          (r) => r.type !== "ECampusCourse",
+                        ).length
+                      }
                     </Badge>
                   </h2>
                 </div>
@@ -506,9 +622,15 @@ const CourseInfoPage = () => {
                 <Separator />
 
                 <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  {courseInfo.resources.map((resource) => (
-                    <ResourceCard key={resource.id} resource={resource} t={t} />
-                  ))}
+                  {courseInfo.resources
+                    .filter((resource) => resource.type !== "ECampusCourse")
+                    .map((resource) => (
+                      <ResourceCard
+                        key={resource.id}
+                        resource={resource}
+                        t={t}
+                      />
+                    ))}
                 </div>
               </div>
             )}

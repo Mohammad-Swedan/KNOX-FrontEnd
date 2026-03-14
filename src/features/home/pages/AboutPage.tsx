@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BookOpen,
@@ -19,29 +18,12 @@ import { useNavigate } from "react-router-dom";
 import SEO from "@/shared/components/seo/SEO";
 
 const AboutPage = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleContributeSubmit = async () => {
-    if (!isAuthenticated) {
-      alert("Please log in to submit your application");
-      return;
-    }
-
-    if (!phoneNumber || phoneNumber.trim().length < 10) {
-      alert("Please enter a valid phone number");
-      return;
-    }
-
-    setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert("Application submitted successfully!");
-    setPhoneNumber("");
-    setIsSubmitting(false);
-  };
+  const WHATSAPP_NUMBER = "962795441474";
+  const whatsappCreatorLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t("home.about.contribute.whatsappMessage"))}`;
 
   const features = [
     {
@@ -118,11 +100,19 @@ const AboutPage = () => {
               {t("home.about.hero.description")}
             </p>
             <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4 px-4 sm:px-0">
-              <button className="bg-background text-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition flex items-center justify-center gap-2">
+              <button
+                onClick={() =>
+                  navigate(isAuthenticated ? "/courses" : "/auth/register")
+                }
+                className="bg-background text-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition flex items-center justify-center gap-2"
+              >
                 {t("home.about.hero.getStarted")}{" "}
                 <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rtl:rotate-180" />
               </button>
-              <button className="border-2 border-primary-foreground text-primary-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-primary-foreground/10 transition">
+              <button
+                onClick={() => navigate("/courses")}
+                className="border-2 border-primary-foreground text-primary-foreground px-5 md:px-8 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-primary-foreground/10 transition"
+              >
                 {t("home.about.hero.learnMore")}
               </button>
             </div>
@@ -361,42 +351,18 @@ const AboutPage = () => {
               </div>
 
               <div className="space-y-4 md:space-y-5 lg:space-y-6">
-                <div>
-                  <label
-                    className="block text-xs md:text-sm font-medium mb-1.5 md:mb-2 text-primary-foreground"
-                    htmlFor="phone"
-                  >
-                    {t("home.about.contribute.phoneLabel")}
-                  </label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    placeholder={t("home.about.contribute.phonePlaceholder")}
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    disabled={isSubmitting}
-                    className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg text-sm md:text-base text-foreground bg-background focus:ring-2 focus:ring-primary/50 outline-none"
-                  />
-                  <p className="text-xs md:text-sm text-primary-foreground/75 mt-1.5 md:mt-2">
-                    {t("home.about.contribute.phoneNote")}
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleContributeSubmit}
-                  disabled={isSubmitting}
-                  className="w-full bg-background text-foreground py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition disabled:opacity-50"
+                <p className="text-sm md:text-base text-primary-foreground/90 text-center">
+                  {t("home.about.contribute.whatsappNote")}
+                </p>
+                <a
+                  href={whatsappCreatorLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-background text-foreground py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-background/90 transition flex items-center justify-center gap-2"
                 >
-                  {isSubmitting
-                    ? t("home.about.contribute.submitting")
-                    : t("home.about.contribute.submitButton")}
-                </button>
-
-                {!isAuthenticated && (
-                  <p className="text-center text-xs md:text-sm text-primary-foreground/75">
-                    {t("home.about.contribute.loginNote")}
-                  </p>
-                )}
+                  <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                  {t("home.about.contribute.whatsappBtn")}
+                </a>
               </div>
 
               <div className="mt-5 md:mt-6 lg:mt-8 pt-5 md:pt-6 lg:pt-8 border-t border-primary-foreground/20">

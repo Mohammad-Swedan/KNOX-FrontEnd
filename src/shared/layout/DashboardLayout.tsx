@@ -208,7 +208,7 @@ const DashboardLayout = () => {
   const breadcrumbs = getBreadcrumbs();
 
   return (
-    <div className="flex min-h-dvh w-full">
+    <div className="bg-background flex min-h-dvh w-full">
       <SidebarProvider>
         <Sidebar side={sidebarSide}>
           {/* Sidebar Header with Logo */}

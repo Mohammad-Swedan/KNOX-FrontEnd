@@ -11,6 +11,7 @@ import {
   Hash,
   Copy,
   Check,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -95,7 +96,20 @@ export const ProfileHeader = ({
           </button>
 
           {/* Action Buttons - Desktop */}
-          <div className="hidden sm:flex gap-2">
+          <div className="hidden sm:flex gap-2 items-center">
+            {user?.majorId && (
+              <a
+                href={`/curriculum-tree-standalone/${user.majorId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-primary/30 text-xs sm:text-sm font-semibold"
+              >
+                <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                {t("profile.viewCurriculum", {
+                  defaultValue: "View Curriculum",
+                })}
+              </a>
+            )}
             <Button
               variant="outline"
               size="sm"
@@ -204,27 +218,40 @@ export const ProfileHeader = ({
         </div>
 
         {/* Mobile Action Buttons */}
-        <div className="flex sm:hidden gap-2 mt-4 sm:mt-6">
-          <Button
-            variant="outline"
-            size="sm"
-            asChild
-            className="flex-1 bg-white/80 dark:bg-slate-900/80 text-xs h-8"
-          >
-            <Link to="/profile/edit">
-              <Edit3 className="h-3.5 w-3.5 me-1.5" />
-              {t("profile.header.editProfile")}
-            </Link>
-          </Button>
-          <Button
-            onClick={onLogout}
-            variant="outline"
-            size="sm"
-            className="flex-1 bg-white/80 dark:bg-slate-900/80 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 text-xs h-8"
-          >
-            <LogOut className="h-3.5 w-3.5 me-1.5" />
-            {t("profile.header.logout")}
-          </Button>
+        <div className="flex sm:hidden flex-col gap-2 mt-4 sm:mt-6">
+          {user?.majorId && (
+            <a
+              href={`/curriculum-tree-standalone/${user.majorId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 py-2 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 transition-all duration-200 shadow-md text-xs font-semibold"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              {t("profile.viewCurriculum", { defaultValue: "View Curriculum" })}
+            </a>
+          )}
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="flex-1 bg-white/80 dark:bg-slate-900/80 text-xs h-8"
+            >
+              <Link to="/profile/edit">
+                <Edit3 className="h-3.5 w-3.5 me-1.5" />
+                {t("profile.header.editProfile")}
+              </Link>
+            </Button>
+            <Button
+              onClick={onLogout}
+              variant="outline"
+              size="sm"
+              className="flex-1 bg-white/80 dark:bg-slate-900/80 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 text-xs h-8"
+            >
+              <LogOut className="h-3.5 w-3.5 me-1.5" />
+              {t("profile.header.logout")}
+            </Button>
+          </div>
         </div>
       </div>
 

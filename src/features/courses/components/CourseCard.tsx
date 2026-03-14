@@ -1,14 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  FileText,
-  Trophy,
-  Info,
-  UserPlus,
-  Loader2,
-  Sparkles,
-} from "lucide-react";
+import { FileText, Trophy, Info, UserPlus, Loader2, Crown } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/shared/ui/button";
 import ShareButton from "@/shared/ui/ShareButton";
@@ -203,15 +196,17 @@ export default function CourseCard({
             )}
             {course.hasProductCourse && (
               <Button
-                className="col-span-2 relative overflow-hidden text-xs h-10 cursor-pointer bg-linear-to-r from-secondary via-secondary/90 to-primary text-white border-0 hover:shadow-lg hover:shadow-secondary/25 hover:scale-[1.02] transition-all duration-300"
+                className="col-span-2 relative overflow-hidden text-xs h-10 cursor-pointer bg-gradient-to-r from-secondary via-[oklch(0.35_0.09_235)] to-[oklch(0.38_0.1_225)] text-secondary-foreground border-0 shadow-md shadow-secondary/30 hover:shadow-lg hover:shadow-secondary/50 hover:scale-[1.02] hover:brightness-110 transition-all duration-300 font-semibold tracking-wide"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate(`/browse/product-courses`);
+                  navigate(
+                    `/browse/product-courses?academicCourseId=${course.id}`,
+                  );
                 }}
               >
-                <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+                <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/15 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                <Crown className="h-3.5 w-3.5 mr-1.5 fill-white/80" />
                 Pro Learning
               </Button>
             )}
@@ -400,13 +395,13 @@ export default function CourseCard({
           {course.hasProductCourse && (
             <Button
               size="sm"
-              className="relative overflow-hidden cursor-pointer bg-linear-to-r from-secondary via-secondary/90 to-primary text-white border-0 hover:shadow-lg hover:shadow-secondary/25 transition-all duration-300"
+              className="relative overflow-hidden cursor-pointer bg-gradient-to-r from-secondary via-[oklch(0.35_0.09_235)] to-[oklch(0.38_0.1_225)] text-secondary-foreground border-0 shadow-md shadow-secondary/30 hover:shadow-lg hover:shadow-secondary/50 hover:brightness-110 transition-all duration-300 font-semibold tracking-wide text-[10px] sm:text-xs h-7 sm:h-8 md:h-9"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
                 navigate(`/browse/product-courses`);
               }}
             >
-              <Sparkles className="mr-1.5 h-4 w-4" />
+              <Crown className="mr-1.5 h-3.5 w-3.5 fill-white/80" />
               Pro Learning
             </Button>
           )}

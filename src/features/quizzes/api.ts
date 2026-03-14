@@ -1,7 +1,12 @@
 import { apiClient } from "@/lib/api/apiClient";
 import { getPaginated } from "@/lib/api/pagination";
 import type { PaginatedResponse } from "@/lib/api/types";
-import type { QuizDetails, CreateQuizPayload, QuizListItem } from "./types";
+import type {
+  QuizDetails,
+  CreateQuizPayload,
+  QuizListItem,
+  UpdateQuizPayload,
+} from "./types";
 
 /**
  * Upload a temporary file (image) to the server
@@ -100,17 +105,42 @@ export const fetchQuizzesByCourse = async (
 };
 
 /**
- * Update a quiz (title, description, tags)
- * @param quizId - The ID of the quiz to update
- * @param payload - The updated quiz data
+ * Fetch paginated quizzes for a course owned by the current user (writer)
+ * @param courseId - The course ID
+ * @param page - Page number
+ * @param pageSize - Number of items per page
+ * @returns Paginated quiz list
+ */
+export const fetchMyQuizzesByCourse = async (
+  courseId: string,
+  page: number,
+  pageSize: number,
+): Promise<PaginatedResponse<QuizListItem>> => {
+  try {
+    return await getPaginated<QuizListItem>(
+      `/quizzes/by-course/${courseId}/my-quizzes`,
+      page,
+      pageSize,
+    );
+  } catch (err) {
+    console.error("Failed to fetch my quizzes:", err);
+    const error = err instanceof Error ? err.message : "Failed to load quizzes";
+    throw new Error(error);
+  }
+};
+
+/**
+ * Update a quiz including its title, description, tags and questions
+ * @param quizId - The ID of the quiz to update (must match payload.id)
+ * @param payload - The full updated quiz data (including questions)
  * @returns Updated quiz details
  */
 export const updateQuiz = async (
   quizId: number,
-  payload: import("./types").UpdateQuizPayload,
-): Promise<import("./types").QuizDetails> => {
+  payload: UpdateQuizPayload,
+): Promise<QuizDetails> => {
   try {
-    const response = await apiClient.put<import("./types").QuizDetails>(
+    const response = await apiClient.put<QuizDetails>(
       `/quizzes/${quizId}`,
       payload,
     );

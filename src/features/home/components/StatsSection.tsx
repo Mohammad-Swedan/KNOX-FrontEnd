@@ -1,18 +1,26 @@
 import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { BASE_URL } from "@/lib/api/apiClient";
+
+interface ApiStats {
+  totalUniversities: number;
+  totalCourses: number;
+  totalMaterials: number;
+  totalUsers: number;
+}
+
+const fetchPublicStats = async (): Promise<ApiStats> => {
+  const response = await axios.get(`${BASE_URL}/dashboard/statistics`);
+  return response.data;
+};
 
 interface StatItem {
   value: number;
   suffix: string;
   labelKey: string;
 }
-
-const stats: StatItem[] = [
-  { value: 50000, suffix: "+", labelKey: "home.stats.studyMaterials" },
-  { value: 100000, suffix: "+", labelKey: "home.stats.quizQuestions" },
-  { value: 50, suffix: "K+", labelKey: "home.stats.activeStudents" },
-  { value: 100, suffix: "+", labelKey: "home.stats.universities" },
-];
 
 const AnimatedCounter = ({
   value,
@@ -66,6 +74,36 @@ const StatsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+
+  const { data: apiStats } = useQuery({
+    queryKey: ["public-stats"],
+    queryFn: fetchPublicStats,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+
+  const stats: StatItem[] = [
+    {
+      value: apiStats?.totalMaterials ?? 0,
+      suffix: "+",
+      labelKey: "home.stats.studyMaterials",
+    },
+    {
+      value: apiStats?.totalCourses ?? 0,
+      suffix: "+",
+      labelKey: "home.stats.quizQuestions",
+    },
+    {
+      value: apiStats?.totalUsers ?? 0,
+      suffix: "+",
+      labelKey: "home.stats.activeStudents",
+    },
+    {
+      value: apiStats?.totalUniversities ?? 0,
+      suffix: "+",
+      labelKey: "home.stats.universities",
+    },
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(

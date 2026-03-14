@@ -15,6 +15,7 @@ import type { LessonVideoContent } from "../types";
 interface VideoLessonViewerProps {
   video: LessonVideoContent;
   onRefresh?: () => void;
+  onReupload?: () => void;
 }
 
 const isBunnyEmbed = (url: string) =>
@@ -23,6 +24,7 @@ const isBunnyEmbed = (url: string) =>
 export default function VideoLessonViewer({
   video,
   onRefresh,
+  onReupload,
 }: VideoLessonViewerProps) {
   // Show the player whenever a playbackUrl is available
   if (video.playbackUrl) {
@@ -103,17 +105,34 @@ export default function VideoLessonViewer({
               : "Please check back shortly. The video is being prepared."}
           </p>
         </div>
-        {onRefresh && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onRefresh}
-            className="cursor-pointer"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh Status
-          </Button>
-        )}
+        <div className="flex items-center gap-3">
+          {onRefresh && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onRefresh}
+              className="cursor-pointer"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh Status
+            </Button>
+          )}
+          {onReupload &&
+            (isFailed ||
+              video.videoStatus === VideoStatus.Queued ||
+              video.videoStatus === VideoStatus.Processing ||
+              video.videoStatus === VideoStatus.Uploading) && (
+              <Button
+                variant={isFailed ? "default" : "outline"}
+                size="sm"
+                onClick={onReupload}
+                className="cursor-pointer"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Re-upload Video
+              </Button>
+            )}
+        </div>
       </CardContent>
     </Card>
   );

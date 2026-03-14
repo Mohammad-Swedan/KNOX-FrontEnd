@@ -24,6 +24,8 @@ import AnalyticsPage from "@/features/dashboard/pages/AnalyticsPage";
 import ManageUniversitiesPage from "@/features/universities/pages/ManageUniversitiesPage";
 import UniversityDetailsPage from "@/features/universities/pages/UniversityDetailsPage";
 import FacultyDetailsPage from "@/features/universities/pages/FacultyDetailsPage";
+import CurriculumTreePage from "@/features/universities/pages/CurriculumTreePage";
+import StandaloneCurriculumPage from "@/features/universities/pages/StandaloneCurriculumPage";
 import ManageUsersPage from "@/features/users/pages/ManageUsersPage";
 import WriterStatisticsPage from "@/features/dashboard/pages/WriterStatisticsPage";
 import MajorCoursesPage from "@/features/courses/pages/MajorCoursesPage";
@@ -72,14 +74,22 @@ export const router = createBrowserRouter([
         path: "courses/:courseId/quizzes/:quizId/edit",
         element: <EditQuizPage />,
       },
-      // Product Courses — Public routes
+      // Product Courses — Protected routes (require login)
       {
         path: "browse/product-courses",
-        element: <ProductCourseCatalog />,
+        element: (
+          <ProtectedRoute>
+            <ProductCourseCatalog />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "browse/product-courses/:id/:slug",
-        element: <ProductCourseDetailPage />,
+        element: (
+          <ProtectedRoute>
+            <ProductCourseDetailPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "certificates/verify",
@@ -133,7 +143,23 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "curriculum-tree/:majorId",
+        element: (
+          <ProtectedRoute>
+            <CurriculumTreePage />
+          </ProtectedRoute>
+        ),
+      },
     ],
+  },
+  {
+    path: "/curriculum-tree-standalone/:majorId",
+    element: (
+      <ProtectedRoute>
+        <StandaloneCurriculumPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/auth",
@@ -188,6 +214,10 @@ export const router = createBrowserRouter([
       {
         path: "universities/:universityId/faculties/:facultyId/majors/:majorId",
         element: <MajorCoursesPage />,
+      },
+      {
+        path: "universities/:universityId/faculties/:facultyId/majors/:majorId/curriculum",
+        element: <CurriculumTreePage />,
       },
       // Dashboard management routes for materials, quizzes, and resources
       {

@@ -10,12 +10,12 @@ interface Testimonial {
 }
 
 const testimonialKeys: Testimonial[] = [
-  { key: "sarah", rating: 5, avatar: "س" },
-  { key: "michael", rating: 5, avatar: "م" },
+  { key: "sarah", rating: 5, avatar: "ل" },
+  { key: "michael", rating: 5, avatar: "ع" },
   { key: "emma", rating: 5, avatar: "ن" },
   { key: "david", rating: 5, avatar: "أ" },
-  { key: "lisa", rating: 5, avatar: "ل" },
-  { key: "james", rating: 5, avatar: "ع" },
+  { key: "lisa", rating: 5, avatar: "ر" },
+  { key: "james", rating: 5, avatar: "ك" },
 ];
 
 const TestimonialCard = ({

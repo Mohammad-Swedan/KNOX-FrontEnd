@@ -19,20 +19,17 @@ import { toast } from "sonner";
 interface VideoUploaderProps {
   productCourseId: number;
   topicId: number;
-  nextOrder: number;
   onSuccess: () => void;
 }
 
 export default function VideoUploader({
   productCourseId,
   topicId,
-  nextOrder,
   onSuccess,
 }: VideoUploaderProps) {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isFreePreview, setIsFreePreview] = useState(false);
-  const [order, setOrder] = useState(nextOrder);
   const [isDragging, setIsDragging] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -72,7 +69,7 @@ export default function VideoUploader({
 
   const handleUpload = () => {
     if (!file || !title.trim()) return;
-    upload(file, title.trim(), order, isFreePreview);
+    upload(file, title.trim(), 1, isFreePreview);
   };
 
   /*  Complete state  */
@@ -108,22 +105,6 @@ export default function VideoUploader({
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter video title"
           disabled={isDisabled}
-        />
-      </div>
-
-      {/* Order */}
-      <div className="space-y-1.5">
-        <Label htmlFor="videoOrder" className="text-sm font-medium">
-          Lesson Order <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="videoOrder"
-          type="number"
-          min={1}
-          value={order}
-          onChange={(e) => setOrder(parseInt(e.target.value) || 1)}
-          disabled={isDisabled}
-          className="w-28"
         />
       </div>
 

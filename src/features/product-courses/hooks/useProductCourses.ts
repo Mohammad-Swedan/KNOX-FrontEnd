@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   fetchProductCoursesByAcademic,
+  fetchProductCoursesByAcademicPaginated,
   fetchMyProductCourses,
   fetchProductCourseById,
   filterProductCourses,
@@ -53,6 +54,51 @@ export const useProductCoursesByAcademic = (academicCourseId: number) => {
   }, [fetch]);
 
   return { courses, loading, error, refetch: fetch };
+};
+
+// ── Product Courses by Academic Course (with pagination) ────
+
+export const useProductCoursesByAcademicPaginated = (
+  academicCourseId: number,
+  pageNumber: number = 1,
+  pageSize: number = 10,
+) => {
+  const [data, setData] = useState<PaginatedResponse<ProductCourseSummary>>({
+    items: [],
+    pageNumber: 1,
+    pageSize: 10,
+    totalCount: 0,
+    totalPages: 0,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    if (!academicCourseId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetchProductCoursesByAcademicPaginated(
+        academicCourseId,
+        pageNumber,
+        pageSize,
+      );
+      setData(result);
+    } catch (err) {
+      console.error("Failed to fetch product courses:", err);
+      setError("Failed to load product courses");
+    } finally {
+      setLoading(false);
+    }
+  }, [academicCourseId, pageNumber, pageSize]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { ...data, loading, error, refetch: fetch };
 };
 
 // ── My Product Courses (instructor-scoped) ─────────────────
@@ -242,6 +288,11 @@ export const useProductCourseCatalog = (params: ProductCourseFilterParams) => {
     params.isFree,
     params.instructorId,
   ]);
+
+  // Trigger fetch whenever params change
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   useEffect(() => {
     fetch();

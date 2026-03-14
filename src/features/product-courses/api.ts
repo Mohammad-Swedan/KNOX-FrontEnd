@@ -171,6 +171,19 @@ export const filterProductCourses = async (
   );
 };
 
+/** Get paginated product courses by academic course ID */
+export const fetchProductCoursesByAcademicPaginated = async (
+  academicCourseId: number,
+  pageNumber: number = 1,
+  pageSize: number = 10,
+): Promise<PaginatedResponse<ProductCourseSummary>> => {
+  return getPaginated<ProductCourseSummary>(
+    `/product-courses/by-academic/${academicCourseId}`,
+    pageNumber,
+    pageSize,
+  );
+};
+
 // ── Topics ─────────────────────────────────────────────────
 
 /** Add a topic to a product course */

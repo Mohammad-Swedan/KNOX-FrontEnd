@@ -14,8 +14,8 @@ export const ProtectedRoute = ({
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-lg">Authenticating...</div>
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="text-lg text-foreground">Authenticating...</div>
       </div>
     );
   }
@@ -27,13 +27,13 @@ export const ProtectedRoute = ({
   // Check role-based access
   if (requiredRoles && requiredRoles.length > 0) {
     const hasRequiredRole = requiredRoles.some((role) =>
-      user?.roles.includes(role)
+      user?.roles.includes(role),
     );
 
     if (!hasRequiredRole) {
       return (
-        <div className="flex h-screen items-center justify-center">
-          <div className="text-lg">
+        <div className="flex h-screen items-center justify-center bg-background">
+          <div className="text-lg text-foreground">
             You don't have permission to access this page.
           </div>
         </div>

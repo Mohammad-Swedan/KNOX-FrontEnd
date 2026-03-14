@@ -6,15 +6,13 @@ import { useLessons } from "../hooks/useProductCourses";
 import VideoUploader from "../components/VideoUploader";
 
 const AddVideoLessonPage = () => {
-  const { id, topicId: topicIdParam } = useParams<{ id: string; topicId: string }>();
+  const { id, topicId: topicIdParam } = useParams<{
+    id: string;
+    topicId: string;
+  }>();
   const navigate = useNavigate();
   const courseId = parseInt(id || "0");
   const topicId = parseInt(topicIdParam || "0");
-  const { lessons } = useLessons(courseId);
-
-  const nextOrder = lessons.length > 0
-    ? Math.max(...lessons.map((l) => l.order)) + 1
-    : 1;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -35,9 +33,10 @@ const AddVideoLessonPage = () => {
           <VideoUploader
             productCourseId={courseId}
             topicId={topicId}
-            nextOrder={nextOrder}
             onSuccess={() =>
-              navigate(`/dashboard/product-courses/${id}/lessons`)
+              navigate(`/dashboard/product-courses/${id}/lessons`, {
+                replace: true,
+              })
             }
           />
         </CardContent>

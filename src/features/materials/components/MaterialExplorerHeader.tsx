@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui/button";
 import { Separator } from "@/shared/ui/separator";
-import { Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import ShareButton from "@/shared/ui/ShareButton";
 
 interface MaterialExplorerHeaderProps {
@@ -20,13 +21,22 @@ export function MaterialExplorerHeader({
   onAddMaterial,
 }: MaterialExplorerHeaderProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <>
       <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="gap-2 mb-3"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t("common.back", "Back")}
+          </Button>
           <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
             {t("materials.explorer.courseLabel", { courseId })}
           </div>
           <div className="flex items-center gap-2 sm:gap-3">

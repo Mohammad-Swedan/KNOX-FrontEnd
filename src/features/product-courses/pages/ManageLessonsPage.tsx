@@ -121,6 +121,8 @@ const ManageLessonsPage = () => {
 
   const [previewLesson, setPreviewLesson] =
     useState<CourseContentLessonDto | null>(null);
+  const [reuploadLesson, setReuploadLesson] =
+    useState<CourseContentLessonDto | null>(null);
   const {
     content: lessonContent,
     loading: contentLoading,
@@ -360,11 +362,27 @@ const ManageLessonsPage = () => {
                   canManage={canManage}
                   dashboardId={id!}
                   onRefetch={refetch}
+                  onReupload={setReuploadLesson}
                 />
               ))}
           </div>
         )}
       </div>
+
+      {reuploadLesson && (
+        <ReuploadVideoModal
+          open={reuploadLesson !== null}
+          onOpenChange={(open) => {
+            if (!open) setReuploadLesson(null);
+          }}
+          lessonId={reuploadLesson.id}
+          currentTitle={reuploadLesson.title}
+          onSuccess={() => {
+            setReuploadLesson(null);
+            refetch();
+          }}
+        />
+      )}
 
       {/* Add Topic Dialog */}
       <Dialog open={addTopicOpen} onOpenChange={setAddTopicOpen}>
@@ -465,8 +483,10 @@ const ManageLessonsPage = () => {
                   <LessonTypeIcon type={previewLesson.type as string} />
                 </div>
               )}
-              <span className="truncate">{previewLesson?.title}</span>
-              <span className="ml-auto text-xs font-normal text-muted-foreground shrink-0">
+              <span className="flex-1 truncate text-left">
+                {previewLesson?.title}
+              </span>
+              <span className="shrink-0 text-xs font-normal text-muted-foreground">
                 {previewLesson?.type === "Video"
                   ? "Video"
                   : previewLesson?.type === "Quiz"
@@ -532,6 +552,15 @@ const ManageLessonsPage = () => {
                     previewLesson &&
                     fetchContent(previewLesson.id, previewLesson.type as string)
                   }
+                  onReupload={
+                    canManage
+                      ? () => {
+                          if (previewLesson) {
+                            setReuploadLesson(previewLesson);
+                          }
+                        }
+                      : undefined
+                  }
                 />
               )}
 
@@ -583,6 +612,7 @@ function TopicSection({
   canManage,
   dashboardId,
   onRefetch,
+  onReupload,
 }: {
   topic: CourseContentTopicDto;
   expanded: boolean;
@@ -591,6 +621,7 @@ function TopicSection({
   canManage: boolean;
   dashboardId: string;
   onRefetch: () => void;
+  onReupload?: (lesson: CourseContentLessonDto) => void;
 }) {
   const navigate = useNavigate();
 
@@ -685,13 +716,9 @@ function TopicSection({
     if (!externalVideoTitle.trim() || !externalVideoUrl.trim()) return;
     setAddingExternalVideo(true);
     try {
-      const nextOrder =
-        topic.lessons.length > 0
-          ? Math.max(...topic.lessons.map((l) => l.order)) + 1
-          : 1;
       await addLesson(parseInt(dashboardId), topic.id, {
         title: externalVideoTitle.trim(),
-        order: nextOrder,
+        order: 1,
         type: 3,
         isFreePreview: externalVideoPreview,
         directUrl: externalVideoUrl.trim(),
@@ -874,48 +901,50 @@ function TopicSection({
                       >
                         <LessonTypeIcon type={lesson.type} />
                       </div>
-                      <span className="text-sm flex-1 truncate">
-                        {lesson.title}
-                      </span>
+                      <span className="text-sm truncate">{lesson.title}</span>
+                    </button>
+
+                    <div className="flex items-center gap-3 shrink-0">
                       {lesson.isFreePreview && (
-                        <span className="text-[10px] font-medium bg-green-500/10 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full">
+                        <span className="text-[10px] font-medium bg-green-500/10 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full whitespace-nowrap">
                           Preview
                         </span>
                       )}
-                    </button>
-                    {canManage && (
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                        {lesson.type === "Video" && (
+
+                      {canManage && (
+                        <div className="flex items-center gap-1 shrink-0">
+                          {lesson.type === "Video" && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-primary"
+                              onClick={() => setReuploadLesson(lesson)}
+                              title="Re-upload video"
+                            >
+                              <RefreshCw className="h-3.5 w-3.5" />
+                            </Button>
+                          )}
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-primary"
-                            onClick={() => setReuploadLesson(lesson)}
-                            title="Re-upload video"
+                            className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-foreground"
+                            onClick={() => openEditLesson(lesson)}
+                            title="Edit lesson"
                           >
-                            <RefreshCw className="h-3.5 w-3.5" />
+                            <Pencil className="h-3.5 w-3.5" />
                           </Button>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-foreground"
-                          onClick={() => openEditLesson(lesson)}
-                          title="Edit lesson"
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-destructive"
-                          onClick={() => setLessonToDelete(lesson)}
-                          title="Delete lesson"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    )}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 cursor-pointer text-muted-foreground hover:text-destructive"
+                            onClick={() => setLessonToDelete(lesson)}
+                            title="Delete lesson"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
             </div>

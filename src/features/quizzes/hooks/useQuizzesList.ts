@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import type { PaginatedResponse } from "@/lib/api/types";
 import type { QuizListItem } from "../types";
-import { fetchQuizzesByCourse } from "../api";
+import { fetchQuizzesByCourse, fetchMyQuizzesByCourse } from "../api";
 
 interface UseQuizzesListProps {
   courseId: string | undefined;
+  /** "public" — all course quizzes; "my-quizzes" — only quizzes owned by current writer */
+  fetchType?: "public" | "my-quizzes";
 }
 
 interface UseQuizzesListReturn {
@@ -25,6 +27,7 @@ interface UseQuizzesListReturn {
 
 export const useQuizzesList = ({
   courseId,
+  fetchType = "public",
 }: UseQuizzesListProps): UseQuizzesListReturn => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
@@ -41,7 +44,11 @@ export const useQuizzesList = ({
       setError(null);
 
       try {
-        const response = await fetchQuizzesByCourse(courseId, page, size);
+        const fetcher =
+          fetchType === "my-quizzes"
+            ? fetchMyQuizzesByCourse
+            : fetchQuizzesByCourse;
+        const response = await fetcher(courseId, page, size);
         setQuizzesData(response);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load quizzes");
@@ -50,7 +57,7 @@ export const useQuizzesList = ({
         setLoading(false);
       }
     },
-    [courseId]
+    [courseId, fetchType],
   );
 
   useEffect(() => {

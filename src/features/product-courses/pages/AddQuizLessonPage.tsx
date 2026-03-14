@@ -17,13 +17,8 @@ const AddQuizLessonPage = () => {
   const topicId = parseInt(topicIdParam || "0");
 
   const { course, loading: courseLoading } = useProductCourse(courseId);
-  const { lessons } = useLessons(courseId);
-
-  const nextOrder =
-    lessons.length > 0 ? Math.max(...lessons.map((l) => l.order)) + 1 : 1;
 
   const [title, setTitle] = useState("");
-  const [order, setOrder] = useState(nextOrder);
   const [isFreePreview, setIsFreePreview] = useState(false);
 
   const handleContinue = (e: React.FormEvent) => {
@@ -34,13 +29,14 @@ const AddQuizLessonPage = () => {
       productCourseId: String(courseId),
       topicId: String(topicId),
       lessonTitle: title.trim(),
-      lessonOrder: String(order),
+      lessonOrder: String(1),
       lessonIsFree: String(isFreePreview),
       returnTo: `/dashboard/product-courses/${id}/lessons`,
     });
 
     navigate(
       `/courses/${course.academicCourseId}/quizzes/add?${params.toString()}`,
+      { replace: true },
     );
   };
 
@@ -97,20 +93,6 @@ const AddQuizLessonPage = () => {
             <p className="text-xs text-muted-foreground">
               This is the lesson title students will see in the course.
             </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="order" className="text-sm font-medium">
-              Lesson Order <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="order"
-              type="number"
-              min={1}
-              value={order}
-              onChange={(e) => setOrder(parseInt(e.target.value) || 1)}
-              className="w-28"
-            />
           </div>
 
           <div className="flex items-center gap-2.5 rounded-xl border bg-muted/30 px-4 py-3">

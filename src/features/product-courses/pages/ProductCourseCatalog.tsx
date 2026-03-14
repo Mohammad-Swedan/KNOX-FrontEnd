@@ -1,81 +1,65 @@
 import { useState } from "react";
-import {
-  Search,
-  Loader2,
-  GraduationCap,
-  X,
-  SlidersHorizontal,
-} from "lucide-react";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
-import { Label } from "@/shared/ui/label";
-import { Checkbox } from "@/shared/ui/checkbox";
-import { Badge } from "@/shared/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/ui/select";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { Loader2, GraduationCap, Check, ArrowLeft } from "lucide-react";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
-import { useProductCourseCatalog } from "../hooks/useProductCourses";
-import { fetchUniversities } from "@/features/courses/api";
+import {
+  useProductCourseCatalog,
+  useProductCoursesByAcademicPaginated,
+} from "../hooks/useProductCourses";
 import ProductCourseCard from "../components/ProductCourseCard";
-import type { University } from "@/features/courses/types";
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
+import { useAuth } from "@/app/providers/useAuth";
+import { Button } from "@/shared/ui/button";
+import { fetchCourseById } from "@/features/courses/api";
+import { useEffect } from "react";
 
 const ProductCourseCatalog = () => {
-  const [search, setSearch] = useState("");
-  const [appliedSearch, setAppliedSearch] = useState("");
-  const [isFree, setIsFree] = useState<boolean | undefined>(undefined);
-  const [universityId, setUniversityId] = useState<number | undefined>(
-    undefined,
+  const { user } = useAuth();
+  const majorId = user?.majorId;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const academicCourseId = searchParams.get("academicCourseId");
+  const [academicCourseName, setAcademicCourseName] = useState<string | null>(
+    null,
   );
+
+  const [isFree, setIsFree] = useState<boolean | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(12);
 
-  const [universities, setUniversities] = useState<University[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
-
+  // Fetch course name if academicCourseId is provided
   useEffect(() => {
-    fetchUniversities(1, 100)
-      .then((res) => setUniversities(res.items))
-      .catch(console.error);
-  }, []);
+    if (academicCourseId) {
+      fetchCourseById(parseInt(academicCourseId))
+        .then((course) => setAcademicCourseName(course.courseName))
+        .catch(() => setAcademicCourseName(null));
+    }
+  }, [academicCourseId]);
 
+  // Use appropriate hook based on whether academicCourseId is present
   const {
     items: courses,
     totalCount,
     totalPages,
     loading,
     refetch: refetchCatalog,
-  } = useProductCourseCatalog({
-    pageNumber: currentPage,
-    pageSize,
-    search: appliedSearch,
-    isFree,
-    universityId,
-  });
+  } = academicCourseId
+    ? useProductCoursesByAcademicPaginated(
+        parseInt(academicCourseId),
+        currentPage,
+        pageSize,
+      )
+    : useProductCourseCatalog({
+        pageNumber: currentPage,
+        pageSize,
+        isFree,
+        majorId,
+      });
 
   // Re-fetch catalog so isEnrolled flags are refreshed
   const handleEnrollSuccess = useCallback(() => {
     refetchCatalog();
   }, [refetchCatalog]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setAppliedSearch(search);
-    setCurrentPage(1);
-  };
-
-  const hasActiveFilters = isFree !== undefined || universityId !== undefined;
-
-  const clearFilters = () => {
-    setIsFree(undefined);
-    setUniversityId(undefined);
-    setCurrentPage(1);
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,130 +67,81 @@ const ProductCourseCatalog = () => {
       <div className="relative bg-linear-to-br from-primary/5 via-background to-secondary/5 border-b">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="relative container mx-auto px-4 py-12 max-w-7xl">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <GraduationCap className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">Product Courses</h1>
+          {/* Title and Toggle */}
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              {academicCourseId && (
+                <Button
+                  variant="ghost"
+                  className="mb-4 gap-2 cursor-pointer"
+                  onClick={() => navigate(-1)}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Button>
+              )}
+              <h1 className="text-3xl font-bold">Pro Learning Courses</h1>
               <p className="text-muted-foreground">
-                Premium courses with video lessons, quizzes & certificates
+                {academicCourseName
+                  ? `Premium courses for ${academicCourseName}`
+                  : "Premium courses with video lessons, quizzes & certificates"}
               </p>
             </div>
           </div>
-
-          {/* Search bar */}
-          <form onSubmit={handleSearch} className="flex gap-2 max-w-xl mt-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search courses..."
-                className="pl-10 h-11 bg-background"
-              />
-            </div>
-            <Button type="submit" className="h-11 px-6 cursor-pointer">
-              Search
-            </Button>
-          </form>
         </div>
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 py-6 max-w-7xl">
-        {/* Filter bar */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={showFilters ? "default" : "outline"}
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-              className="cursor-pointer gap-1.5"
+        {/* Top bar with toggle and course count */}
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+          {/* Free Courses Toggle - only show when not filtered by academic course */}
+          {!academicCourseId && (
+            <button
+              onClick={() => {
+                setIsFree(isFree === true ? undefined : true);
+                setCurrentPage(1);
+              }}
+              type="button"
+              className={`flex items-center gap-3 p-2 lg:pr-5 pr-4 rounded-full border transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/50 select-none ${
+                isFree === true
+                  ? "bg-primary/5 border-primary/20"
+                  : "bg-background border-border/50 hover:bg-muted/50 shadow-sm"
+              }`}
             >
-              <SlidersHorizontal className="h-3.5 w-3.5" />
-              Filters
-            </Button>
-
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="cursor-pointer gap-1 text-muted-foreground"
+              <div
+                className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors shrink-0 ${
+                  isFree === true ? "bg-primary" : "bg-muted-foreground/20"
+                }`}
               >
-                <X className="h-3.5 w-3.5" />
-                Clear all
-              </Button>
-            )}
-
-            {isFree && (
-              <Badge variant="secondary" className="gap-1">
-                Free only
-                <button
-                  onClick={() => {
-                    setIsFree(undefined);
-                    setCurrentPage(1);
-                  }}
-                  title="Remove free filter"
-                  className="ml-1 cursor-pointer"
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
+                    isFree === true ? "translate-x-6" : "translate-x-1"
+                  }`}
                 >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            )}
-          </div>
+                  {isFree === true && (
+                    <Check
+                      className="h-2.5 w-2.5 text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                      strokeWidth={4}
+                    />
+                  )}
+                </span>
+              </div>
+              <span
+                className={`text-sm font-medium ${isFree === true ? "text-primary" : "text-muted-foreground"}`}
+              >
+                Show free courses only
+              </span>
+            </button>
+          )}
 
+          {/* Course count */}
           {!loading && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground ml-auto">
               {totalCount} course{totalCount !== 1 ? "s" : ""} found
             </p>
           )}
         </div>
-
-        {/* Filter panel */}
-        {showFilters && (
-          <div className="flex flex-wrap gap-4 p-4 mb-6 rounded-xl border bg-muted/20">
-            <div className="space-y-2">
-              <Label className="text-xs font-medium uppercase text-muted-foreground tracking-wider">
-                University
-              </Label>
-              <Select
-                value={universityId?.toString() ?? "all"}
-                onValueChange={(val) => {
-                  setUniversityId(val === "all" ? undefined : parseInt(val));
-                  setCurrentPage(1);
-                }}
-              >
-                <SelectTrigger className="w-[220px]">
-                  <SelectValue placeholder="All universities" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All universities</SelectItem>
-                  {universities.map((u) => (
-                    <SelectItem key={u.id} value={u.id.toString()}>
-                      {u.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-end gap-2 pb-2">
-              <Checkbox
-                id="freeOnly"
-                checked={isFree === true}
-                onCheckedChange={(checked) => {
-                  setIsFree(checked === true ? true : undefined);
-                  setCurrentPage(1);
-                }}
-              />
-              <Label htmlFor="freeOnly" className="cursor-pointer text-sm">
-                Free courses only
-              </Label>
-            </div>
-          </div>
-        )}
 
         {/* Results */}
         {loading ? (

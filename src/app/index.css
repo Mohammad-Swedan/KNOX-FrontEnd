@@ -98,6 +98,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.155 0.035 244);
   --foreground: oklch(0.96 0.005 250);
   --card: oklch(0.195 0.045 244);
@@ -135,8 +136,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Prevent background-color transition on initial page load to avoid white flash */
+  html {
+    background-color: var(--background);
+  }
   body {
     @apply bg-background text-foreground antialiased;
+  }
+  /* Re-enable transitions only after the page has loaded */
+  body.theme-ready {
     transition:
       background-color 0.2s ease,
       color 0.2s ease;

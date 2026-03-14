@@ -24,21 +24,14 @@ export default function CourseOutline({
   onFreePreviewClick,
   onLockedClick,
 }: CourseOutlineProps) {
-  const [expandedTopics, setExpandedTopics] = useState<Set<number>>(() => {
+  const [expandedTopicId, setExpandedTopicId] = useState<number | null>(() => {
     // Auto-expand first topic
-    return new Set(topics.length > 0 ? [topics[0].id] : []);
+    return topics.length > 0 ? topics[0].id : null;
   });
 
   const toggleTopic = (topicId: number) => {
-    setExpandedTopics((prev) => {
-      const next = new Set(prev);
-      if (next.has(topicId)) {
-        next.delete(topicId);
-      } else {
-        next.add(topicId);
-      }
-      return next;
-    });
+    // Only allow one topic expanded at a time (accordion behavior)
+    setExpandedTopicId((prev) => (prev === topicId ? null : topicId));
   };
 
   const sortedTopics = [...topics].sort((a, b) => a.order - b.order);
@@ -55,7 +48,7 @@ export default function CourseOutline({
 
       <div className="rounded-xl border overflow-hidden divide-y">
         {sortedTopics.map((topic) => {
-          const isExpanded = expandedTopics.has(topic.id);
+          const isExpanded = expandedTopicId === topic.id;
           const sortedLessons = [...topic.lessons].sort(
             (a, b) => a.order - b.order,
           );
