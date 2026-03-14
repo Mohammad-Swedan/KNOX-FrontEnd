@@ -5,6 +5,9 @@ import {
   useSearchParams,
   useLocation,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import SEO from "@/shared/components/seo/SEO";
+import StructuredData from "@/shared/components/seo/StructuredData";
 import {
   ArrowLeft,
   Loader2,
@@ -54,6 +57,7 @@ const ProductCourseDetailPage = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   // Course summary passed from the catalog card via navigation state
   const courseSummary = (
@@ -271,445 +275,475 @@ const ProductCourseDetailPage = () => {
     url.includes("iframe.mediadelivery.net") || url.includes("/embed/");
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section - Only show for non-enrolled users */}
-      {!isEnrolledFinal && (
-        <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
-          {/* Decorative blobs */}
-          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-primary/10 blur-3xl" />
+    <>
+      <SEO
+        title={`${course.title} | eCampus`}
+        description={
+          course.description ||
+          t("seo.productCourseDetail.description").replace(
+            "{{courseDescription}}",
+            course.title,
+          )
+        }
+        keywords={t("seo.productCourseDetail.keywords").replace(
+          "{{courseName}}",
+          course.title,
+        )}
+        image={course.thumbnailUrl || undefined}
+        canonical={`https://ecampusjo.com/browse/product-courses/${course.id}/${course.slug || course.id}`}
+      />
+      <StructuredData
+        type="course"
+        data={{
+          name: course.title,
+          description: course.description || course.title,
+          provider: course.instructorName || "eCampus",
+          url: `https://ecampusjo.com/browse/product-courses/${course.id}/${course.slug || course.id}`,
+          image: course.thumbnailUrl || undefined,
+          price: course.price,
+          priceCurrency: "JOD",
+        }}
+      />
+      <div className="min-h-screen bg-background">
+        {/* Hero Section - Only show for non-enrolled users */}
+        {!isEnrolledFinal && (
+          <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+            {/* Decorative blobs */}
+            <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-primary/10 blur-3xl" />
 
-          <div className="relative container mx-auto px-4 py-8 max-w-6xl">
-            <Button
-              variant="ghost"
-              className="mb-6 gap-2 cursor-pointer text-white/70 hover:text-white hover:bg-white/10"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Courses
-            </Button>
+            <div className="relative container mx-auto px-4 py-8 max-w-6xl">
+              <Button
+                variant="ghost"
+                className="mb-6 gap-2 cursor-pointer text-white/70 hover:text-white hover:bg-white/10"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Courses
+              </Button>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-              {/* Left: Course info */}
-              <div className="lg:col-span-3 space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  {isEnrolledFinal && (
-                    <Badge className="bg-emerald-500/90 text-white border-0 gap-1">
-                      <CheckCircle className="h-3 w-3" />
-                      Enrolled
-                    </Badge>
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                {/* Left: Course info */}
+                <div className="lg:col-span-3 space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    {isEnrolledFinal && (
+                      <Badge className="bg-emerald-500/90 text-white border-0 gap-1">
+                        <CheckCircle className="h-3 w-3" />
+                        Enrolled
+                      </Badge>
+                    )}
+                    {course.isFree && (
+                      <Badge className="bg-emerald-500/90 text-white border-0">
+                        Free
+                      </Badge>
+                    )}
+                    {course.categories.map((cat) => (
+                      <Badge
+                        key={cat}
+                        variant="outline"
+                        className="border-white/20 text-white/80"
+                      >
+                        {cat}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+                    {course.title}
+                  </h1>
+
+                  {course.description && (
+                    <p className="text-white/70 text-base leading-relaxed max-w-2xl">
+                      {course.description}
+                    </p>
                   )}
-                  {course.isFree && (
-                    <Badge className="bg-emerald-500/90 text-white border-0">
-                      Free
-                    </Badge>
+
+                  {instructorName && (
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-14 w-14 border-2 border-white/20 shadow-lg">
+                        {instructorPicture ? (
+                          <AvatarImage
+                            src={instructorPicture}
+                            alt={instructorName}
+                          />
+                        ) : null}
+                        <AvatarFallback className="text-lg font-bold bg-white/15 text-white">
+                          {getInitials(instructorName)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-white/50 text-xs">Created by</p>
+                        <p className="text-white text-base font-semibold">
+                          {instructorName}
+                        </p>
+                      </div>
+                    </div>
                   )}
-                  {course.categories.map((cat) => (
-                    <Badge
-                      key={cat}
-                      variant="outline"
-                      className="border-white/20 text-white/80"
-                    >
-                      {cat}
-                    </Badge>
-                  ))}
-                </div>
 
-                <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
-                  {course.title}
-                </h1>
-
-                {course.description && (
-                  <p className="text-white/70 text-base leading-relaxed max-w-2xl">
-                    {course.description}
-                  </p>
-                )}
-
-                {instructorName && (
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-14 w-14 border-2 border-white/20 shadow-lg">
-                      {instructorPicture ? (
-                        <AvatarImage
-                          src={instructorPicture}
-                          alt={instructorName}
-                        />
-                      ) : null}
-                      <AvatarFallback className="text-lg font-bold bg-white/15 text-white">
-                        {getInitials(instructorName)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-white/50 text-xs">Created by</p>
-                      <p className="text-white text-base font-semibold">
-                        {instructorName}
-                      </p>
+                  {/* Stats */}
+                  <div className="flex flex-wrap items-center gap-5 pt-2">
+                    <div className="flex items-center gap-1.5">
+                      <BookOpen className="h-4 w-4 text-white/60" />
+                      <span className="font-semibold text-sm">
+                        {course.lessonCount || lessonCount}
+                      </span>
+                      <span className="text-white/50 text-sm">lessons</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-white/50 text-sm">
+                      <Calendar className="h-4 w-4" />
+                      Last updated{" "}
+                      {new Date(
+                        course.updatedAt || course.createdAt,
+                      ).toLocaleDateString()}
                     </div>
                   </div>
-                )}
-
-                {/* Stats */}
-                <div className="flex flex-wrap items-center gap-5 pt-2">
-                  <div className="flex items-center gap-1.5">
-                    <BookOpen className="h-4 w-4 text-white/60" />
-                    <span className="font-semibold text-sm">
-                      {course.lessonCount || lessonCount}
-                    </span>
-                    <span className="text-white/50 text-sm">lessons</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-white/50 text-sm">
-                    <Calendar className="h-4 w-4" />
-                    Last updated{" "}
-                    {new Date(
-                      course.updatedAt || course.createdAt,
-                    ).toLocaleDateString()}
-                  </div>
                 </div>
-              </div>
 
-              {/* Right: Trial video or thumbnail */}
-              <div className="lg:col-span-2">
-                {trialVideoUrl && !showTrialVideo ? (
-                  <div
-                    className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/50 cursor-pointer group aspect-video bg-slate-900 ring-1 ring-white/10 hover:ring-primary/40 transition-all duration-300"
-                    onClick={() => setShowTrialVideo(true)}
-                  >
-                    {course.thumbnailUrl ? (
+                {/* Right: Trial video or thumbnail */}
+                <div className="lg:col-span-2">
+                  {trialVideoUrl && !showTrialVideo ? (
+                    <div
+                      className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/50 cursor-pointer group aspect-video bg-slate-900 ring-1 ring-white/10 hover:ring-primary/40 transition-all duration-300"
+                      onClick={() => setShowTrialVideo(true)}
+                    >
+                      {course.thumbnailUrl ? (
+                        <img
+                          src={course.thumbnailUrl}
+                          alt={course.title}
+                          className="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-linear-to-br from-primary/25 via-slate-900 to-secondary/30" />
+                      )}
+                      {/* Gradient overlays */}
+                      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-black/10" />
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      {/* Animated play button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="relative flex items-center justify-center">
+                          {/* Outer ping */}
+                          <div className="absolute w-32 h-32 rounded-full bg-white/10 animate-ping animation-duration-[3s]" />
+                          {/* Middle ping */}
+                          <div className="absolute w-24 h-24 rounded-full bg-primary/20 animate-ping animation-duration-[2.2s] animation-delay-[0.4s]" />
+                          {/* Inner ping */}
+                          <div className="absolute w-16 h-16 rounded-full bg-white/15 animate-ping animation-duration-[1.8s] animation-delay-[0.9s]" />
+                          {/* Glow ring */}
+                          <div className="absolute w-[76px] h-[76px] rounded-full ring-2 ring-white/30" />
+                          {/* Play button */}
+                          <div className="relative z-10 w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center shadow-2xl shadow-black/60 group-hover:scale-110 group-hover:shadow-primary/60 transition-all duration-300">
+                            <Play className="h-8 w-8 text-primary fill-primary ml-1" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* FREE PREVIEW badge — top left */}
+                      <div className="absolute top-3 left-3">
+                        <Badge className="bg-primary text-white border-0 text-[11px] font-bold shadow-lg shadow-primary/30 gap-1.5">
+                          <Sparkles className="h-3 w-3" />
+                          FREE PREVIEW
+                        </Badge>
+                      </div>
+
+                      {/* Hover hint — bottom right */}
+                      <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="text-white/80 text-xs bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                          Click to play ▶
+                        </span>
+                      </div>
+                    </div>
+                  ) : trialVideoUrl && showTrialVideo ? (
+                    <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video bg-black ring-1 ring-white/10 animate-in fade-in duration-500">
+                      {isBunnyEmbed(trialVideoUrl) ? (
+                        <iframe
+                          src={trialVideoUrl}
+                          title="Trial video preview"
+                          className="w-full h-full border-0"
+                          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video
+                          src={trialVideoUrl}
+                          controls
+                          autoPlay
+                          className="w-full h-full"
+                        />
+                      )}
+                    </div>
+                  ) : course.thumbnailUrl ? (
+                    <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video ring-1 ring-white/10">
                       <img
                         src={course.thumbnailUrl}
                         alt={course.title}
-                        className="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
+                        className="w-full h-full object-cover"
                       />
-                    ) : (
-                      <div className="w-full h-full bg-linear-to-br from-primary/25 via-slate-900 to-secondary/30" />
-                    )}
-                    {/* Gradient overlays */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-black/10" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Animated play button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative flex items-center justify-center">
-                        {/* Outer ping */}
-                        <div className="absolute w-32 h-32 rounded-full bg-white/10 animate-ping animation-duration-[3s]" />
-                        {/* Middle ping */}
-                        <div className="absolute w-24 h-24 rounded-full bg-primary/20 animate-ping animation-duration-[2.2s] animation-delay-[0.4s]" />
-                        {/* Inner ping */}
-                        <div className="absolute w-16 h-16 rounded-full bg-white/15 animate-ping animation-duration-[1.8s] animation-delay-[0.9s]" />
-                        {/* Glow ring */}
-                        <div className="absolute w-[76px] h-[76px] rounded-full ring-2 ring-white/30" />
-                        {/* Play button */}
-                        <div className="relative z-10 w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center shadow-2xl shadow-black/60 group-hover:scale-110 group-hover:shadow-primary/60 transition-all duration-300">
-                          <Play className="h-8 w-8 text-primary fill-primary ml-1" />
-                        </div>
-                      </div>
                     </div>
-
-                    {/* FREE PREVIEW badge — top left */}
-                    <div className="absolute top-3 left-3">
-                      <Badge className="bg-primary text-white border-0 text-[11px] font-bold shadow-lg shadow-primary/30 gap-1.5">
-                        <Sparkles className="h-3 w-3" />
-                        FREE PREVIEW
-                      </Badge>
-                    </div>
-
-                    {/* Hover hint — bottom right */}
-                    <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <span className="text-white/80 text-xs bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
-                        Click to play ▶
-                      </span>
-                    </div>
-                  </div>
-                ) : trialVideoUrl && showTrialVideo ? (
-                  <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video bg-black ring-1 ring-white/10 animate-in fade-in duration-500">
-                    {isBunnyEmbed(trialVideoUrl) ? (
-                      <iframe
-                        src={trialVideoUrl}
-                        title="Trial video preview"
-                        className="w-full h-full border-0"
-                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                        allowFullScreen
-                      />
-                    ) : (
-                      <video
-                        src={trialVideoUrl}
-                        controls
-                        autoPlay
-                        className="w-full h-full"
-                      />
-                    )}
-                  </div>
-                ) : course.thumbnailUrl ? (
-                  <div className="rounded-xl overflow-hidden shadow-2xl shadow-black/40 aspect-video ring-1 ring-white/10">
-                    <img
-                      src={course.thumbnailUrl}
-                      alt={course.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Back button for enrolled users */}
-      {isEnrolledFinal && (
-        <div className="border-b bg-muted/20">
-          <div className="container mx-auto px-4 py-4 max-w-6xl">
-            <Button
-              variant="ghost"
-              className="gap-2 cursor-pointer"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Courses
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Body */}
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div
-          className={`grid grid-cols-1 ${isEnrolledFinal ? "" : "lg:grid-cols-3"} gap-8`}
-        >
-          {/* Main content */}
-          <div
-            className={`${isEnrolledFinal ? "" : "lg:col-span-2"} space-y-8`}
-          >
-            {/* Course content view (fetched from /content API) */}
-            {showContent && contentLoading && (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                <span className="ml-2 text-muted-foreground text-sm">
-                  Loading content...
-                </span>
-              </div>
-            )}
-
-            {showContent && courseContent && (
-              <CourseContentView
-                content={courseContent}
-                instructorName={instructorName}
-                instructorProfilePictureUrl={instructorPicture}
-                trialVideoUrl={trialVideoUrl}
-                onLessonClick={handleContentLessonClick}
-                activeLessonId={selectedLesson?.id ?? null}
-                selectedLesson={selectedLesson}
-                lessonContent={lessonContent}
-                lessonContentLoading={lessonContentLoading}
-                lessonContentError={lessonContentError}
-                onCloseLessonContent={handleCloseLessonContent}
-                onRetryLessonContent={handleRetryLessonContent}
-                onMarkCompleted={handleMarkCompleted}
-                markCompletedLoading={completeLessonLoading}
-              />
-            )}
-
-            {/* Course outline (shown when content is not active) */}
-            {!showContent && outline && outline.topics.length > 0 && (
-              <CourseOutline
-                topics={outline.topics}
-                onFreePreviewClick={handleFreePreviewClick}
-                onLockedClick={handleLockedClick}
-              />
-            )}
-
-            {/* About section */}
-            {course.description && (
-              <div>
-                <h3 className="text-lg font-semibold mb-3">
-                  About This Course
-                </h3>
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
-                    {course.description}
-                  </p>
+                  ) : null}
                 </div>
               </div>
-            )}
+            </div>
           </div>
+        )}
 
-          {/* Sidebar — only shown for non-enrolled users */}
-          {!isEnrolledFinal && (
-            <div className="space-y-4">
-              <Card className="sticky top-20 shadow-lg border-0 bg-card">
-                <CardContent className="pt-6 space-y-5">
-                  {/* Price */}
-                  <div className="text-center">
-                    {course.isFree ? (
-                      <div>
-                        <p className="text-3xl font-bold text-emerald-600">
-                          Free
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Full access, no payment needed
-                        </p>
-                      </div>
-                    ) : course.discountPercentage &&
-                      course.discountedPrice != null ? (
-                      <div>
-                        <div className="flex items-center justify-center gap-2">
-                          <p className="text-3xl font-bold text-primary">
-                            {course.discountedPrice.toFixed(2)} JD
+        {/* Back button for enrolled users */}
+        {isEnrolledFinal && (
+          <div className="border-b bg-muted/20">
+            <div className="container mx-auto px-4 py-4 max-w-6xl">
+              <Button
+                variant="ghost"
+                className="gap-2 cursor-pointer"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Courses
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Body */}
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          <div
+            className={`grid grid-cols-1 ${isEnrolledFinal ? "" : "lg:grid-cols-3"} gap-8`}
+          >
+            {/* Main content */}
+            <div
+              className={`${isEnrolledFinal ? "" : "lg:col-span-2"} space-y-8`}
+            >
+              {/* Course content view (fetched from /content API) */}
+              {showContent && contentLoading && (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  <span className="ml-2 text-muted-foreground text-sm">
+                    Loading content...
+                  </span>
+                </div>
+              )}
+
+              {showContent && courseContent && (
+                <CourseContentView
+                  content={courseContent}
+                  instructorName={instructorName}
+                  instructorProfilePictureUrl={instructorPicture}
+                  trialVideoUrl={trialVideoUrl}
+                  onLessonClick={handleContentLessonClick}
+                  activeLessonId={selectedLesson?.id ?? null}
+                  selectedLesson={selectedLesson}
+                  lessonContent={lessonContent}
+                  lessonContentLoading={lessonContentLoading}
+                  lessonContentError={lessonContentError}
+                  onCloseLessonContent={handleCloseLessonContent}
+                  onRetryLessonContent={handleRetryLessonContent}
+                  onMarkCompleted={handleMarkCompleted}
+                  markCompletedLoading={completeLessonLoading}
+                />
+              )}
+
+              {/* Course outline (shown when content is not active) */}
+              {!showContent && outline && outline.topics.length > 0 && (
+                <CourseOutline
+                  topics={outline.topics}
+                  onFreePreviewClick={handleFreePreviewClick}
+                  onLockedClick={handleLockedClick}
+                />
+              )}
+
+              {/* About section */}
+              {course.description && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">
+                    About This Course
+                  </h3>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                      {course.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar — only shown for non-enrolled users */}
+            {!isEnrolledFinal && (
+              <div className="space-y-4">
+                <Card className="sticky top-20 shadow-lg border-0 bg-card">
+                  <CardContent className="pt-6 space-y-5">
+                    {/* Price */}
+                    <div className="text-center">
+                      {course.isFree ? (
+                        <div>
+                          <p className="text-3xl font-bold text-emerald-600">
+                            Free
                           </p>
-                          <Badge className="bg-primary/10 text-primary border-primary/20 border font-bold">
-                            -{course.discountPercentage}%
-                          </Badge>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Full access, no payment needed
+                          </p>
                         </div>
-                        <p className="text-base text-muted-foreground line-through mt-0.5">
-                          {course.price.toFixed(2)} JD
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          One-time purchase
-                        </p>
+                      ) : course.discountPercentage &&
+                        course.discountedPrice != null ? (
+                        <div>
+                          <div className="flex items-center justify-center gap-2">
+                            <p className="text-3xl font-bold text-primary">
+                              {course.discountedPrice.toFixed(2)} JD
+                            </p>
+                            <Badge className="bg-primary/10 text-primary border-primary/20 border font-bold">
+                              -{course.discountPercentage}%
+                            </Badge>
+                          </div>
+                          <p className="text-base text-muted-foreground line-through mt-0.5">
+                            {course.price.toFixed(2)} JD
+                          </p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            One-time purchase
+                          </p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-3xl font-bold">
+                            {course.price.toFixed(2)} JD
+                          </p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            One-time purchase
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action buttons */}
+                    {isAuthenticated ? (
+                      <div className="space-y-2">
+                        <EnrollButton
+                          course={course}
+                          isEnrolled={false}
+                          onEnrolled={() => {
+                            refetchEnrollments();
+                            refetchContent();
+                          }}
+                        />
+                        <Button
+                          variant="outline"
+                          className="w-full cursor-pointer"
+                          size="lg"
+                          onClick={handleShowContent}
+                        >
+                          <ListTree className="h-4 w-4 mr-2" />
+                          Show Content
+                        </Button>
                       </div>
                     ) : (
-                      <div>
-                        <p className="text-3xl font-bold">
-                          {course.price.toFixed(2)} JD
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          One-time purchase
-                        </p>
+                      <div className="space-y-2">
+                        <Button
+                          className="w-full cursor-pointer"
+                          size="lg"
+                          onClick={() => navigate("/auth/login")}
+                        >
+                          <Sparkles className="h-4 w-4 mr-2" />
+                          Login to Enroll
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="w-full cursor-pointer"
+                          size="lg"
+                          onClick={handleShowContent}
+                        >
+                          <ListTree className="h-4 w-4 mr-2" />
+                          Show Content
+                        </Button>
                       </div>
                     )}
-                  </div>
 
-                  {/* Action buttons */}
-                  {isAuthenticated ? (
-                    <div className="space-y-2">
-                      <EnrollButton
-                        course={course}
-                        isEnrolled={false}
-                        onEnrolled={() => {
-                          refetchEnrollments();
-                          refetchContent();
-                        }}
-                      />
-                      <Button
-                        variant="outline"
-                        className="w-full cursor-pointer"
-                        size="lg"
-                        onClick={handleShowContent}
-                      >
-                        <ListTree className="h-4 w-4 mr-2" />
-                        Show Content
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <Button
-                        className="w-full cursor-pointer"
-                        size="lg"
-                        onClick={() => navigate("/auth/login")}
-                      >
-                        <Sparkles className="h-4 w-4 mr-2" />
-                        Login to Enroll
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="w-full cursor-pointer"
-                        size="lg"
-                        onClick={handleShowContent}
-                      >
-                        <ListTree className="h-4 w-4 mr-2" />
-                        Show Content
-                      </Button>
-                    </div>
-                  )}
-
-                  {/* Course info */}
-                  <div className="space-y-3 text-sm pt-4 border-t">
-                    {course.academicCourseName && (
+                    {/* Course info */}
+                    <div className="space-y-3 text-sm pt-4 border-t">
+                      {course.academicCourseName && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">
+                            Academic Course
+                          </span>
+                          <span className="font-medium text-right max-w-[60%] truncate">
+                            {course.academicCourseName}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">
-                          Academic Course
-                        </span>
-                        <span className="font-medium text-right max-w-[60%] truncate">
-                          {course.academicCourseName}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Lessons</span>
-                      <span className="font-medium">
-                        {course.lessonCount || lessonCount}
-                      </span>
-                    </div>
-                    {outline && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Topics</span>
+                        <span className="text-muted-foreground">Lessons</span>
                         <span className="font-medium">
-                          {outline.topics.length}
+                          {course.lessonCount || lessonCount}
                         </span>
                       </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Video preview modal */}
-      <Dialog
-        open={previewVideoId !== null}
-        onOpenChange={(open) => !open && setPreviewVideoId(null)}
-      >
-        <DialogContent className="sm:max-w-3xl p-0 overflow-hidden">
-          <DialogHeader className="px-6 pt-6 pb-2">
-            <DialogTitle>{previewLessonTitle}</DialogTitle>
-            <DialogDescription>Free preview lesson</DialogDescription>
-          </DialogHeader>
-          <div className="px-6 pb-6">
-            {previewVideoId && <VideoPlayer videoId={previewVideoId} />}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Enrollment prompt dialog */}
-      <Dialog open={showEnrollPrompt} onOpenChange={setShowEnrollPrompt}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Enroll to Access</DialogTitle>
-            <DialogDescription>
-              This lesson is only available for enrolled students. Enroll in the
-              course to access all lessons.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex gap-3 justify-end mt-4">
-            <Button
-              variant="outline"
-              onClick={() => setShowEnrollPrompt(false)}
-              className="cursor-pointer"
-            >
-              Cancel
-            </Button>
-            {isAuthenticated ? (
-              <Button
-                className="cursor-pointer"
-                onClick={() => {
-                  setShowEnrollPrompt(false);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              >
-                Enroll Now
-              </Button>
-            ) : (
-              <Button
-                className="cursor-pointer"
-                onClick={() => navigate("/auth/login")}
-              >
-                Login to Enroll
-              </Button>
+                      {outline && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Topics</span>
+                          <span className="font-medium">
+                            {outline.topics.length}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </div>
+
+        {/* Video preview modal */}
+        <Dialog
+          open={previewVideoId !== null}
+          onOpenChange={(open) => !open && setPreviewVideoId(null)}
+        >
+          <DialogContent className="sm:max-w-3xl p-0 overflow-hidden">
+            <DialogHeader className="px-6 pt-6 pb-2">
+              <DialogTitle>{previewLessonTitle}</DialogTitle>
+              <DialogDescription>Free preview lesson</DialogDescription>
+            </DialogHeader>
+            <div className="px-6 pb-6">
+              {previewVideoId && <VideoPlayer videoId={previewVideoId} />}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Enrollment prompt dialog */}
+        <Dialog open={showEnrollPrompt} onOpenChange={setShowEnrollPrompt}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Enroll to Access</DialogTitle>
+              <DialogDescription>
+                This lesson is only available for enrolled students. Enroll in
+                the course to access all lessons.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex gap-3 justify-end mt-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowEnrollPrompt(false)}
+                className="cursor-pointer"
+              >
+                Cancel
+              </Button>
+              {isAuthenticated ? (
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setShowEnrollPrompt(false);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  Enroll Now
+                </Button>
+              ) : (
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Login to Enroll
+                </Button>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 };
 

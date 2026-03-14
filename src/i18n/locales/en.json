@@ -1,34 +1,114 @@
 {
   "seo": {
     "home": {
-      "title": "eCampus | Your Complete University Learning Platform",
-      "description": "A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance. Join thousands of successful students.",
-      "keywords": "university education, study materials, quizzes, notes, university, students, learning, educational platform, interactive quizzes, academic resources"
+      "title": "eCampus | eCampus Platform - University Learning Platform for Jordanian Students",
+      "description": "eCampus (ecampusjo) - The comprehensive educational platform for Jordanian university students. Study materials, summaries, past exams, quizzes, and courses for all Jordanian universities.",
+      "keywords": "eCampus, ecampusjo, eCampus platform, eCampus Jordan, Jordanian universities, Jordan students, university courses Jordan, study materials Jordan, past exams Jordan, university quizzes, online learning Jordan, منصة ايكامبس, University of Jordan, Yarmouk University, JUST Jordan, Hashemite University, Mutah University, Balqa Applied University"
     },
     "about": {
-      "title": "About Us",
-      "description": "Learn about eCampus's mission to revolutionize university education. Discover how we help students succeed with organized learning resources, interactive quizzes, and community support.",
-      "keywords": "about eCampus, university learning platform, educational mission, student success, academic resources, learning community"
+      "title": "About eCampus Platform | ecampusjo",
+      "description": "Learn about eCampus (ecampusjo) - Jordan's leading university learning platform. Discover how we help Jordanian university students succeed with organized study materials, interactive quizzes, and specialized courses.",
+      "keywords": "about eCampus, about ecampusjo, eCampus platform Jordan, Jordanian educational platform, university learning Jordan, student success Jordan"
     },
     "courses": {
-      "title": "Courses",
-      "description": "Explore our comprehensive course catalog. Find study materials, quizzes, and resources organized by university, faculty, and major.",
-      "keywords": "university courses, course materials, study resources, academic courses, course catalog, university subjects"
+      "title": "University Courses | Study Materials Jordan - eCampus",
+      "description": "Browse all university courses on eCampus platform. Find study materials, summaries, past exams, and quizzes organized by Jordanian university, faculty, and major.",
+      "keywords": "Jordanian university courses, study materials Jordan, university subjects Jordan, academic courses, course catalog Jordan, eCampus courses, Yarmouk courses, JUST courses, Hashemite University courses, Mutah courses"
+    },
+    "courseInfo": {
+      "title": "{{courseName}} | Course Materials - eCampus",
+      "description": "Get all study materials for {{courseName}} on eCampus - summaries, explanations, past exams, and interactive quizzes.",
+      "keywords": "{{courseName}}, study materials, past exams, quizzes, eCampus"
+    },
+    "materials": {
+      "title": "Study Materials | {{courseName}} - eCampus",
+      "description": "Browse study materials and lecture notes for {{courseName}} on eCampus. PDFs, summaries, slides, and resources for Jordanian university students.",
+      "keywords": "study materials, lecture notes, PDF university, summaries, slides, eCampus materials, {{courseName}}, Jordan university materials"
+    },
+    "quizzes": {
+      "title": "Quizzes & Past Exams | {{courseName}} - eCampus",
+      "description": "Practice quizzes and past exam questions for {{courseName}} on eCampus. Comprehensive question bank and exam simulations for Jordanian university students.",
+      "keywords": "university quizzes, past exams Jordan, question bank, exam practice, {{courseName}}, eCampus quizzes, Jordan university exams"
+    },
+    "productCourses": {
+      "title": "Online Courses | University Courses Jordan - eCampus",
+      "description": "Discover the best online courses on eCampus platform. Specialized courses taught by top Jordanian instructors for university students.",
+      "keywords": "online courses Jordan, university courses, eCampus courses, Jordanian instructors, academic courses online, e-learning Jordan, paid courses"
+    },
+    "productCourseDetail": {
+      "title": "{{courseName}} | Online Course - eCampus",
+      "description": "{{courseDescription}} Join now on eCampus for the best learning experience.",
+      "keywords": "{{courseName}}, online course, eCampus, university courses, learn online"
+    },
+    "universities": {
+      "title": "Jordanian Universities | Universities Jordan - eCampus",
+      "description": "Browse all Jordanian universities on eCampus platform. University of Jordan, Yarmouk University, JUST, Hashemite University, Mutah University, Balqa Applied University, and more.",
+      "keywords": "Jordanian universities, universities Jordan, University of Jordan, Yarmouk University, Jordan University of Science and Technology JUST, Hashemite University, Mutah University, Balqa Applied University, Al al-Bayt University, Tafila Technical University, Hussein Bin Talal University, Philadelphia University, Amman Ahliyya University, Petra University, Zaytouneh University, Isra University, Middle East University, eCampus universities"
+    },
+    "universityDetail": {
+      "title": "{{universityName}} | Faculties & Majors - eCampus",
+      "description": "Browse faculties and majors of {{universityName}} on eCampus. Get study materials, summaries, and past exams for all {{universityName}} majors.",
+      "keywords": "{{universityName}}, faculties, majors, study materials, past exams, eCampus"
+    },
+    "facultyDetail": {
+      "title": "{{facultyName}} | {{universityName}} - eCampus",
+      "description": "Browse majors of {{facultyName}} at {{universityName}} on eCampus. Study materials, summaries, and quizzes for all faculty majors.",
+      "keywords": "{{facultyName}}, {{universityName}}, faculty majors, study materials, eCampus"
+    },
+    "curriculum": {
+      "title": "Study Plan | {{majorName}} - eCampus",
+      "description": "View the complete study plan for {{majorName}} major on eCampus. All courses organized by semester.",
+      "keywords": "study plan, {{majorName}}, major courses, semesters, eCampus curriculum"
     },
     "login": {
-      "title": "Login",
-      "description": "Sign in to your eCampus account to access personalized study materials, track your progress, and connect with fellow students.",
-      "keywords": "login, sign in, student portal, access account"
+      "title": "Login - eCampus | ecampusjo Platform",
+      "description": "Sign in to eCampus platform to access personalized study materials, track your progress, and connect with fellow Jordanian university students.",
+      "keywords": "eCampus login, sign in ecampusjo, student portal Jordan, access account eCampus"
     },
     "register": {
-      "title": "Create Account",
-      "description": "Join eCampus today and get free access to thousands of study materials, interactive quizzes, and AI-powered academic guidance.",
-      "keywords": "register, sign up, create account, join eCampus, student registration"
+      "title": "Create Free Account - eCampus | ecampusjo",
+      "description": "Join eCampus (ecampusjo) today for free. Get access to thousands of study materials, past exams, interactive quizzes, and courses for Jordanian universities.",
+      "keywords": "register eCampus, sign up ecampusjo, create account, join eCampus, student registration Jordan"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password - eCampus",
+      "description": "Reset your eCampus account password.",
+      "keywords": "forgot password, reset password, eCampus"
+    },
+    "verifyAccount": {
+      "title": "Verify Account - eCampus",
+      "description": "Verify your eCampus account to access all features and study materials.",
+      "keywords": "verify account, email verification, eCampus"
     },
     "profile": {
-      "title": "My Profile",
-      "description": "Manage your eCampus profile, track your learning progress, and customize your study preferences.",
-      "keywords": "user profile, student profile, account settings, learning progress"
+      "title": "My Profile - eCampus Platform",
+      "description": "Manage your eCampus profile, track your learning progress, and view enrolled courses and study materials.",
+      "keywords": "user profile, student profile, account settings, learning progress, eCampus profile"
+    },
+    "myLearning": {
+      "title": "My Learning | Enrolled Courses - eCampus",
+      "description": "View all your enrolled courses on eCampus platform and track your learning progress.",
+      "keywords": "my courses, enrolled courses, my learning, eCampus my learning"
+    },
+    "myCourses": {
+      "title": "My Published Courses - eCampus",
+      "description": "Manage the educational courses you've published on eCampus platform.",
+      "keywords": "my courses, published courses, manage courses, eCampus instructor"
+    },
+    "certificateVerify": {
+      "title": "Verify Certificate - eCampus",
+      "description": "Verify the authenticity of certificates issued by eCampus platform.",
+      "keywords": "certificate verification, eCampus certificate, verify certificate"
+    },
+    "notFound": {
+      "title": "Page Not Found - eCampus",
+      "description": "The page you're looking for doesn't exist on eCampus. Go back to the homepage and browse study materials and courses.",
+      "keywords": "page not found, 404, eCampus"
+    },
+    "dashboard": {
+      "title": "Dashboard - eCampus",
+      "description": "eCampus dashboard for managing content, materials, and courses.",
+      "keywords": "dashboard, content management, eCampus dashboard"
     }
   },
   "common": {

@@ -1,64 +1,95 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- Favicons – all devices & platforms -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/favicon-32x32.png" />
+
+    <!-- Apple / iOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Android / PWA -->
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Windows tiles -->
+    <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
+    <meta name="msapplication-TileColor" content="#003450" />
+    <meta name="msapplication-config" content="none" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary Meta Tags -->
-    <title>Uni-Hub | Your Complete University Learning Platform</title>
+    <title>
+      eCampus | منصة ايكامبس - منصة التعلم الجامعي للجامعات الأردنية
+    </title>
     <meta
       name="title"
-      content="Uni-Hub | Your Complete University Learning Platform"
+      content="eCampus | منصة ايكامبس - منصة التعلم الجامعي للجامعات الأردنية"
     />
     <meta
       name="description"
-      content="A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance. Join thousands of successful students."
+      content="منصة ايكامبس eCampus - المنصة التعليمية الشاملة لطلاب الجامعات الأردنية. مواد دراسية، ملازم، اختبارات سابقة، كويزات، وكورسات لجميع الجامعات الأردنية. eCampus platform for Jordanian university students."
     />
     <meta
       name="keywords"
-      content="university education, study materials, quizzes, notes, university, students, learning, educational platform, interactive quizzes, academic resources"
+      content="eCampus, ايكامبس, منصة ايكامبس, ecampusjo, منصة تعليمية اردنية, جامعات الاردن, طلاب جامعيين, مواد دراسية, ملازم جامعية, اختبارات سابقة, كويزات جامعية, كورسات جامعية, الجامعة الاردنية, جامعة اليرموك, جامعة العلوم والتكنولوجيا, الجامعة الهاشمية, جامعة مؤتة, university Jordan, study materials Jordan, past exams, Jordanian students"
     />
-    <meta name="author" content="Uni-Hub Team" />
+    <meta name="author" content="eCampus Team" />
     <meta name="robots" content="index, follow" />
+    <meta name="language" content="ar" />
+    <meta name="geo.region" content="JO" />
+    <meta name="geo.country" content="Jordan" />
+    <meta name="copyright" content="eCampus" />
+
+    <!-- Hreflang for bilingual Arabic/English -->
+    <link rel="alternate" hreflang="ar" href="https://ecampusjo.com/" />
+    <link rel="alternate" hreflang="en" href="https://ecampusjo.com/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://uni-hub.com/" />
+    <meta property="og:url" content="https://ecampusjo.com/" />
     <meta
       property="og:title"
-      content="Uni-Hub | Your Complete University Learning Platform"
+      content="eCampus | منصة ايكامبس - منصة التعلم الجامعي الأردنية"
     />
     <meta
       property="og:description"
-      content="A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance."
+      content="منصة ايكامبس - المنصة التعليمية الشاملة لطلاب الجامعات الأردنية. مواد دراسية، ملازم، كويزات، واختبارات سابقة لجميع الجامعات الأردنية."
     />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:site_name" content="Uni-Hub" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta property="og:image" content="https://ecampusjo.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="eCampus - منصة ايكامبس" />
+    <meta property="og:site_name" content="eCampus" />
+    <meta property="og:locale" content="ar_JO" />
+    <meta property="og:locale:alternate" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://uni-hub.com/" />
+    <meta name="twitter:site" content="@ecampusjo" />
+    <meta name="twitter:url" content="https://ecampusjo.com/" />
     <meta
       name="twitter:title"
-      content="Uni-Hub | Your Complete University Learning Platform"
+      content="eCampus | منصة ايكامبس - منصة التعلم الجامعي الأردنية"
     />
     <meta
       name="twitter:description"
-      content="A comprehensive learning platform for university students. Access study materials, interactive quizzes, and AI-powered academic guidance."
+      content="منصة ايكامبس - المنصة التعليمية الشاملة لطلاب الجامعات الأردنية. مواد دراسية، ملازم، كويزات، واختبارات سابقة."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="https://ecampusjo.com/og-image.png" />
+    <meta name="twitter:image:alt" content="eCampus - منصة ايكامبس" />
 
     <!-- Theme & App Meta -->
     <meta name="theme-color" content="#003450" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Uni-Hub" />
+    <meta name="apple-mobile-web-app-title" content="eCampus" />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://uni-hub.com/" />
+    <link rel="canonical" href="https://ecampusjo.com/" />
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

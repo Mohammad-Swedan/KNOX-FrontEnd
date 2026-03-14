@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  eCampus | منصة ايكامبس — Static Pages Sitemap
+  Domain: https://ecampusjo.com
+  Includes hreflang alternates for Arabic (ar-JO) and English (en)
+-->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
+
+  <!-- Home Page | الصفحة الرئيسية -->
+  <url>
+    <loc>https://ecampusjo.com/</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/"/>
+    <image:image>
+      <image:loc>https://ecampusjo.com/og-image.png</image:loc>
+      <image:title>eCampus | منصة ايكامبس - منصة التعلم الجامعي الأردنية</image:title>
+    </image:image>
+  </url>
+
+  <!-- About Page | عن المنصة -->
+  <url>
+    <loc>https://ecampusjo.com/about</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/about?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/about"/>
+  </url>
+
+  <!-- Courses Catalog | المقررات الدراسية -->
+  <url>
+    <loc>https://ecampusjo.com/courses</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/courses"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/courses?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/courses"/>
+  </url>
+
+  <!-- Product Courses Catalog | الكورسات المدفوعة -->
+  <url>
+    <loc>https://ecampusjo.com/browse/product-courses</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/browse/product-courses"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/browse/product-courses?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/browse/product-courses"/>
+  </url>
+
+  <!-- Certificate Verification | التحقق من الشهادات -->
+  <url>
+    <loc>https://ecampusjo.com/certificates/verify</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/certificates/verify"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/certificates/verify?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/certificates/verify"/>
+  </url>
+
+  <!-- Login Page | تسجيل الدخول -->
+  <url>
+    <loc>https://ecampusjo.com/auth/login</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/auth/login"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/auth/login?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/auth/login"/>
+  </url>
+
+  <!-- Register Page | إنشاء حساب -->
+  <url>
+    <loc>https://ecampusjo.com/auth/register</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/auth/register"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/auth/register?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/auth/register"/>
+  </url>
+
+  <!-- Forgot Password | نسيت كلمة المرور -->
+  <url>
+    <loc>https://ecampusjo.com/auth/forgot-password</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ecampusjo.com/auth/forgot-password"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ecampusjo.com/auth/forgot-password?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ecampusjo.com/auth/forgot-password"/>
+  </url>
+
+</urlset>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ import { CoursesTable } from "@/features/courses/components/CoursesTable";
 import { useCourseFilters } from "@/features/courses/hooks/useCourseFilters";
 import { useBreadcrumbData } from "@/features/courses/hooks/useBreadcrumbData";
 import { useCourses } from "@/features/courses/hooks/useCourses";
+import SEO from "@/shared/components/seo/SEO";
 
 const MajorCoursesPage = () => {
   const { universityId, facultyId, majorId } = useParams<{
@@ -29,6 +31,7 @@ const MajorCoursesPage = () => {
     majorId: string;
   }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const majorIdNum = parseInt(majorId || "0");
 
@@ -57,7 +60,7 @@ const MajorCoursesPage = () => {
   const { university, faculty, major } = useBreadcrumbData(
     universityId,
     facultyId,
-    majorId
+    majorId,
   );
 
   // Filter hook
@@ -92,7 +95,7 @@ const MajorCoursesPage = () => {
     currentPage,
     pageSize,
     requirementType,
-    requirementNature
+    requirementNature,
   );
 
   // Add Course Handler
@@ -171,7 +174,7 @@ const MajorCoursesPage = () => {
               .response?.data?.message
           : "Failed to add course";
       setAddError(
-        typeof errorMsg === "string" ? errorMsg : "Failed to add course"
+        typeof errorMsg === "string" ? errorMsg : "Failed to add course",
       );
     } finally {
       setAddLoading(false);
@@ -200,257 +203,276 @@ const MajorCoursesPage = () => {
 
   const totalMaterials = courses.reduce(
     (acc, c) => acc + c.numberOfMaterials,
-    0
+    0,
   );
   const totalQuizzes = courses.reduce((acc, c) => acc + c.numberOfQuizzes, 0);
 
   return (
-    <div className="container mx-auto space-y-6 p-6">
-      <MajorCoursesHeader
-        university={university}
-        faculty={faculty}
-        major={major}
-        onBackClick={() =>
-          navigate(
-            `/dashboard/universities/${universityId}/faculties/${facultyId}`
-          )
+    <>
+      <SEO
+        title={
+          major?.name
+            ? `${major.name} | ${university?.name || ""} - eCampus`
+            : t("seo.courses.title")
         }
+        description={
+          major?.name
+            ? `${t("seo.curriculum.description").replace("{\{majorName\}}", major.name)} - ${university?.name || ""}`
+            : t("seo.courses.description")
+        }
+        keywords={t("seo.courses.keywords")}
+        noIndex={true}
+        hreflang={false}
       />
-      <div className="flex justify-end mb-2">
-        <Button onClick={() => setAddDialogOpen(true)}>+ Add Course</Button>
-      </div>
-
-      {/* Add Course Dialog */}
-      <Dialog
-        open={addDialogOpen}
-        onOpenChange={(open) => {
-          setAddDialogOpen(open);
-          if (!open) {
-            setStep(1);
-            setCodeInput("");
-            setExistingCourse(null);
-            setAddError("");
+      <div className="container mx-auto space-y-6 p-6">
+        <MajorCoursesHeader
+          university={university}
+          faculty={faculty}
+          major={major}
+          onBackClick={() =>
+            navigate(
+              `/dashboard/universities/${universityId}/faculties/${facultyId}`,
+            )
           }
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add New Course</DialogTitle>
-          </DialogHeader>
-          {step === 1 && (
-            <form onSubmit={handleCheckCode} className="space-y-4">
-              <Input
-                required
-                placeholder="Enter Course Code"
-                value={codeInput}
-                onChange={(e) => setCodeInput(e.target.value)}
-                autoFocus
-              />
-              {addError && (
-                <div className="text-red-500 text-sm">{addError}</div>
-              )}
-              <DialogFooter>
-                <Button
-                  type="submit"
-                  disabled={addLoading || !codeInput.trim()}
-                >
-                  {addLoading ? "Checking..." : "Next"}
-                </Button>
-                <DialogClose asChild>
-                  <Button type="button" variant="outline">
-                    Cancel
+        />
+        <div className="flex justify-end mb-2">
+          <Button onClick={() => setAddDialogOpen(true)}>+ Add Course</Button>
+        </div>
+
+        {/* Add Course Dialog */}
+        <Dialog
+          open={addDialogOpen}
+          onOpenChange={(open) => {
+            setAddDialogOpen(open);
+            if (!open) {
+              setStep(1);
+              setCodeInput("");
+              setExistingCourse(null);
+              setAddError("");
+            }
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New Course</DialogTitle>
+            </DialogHeader>
+            {step === 1 && (
+              <form onSubmit={handleCheckCode} className="space-y-4">
+                <Input
+                  required
+                  placeholder="Enter Course Code"
+                  value={codeInput}
+                  onChange={(e) => setCodeInput(e.target.value)}
+                  autoFocus
+                />
+                {addError && (
+                  <div className="text-red-500 text-sm">{addError}</div>
+                )}
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    disabled={addLoading || !codeInput.trim()}
+                  >
+                    {addLoading ? "Checking..." : "Next"}
                   </Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
-          )}
-          {step === 2 && (
-            <form onSubmit={handleAddCourse} className="space-y-4">
-              {existingCourse ? (
-                <>
-                  <div className="space-y-2">
-                    <div>
-                      <label className="block text-xs font-medium">
-                        Course Name
-                      </label>
-                      <Input value={form.courseName} readOnly disabled />
+                  <DialogClose asChild>
+                    <Button type="button" variant="outline">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </form>
+            )}
+            {step === 2 && (
+              <form onSubmit={handleAddCourse} className="space-y-4">
+                {existingCourse ? (
+                  <>
+                    <div className="space-y-2">
+                      <div>
+                        <label className="block text-xs font-medium">
+                          Course Name
+                        </label>
+                        <Input value={form.courseName} readOnly disabled />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium">
+                          Course Code
+                        </label>
+                        <Input value={form.courseCode} readOnly disabled />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium">
+                          Description
+                        </label>
+                        <Input value={form.description} readOnly disabled />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium">
+                          Credits
+                        </label>
+                        <Input value={form.credits} readOnly disabled />
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-medium">
-                        Course Code
-                      </label>
-                      <Input value={form.courseCode} readOnly disabled />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium">
-                        Description
-                      </label>
-                      <Input value={form.description} readOnly disabled />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium">
-                        Credits
-                      </label>
-                      <Input value={form.credits} readOnly disabled />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <Input
-                    required
-                    placeholder="Course Name"
-                    value={form.courseName}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, courseName: e.target.value }))
-                    }
-                  />
-                  <Input
-                    required
-                    placeholder="Course Code"
-                    value={form.courseCode}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, courseCode: e.target.value }))
-                    }
-                  />
-                  <Input
-                    placeholder="Description"
-                    value={form.description}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, description: e.target.value }))
-                    }
-                  />
-                  <div className="flex-1">
-                    <label className="block text-sm mb-1">Credits</label>
+                  </>
+                ) : (
+                  <>
                     <Input
-                      type="number"
-                      min={0}
                       required
-                      value={form.credits}
+                      placeholder="Course Name"
+                      value={form.courseName}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, courseName: e.target.value }))
+                      }
+                    />
+                    <Input
+                      required
+                      placeholder="Course Code"
+                      value={form.courseCode}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, courseCode: e.target.value }))
+                      }
+                    />
+                    <Input
+                      placeholder="Description"
+                      value={form.description}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, description: e.target.value }))
+                      }
+                    />
+                    <div className="flex-1">
+                      <label className="block text-sm mb-1">Credits</label>
+                      <Input
+                        type="number"
+                        min={0}
+                        required
+                        value={form.credits}
+                        onChange={(e) =>
+                          setForm((f) => ({
+                            ...f,
+                            credits: Number(e.target.value),
+                          }))
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+                <div className="flex gap-2 mt-2">
+                  <div className="flex-1">
+                    <label className="block text-sm mb-1">
+                      Requirement Type
+                    </label>
+                    <select
+                      className="w-full border rounded p-2"
+                      value={form.requirementType}
+                      aria-label="Requirement Type"
                       onChange={(e) =>
                         setForm((f) => ({
                           ...f,
-                          credits: Number(e.target.value),
+                          requirementType: e.target.value,
                         }))
                       }
-                    />
+                    >
+                      <option value="1">University</option>
+                      <option value="2">Faculty</option>
+                      <option value="3">Major</option>
+                      <option value="4">Remedial</option>
+                    </select>
                   </div>
-                </>
-              )}
-              <div className="flex gap-2 mt-2">
-                <div className="flex-1">
-                  <label className="block text-sm mb-1">Requirement Type</label>
-                  <select
-                    className="w-full border rounded p-2"
-                    value={form.requirementType}
-                    aria-label="Requirement Type"
-                    onChange={(e) =>
-                      setForm((f) => ({
-                        ...f,
-                        requirementType: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="1">University</option>
-                    <option value="2">Faculty</option>
-                    <option value="3">Major</option>
-                    <option value="4">Remedial</option>
-                  </select>
+                  <div className="flex-1">
+                    <label className="block text-sm mb-1">
+                      Requirement Nature
+                    </label>
+                    <select
+                      className="w-full border rounded p-2"
+                      value={form.requirementNature}
+                      aria-label="Requirement Nature"
+                      onChange={(e) =>
+                        setForm((f) => ({
+                          ...f,
+                          requirementNature: e.target.value,
+                        }))
+                      }
+                    >
+                      <option value="1">Compulsory</option>
+                      <option value="2">Elective</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <label className="block text-sm mb-1">
-                    Requirement Nature
-                  </label>
-                  <select
-                    className="w-full border rounded p-2"
-                    value={form.requirementNature}
-                    aria-label="Requirement Nature"
-                    onChange={(e) =>
-                      setForm((f) => ({
-                        ...f,
-                        requirementNature: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="1">Compulsory</option>
-                    <option value="2">Elective</option>
-                  </select>
-                </div>
-              </div>
-              {addError && (
-                <div className="text-red-500 text-sm">{addError}</div>
-              )}
-              <DialogFooter>
-                <Button type="submit" disabled={addLoading}>
-                  {addLoading ? "Adding..." : "Add Course"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setStep(1);
-                    setAddError("");
-                  }}
-                >
-                  Back
-                </Button>
-                <DialogClose asChild>
-                  <Button type="button" variant="outline">
-                    Cancel
+                {addError && (
+                  <div className="text-red-500 text-sm">{addError}</div>
+                )}
+                <DialogFooter>
+                  <Button type="submit" disabled={addLoading}>
+                    {addLoading ? "Adding..." : "Add Course"}
                   </Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
-          )}
-        </DialogContent>
-      </Dialog>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setStep(1);
+                      setAddError("");
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <DialogClose asChild>
+                    <Button type="button" variant="outline">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
 
-      <CourseFilters
-        showFilters={showFilters}
-        onToggleFilters={() => setShowFilters(!showFilters)}
-        localRequirementType={localRequirementType}
-        localRequirementNature={localRequirementNature}
-        onRequirementTypeChange={setLocalRequirementType}
-        onRequirementNatureChange={setLocalRequirementNature}
-        onClearRequirementType={handleClearRequirementTypeFilter}
-        onClearRequirementNature={handleClearRequirementNatureFilter}
-        onApplyFilters={handleApplyFilters}
-        onClearAllFilters={handleClearFilters}
-        hasActiveFilters={hasActiveFilters}
-        hasUnappliedChanges={hasUnappliedChanges}
-      />
+        <CourseFilters
+          showFilters={showFilters}
+          onToggleFilters={() => setShowFilters(!showFilters)}
+          localRequirementType={localRequirementType}
+          localRequirementNature={localRequirementNature}
+          onRequirementTypeChange={setLocalRequirementType}
+          onRequirementNatureChange={setLocalRequirementNature}
+          onClearRequirementType={handleClearRequirementTypeFilter}
+          onClearRequirementNature={handleClearRequirementNatureFilter}
+          onApplyFilters={handleApplyFilters}
+          onClearAllFilters={handleClearFilters}
+          hasActiveFilters={hasActiveFilters}
+          hasUnappliedChanges={hasUnappliedChanges}
+        />
 
-      <CourseStatsCards
-        totalCount={totalCount}
-        totalMaterials={totalMaterials}
-        totalQuizzes={totalQuizzes}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+        <CourseStatsCards
+          totalCount={totalCount}
+          totalMaterials={totalMaterials}
+          totalQuizzes={totalQuizzes}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
 
-      <CoursesTable
-        courses={courses}
-        loading={loading}
-        totalCount={totalCount}
-        currentPage={currentPage}
-        pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
-        hasActiveFilters={hasActiveFilters}
-      />
+        <CoursesTable
+          courses={courses}
+          loading={loading}
+          totalCount={totalCount}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageSizeChange={handlePageSizeChange}
+          hasActiveFilters={hasActiveFilters}
+        />
 
-      {/* Pagination */}
-      {!loading && totalPages > 1 && (
-        <div className="flex justify-center">
-          <SmartPagination
-            pageNumber={currentPage}
-            totalPages={totalPages}
-            hasPreviousPage={hasPreviousPage}
-            hasNextPage={hasNextPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
-    </div>
+        {/* Pagination */}
+        {!loading && totalPages > 1 && (
+          <div className="flex justify-center">
+            <SmartPagination
+              pageNumber={currentPage}
+              totalPages={totalPages}
+              hasPreviousPage={hasPreviousPage}
+              hasNextPage={hasNextPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

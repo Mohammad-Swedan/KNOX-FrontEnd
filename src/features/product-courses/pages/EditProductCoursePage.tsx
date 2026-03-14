@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/shared/components/seo/SEO";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/shared/ui/button";
@@ -39,34 +40,37 @@ const EditProductCoursePage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-3xl">
-      <Button
-        variant="ghost"
-        className="mb-4 gap-2 cursor-pointer"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back
-      </Button>
+    <>
+      <SEO title="تعديل الدورة | eCampus" noIndex={true} hreflang={false} />
+      <div className="container mx-auto px-4 py-6 max-w-3xl">
+        <Button
+          variant="ghost"
+          className="mb-4 gap-2 cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Edit Product Course</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {course && (
-            <ProductCourseForm
-              initialData={course}
-              courseId={courseId}
-              academicCourseId={course.academicCourseId ?? undefined}
-              onSubmit={handleSubmit}
-              isSubmitting={isSubmitting}
-              submitLabel="Update Course"
-            />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Edit Product Course</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {course && (
+              <ProductCourseForm
+                initialData={course}
+                courseId={courseId}
+                academicCourseId={course.academicCourseId ?? undefined}
+                onSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+                submitLabel="Update Course"
+              />
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 

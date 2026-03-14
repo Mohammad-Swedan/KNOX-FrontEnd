@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useTranslation } from "react-i18next";
 import { useFolderContents } from "../hooks/useFolderContents";
 import { LoadingState, ErrorState } from "../components/PageStates";
 import { FolderPageHeader } from "../components/FolderPageHeader";
@@ -12,6 +13,7 @@ import { CreateFolderDialog } from "../components/CreateFolderDialog";
 import { AddMaterialDialog } from "../components/AddMaterialDialog";
 import { EditMaterialDialog } from "../components/EditMaterialDialog";
 import { EditFolderDialog } from "../components/EditFolderDialog";
+import SEO from "@/shared/components/seo/SEO";
 import {
   createFolder,
   createMaterial,
@@ -32,6 +34,7 @@ export default function FolderPage({ mode = "public" }: FolderPageProps) {
     folderId: string;
   }>();
   const { canManageContent } = useUserRole();
+  const { t } = useTranslation();
 
   // Check if user can see management UI
   const isManagementMode = mode === "manage" && canManageContent();
@@ -171,68 +174,83 @@ export default function FolderPage({ mode = "public" }: FolderPageProps) {
     contents.folders.length === 0 && contents.materials.length === 0;
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <FolderPageHeader
-        courseId={courseId!}
-        folderId={folderId}
-        isManagementMode={isManagementMode}
-        onAddFolder={() => setShowCreateFolderDialog(true)}
-        onAddMaterial={() => setShowAddMaterialDialog(true)}
+    <>
+      <SEO
+        title={t("seo.materials.title").replace(
+          "{{courseName}}",
+          courseId || "",
+        )}
+        description={t("seo.materials.description").replace(
+          "{{courseName}}",
+          courseId || "",
+        )}
+        keywords={t("seo.materials.keywords").replace("{{courseName}}", "")}
+        noIndex={isManagementMode}
+        hreflang={!isManagementMode}
       />
-
-      <div className="space-y-6">
-        <FoldersList
-          folders={contents.folders}
+      <div className="container mx-auto px-4 py-6">
+        <FolderPageHeader
           courseId={courseId!}
+          folderId={folderId}
           isManagementMode={isManagementMode}
-          onEdit={(folder) => setEditingFolder(folder)}
-          onDelete={handleDeleteFolder}
+          onAddFolder={() => setShowCreateFolderDialog(true)}
+          onAddMaterial={() => setShowAddMaterialDialog(true)}
         />
 
-        <MaterialsList
-          materials={contents.materials}
-          isManagementMode={isManagementMode}
-          onEdit={(material) => setEditingMaterial(material)}
-          onDelete={handleDeleteMaterial}
+        <div className="space-y-6">
+          <FoldersList
+            folders={contents.folders}
+            courseId={courseId!}
+            isManagementMode={isManagementMode}
+            onEdit={(folder) => setEditingFolder(folder)}
+            onDelete={handleDeleteFolder}
+          />
+
+          <MaterialsList
+            materials={contents.materials}
+            isManagementMode={isManagementMode}
+            onEdit={(material) => setEditingMaterial(material)}
+            onDelete={handleDeleteMaterial}
+          />
+
+          {isEmpty && <EmptyState />}
+        </div>
+
+        {/* Create sub-folder dialog */}
+        <CreateFolderDialog
+          open={showCreateFolderDialog}
+          onOpenChange={setShowCreateFolderDialog}
+          onSubmit={handleCreateFolder}
         />
 
-        {isEmpty && <EmptyState />}
+        {/* Add Material dialog — defaultFolderId places it in the current folder */}
+        <AddMaterialDialog
+          open={showAddMaterialDialog}
+          onOpenChange={setShowAddMaterialDialog}
+          defaultFolderId={folderId ? parseInt(folderId) : null}
+          onSubmit={handleAddMaterial}
+        />
+
+        {/* Edit Folder dialog */}
+        <EditFolderDialog
+          open={editingFolder !== null}
+          onOpenChange={(open: boolean) => {
+            if (!open) setEditingFolder(null);
+          }}
+          folder={editingFolder}
+          onSubmit={handleUpdateFolder}
+        />
+
+        {/* Edit Material dialog */}
+        <EditMaterialDialog
+          open={editingMaterial !== null}
+          onOpenChange={(open: boolean) => {
+            if (!open) setEditingMaterial(null);
+          }}
+          material={editingMaterial}
+          onSubmit={handleUpdateMaterial}
+        />
       </div>
-
-      {/* Create sub-folder dialog */}
-      <CreateFolderDialog
-        open={showCreateFolderDialog}
-        onOpenChange={setShowCreateFolderDialog}
-        onSubmit={handleCreateFolder}
-      />
-
-      {/* Add Material dialog — defaultFolderId places it in the current folder */}
-      <AddMaterialDialog
-        open={showAddMaterialDialog}
-        onOpenChange={setShowAddMaterialDialog}
-        defaultFolderId={folderId ? parseInt(folderId) : null}
-        onSubmit={handleAddMaterial}
-      />
-
-      {/* Edit Folder dialog */}
-      <EditFolderDialog
-        open={editingFolder !== null}
-        onOpenChange={(open: boolean) => {
-          if (!open) setEditingFolder(null);
-        }}
-        folder={editingFolder}
-        onSubmit={handleUpdateFolder}
-      />
-
-      {/* Edit Material dialog */}
-      <EditMaterialDialog
-        open={editingMaterial !== null}
-        onOpenChange={(open: boolean) => {
-          if (!open) setEditingMaterial(null);
-        }}
-        material={editingMaterial}
-        onSubmit={handleUpdateMaterial}
-      />
-    </div>
+    </>
   );
 }

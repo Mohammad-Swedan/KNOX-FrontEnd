@@ -1,0 +1,35 @@
+# robots.txt for eCampus | منصة ايكامبس
+# https://ecampusjo.com
+
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /courses
+Allow: /certificates/verify
+Allow: /browse/product-courses
+Allow: /auth/login
+Allow: /auth/register
+Allow: /auth/forgot-password
+
+# Disallow admin/private areas
+Disallow: /dashboard/
+Disallow: /profile/edit
+Disallow: /profile/change-password
+Disallow: /my-learning
+Disallow: /my-courses
+Disallow: /curriculum-tree/
+Disallow: /curriculum-tree-standalone/
+Disallow: /product-courses/*/learn
+Disallow: /courses/*/quizzes/add
+Disallow: /courses/*/quizzes/*/edit
+Disallow: /courses/*/quizzes/new
+
+# Sitemap locations
+Sitemap: https://ecampusjo.com/sitemap.xml
+Sitemap: https://ecampusjo.com/sitemap-static.xml
+Sitemap: https://ecampusjo.com/sitemap-courses.xml
+Sitemap: https://ecampusjo.com/sitemap-universities.xml
+Sitemap: https://ecampusjo.com/sitemap-product-courses.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 2

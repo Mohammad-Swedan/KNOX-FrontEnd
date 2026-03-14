@@ -8,8 +8,14 @@ import {
   fetchMyEnrollments,
   fetchEnrolledCourses,
   completeLesson,
+  getMyCertificates,
+  getCertificateById,
 } from "../api";
-import type { ProductEnrollment, ProductCourseSummary } from "../types";
+import type {
+  ProductEnrollment,
+  ProductCourseSummary,
+  Certificate,
+} from "../types";
 import type { PaginatedResponse } from "@/lib/api/types";
 
 // ── Enroll action ──────────────────────────────────────────
@@ -128,4 +134,60 @@ export const useCompleteLesson = () => {
   );
 
   return { complete, loading };
+};
+// ── My Certificates ────────────────────────────────────────
+
+export const useMyCertificates = () => {
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await getMyCertificates();
+      setCertificates(result);
+    } catch (err) {
+      console.error("Failed to fetch certificates:", err);
+      setError("Failed to load certificates");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { certificates, loading, error, refetch: fetch };
+};
+
+// ── Certificate by ID ──────────────────────────────────────
+
+export const useCertificate = (id: number | undefined) => {
+  const [certificate, setCertificate] = useState<Certificate | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await getCertificateById(id);
+      setCertificate(result);
+    } catch (err) {
+      console.error("Failed to fetch certificate:", err);
+      setError("Certificate not found");
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { certificate, loading, error, refetch: fetch };
 };

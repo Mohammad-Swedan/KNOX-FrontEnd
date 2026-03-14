@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SearchSection } from "../components/SearchSection";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
 import type { Faculty } from "../types";
@@ -11,10 +12,12 @@ import {
   EditFacultyDialog,
   // DeleteFacultyDialog,
 } from "../components/FacultyDialogs";
+import SEO from "@/shared/components/seo/SEO";
 
 const UniversityDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const universityId = parseInt(id || "0");
 
   // Dialog states
@@ -63,59 +66,77 @@ const UniversityDetailsPage = () => {
   // };
 
   return (
-    <div className="space-y-6">
-      <UniversityHeader
-        universityName={university?.name}
-        onBack={handleBack}
-        onAddFaculty={() => setIsAddDialogOpen(true)}
+    <>
+      <SEO
+        title={
+          university?.name
+            ? `${university.name} | ${t("seo.universityDetail.title").replace("{{universityName}}", university.name)}`
+            : t("seo.universities.title")
+        }
+        description={
+          university?.name
+            ? t("seo.universityDetail.description").replace(
+                /\{\{universityName\}\}/g,
+                university.name,
+              )
+            : t("seo.universities.description")
+        }
+        noIndex={true}
+        hreflang={false}
       />
-
-      <SearchSection
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        onSearch={handleSearch}
-        onClearSearch={handleClearSearch}
-      />
-
-      <FacultyTable
-        faculties={faculties}
-        loading={loading}
-        searchTerm={searchTerm}
-        universityName={university?.name}
-        onFacultyClick={handleFacultyClick}
-        onEditClick={handleEditClick}
-        // onDeleteClick={handleDeleteClick}
-        onAddClick={() => setIsAddDialogOpen(true)}
-      />
-
-      {totalPages > 1 && (
-        <SmartPagination
-          pageNumber={currentPage}
-          totalPages={totalPages}
-          hasPreviousPage={paginationInfo.hasPreviousPage}
-          hasNextPage={paginationInfo.hasNextPage}
-          onPageChange={setCurrentPage}
+      <div className="space-y-6">
+        <UniversityHeader
+          universityName={university?.name}
+          onBack={handleBack}
+          onAddFaculty={() => setIsAddDialogOpen(true)}
         />
-      )}
 
-      <AddFacultyDialog
-        isOpen={isAddDialogOpen}
-        onClose={() => setIsAddDialogOpen(false)}
-        onAdd={handleAddFaculty}
-        universityName={university?.name}
-      />
+        <SearchSection
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+          onSearch={handleSearch}
+          onClearSearch={handleClearSearch}
+        />
 
-      <EditFacultyDialog
-        isOpen={isEditDialogOpen}
-        onClose={() => {
-          setIsEditDialogOpen(false);
-          setEditingFaculty(null);
-        }}
-        onEdit={handleEditFaculty}
-        faculty={editingFaculty}
-      />
+        <FacultyTable
+          faculties={faculties}
+          loading={loading}
+          searchTerm={searchTerm}
+          universityName={university?.name}
+          onFacultyClick={handleFacultyClick}
+          onEditClick={handleEditClick}
+          // onDeleteClick={handleDeleteClick}
+          onAddClick={() => setIsAddDialogOpen(true)}
+        />
 
-      {/* <DeleteFacultyDialog
+        {totalPages > 1 && (
+          <SmartPagination
+            pageNumber={currentPage}
+            totalPages={totalPages}
+            hasPreviousPage={paginationInfo.hasPreviousPage}
+            hasNextPage={paginationInfo.hasNextPage}
+            onPageChange={setCurrentPage}
+          />
+        )}
+
+        <AddFacultyDialog
+          isOpen={isAddDialogOpen}
+          onClose={() => setIsAddDialogOpen(false)}
+          onAdd={handleAddFaculty}
+          universityName={university?.name}
+        />
+
+        <EditFacultyDialog
+          isOpen={isEditDialogOpen}
+          onClose={() => {
+            setIsEditDialogOpen(false);
+            setEditingFaculty(null);
+          }}
+          onEdit={handleEditFaculty}
+          faculty={editingFaculty}
+        />
+
+        {/* <DeleteFacultyDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => {
           setIsDeleteDialogOpen(false);
@@ -124,7 +145,8 @@ const UniversityDetailsPage = () => {
         onDelete={handleDeleteFaculty}
         faculty={deletingFaculty}
       /> */}
-    </div>
+      </div>
+    </>
   );
 };
 

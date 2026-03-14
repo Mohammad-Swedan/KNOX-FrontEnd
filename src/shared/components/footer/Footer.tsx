@@ -26,6 +26,11 @@ const Footer = () => {
       },
       { name: "Study Materials", href: "/courses", internal: true },
       { name: "About Us", href: "/about", internal: true },
+      {
+        name: "Verify Certificate",
+        href: "/certificates/verify",
+        internal: true,
+      },
     ],
     support: [
       { name: "Buy Prepaid Code", href: WHATSAPP_BUY_LINK, internal: false },

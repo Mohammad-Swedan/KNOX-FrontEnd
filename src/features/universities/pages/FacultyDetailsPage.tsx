@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui/button";
 import { PlusIcon, ArrowLeftIcon } from "lucide-react";
 import SmartPagination from "@/shared/components/pagination/SmartPagination";
@@ -13,6 +14,7 @@ import {
   EditMajorDialog,
   // DeleteMajorDialog,
 } from "../components/MajorDialogs";
+import SEO from "@/shared/components/seo/SEO";
 
 const FacultyDetailsPage = () => {
   const { universityId, facultyId } = useParams<{
@@ -21,6 +23,7 @@ const FacultyDetailsPage = () => {
   }>();
   const navigate = useNavigate();
   const { isSuperAdmin } = useUserRole();
+  const { t } = useTranslation();
   const universityIdNum = parseInt(universityId || "0");
   const facultyIdNum = parseInt(facultyId || "0");
 
@@ -78,73 +81,84 @@ const FacultyDetailsPage = () => {
   // };
 
   return (
-    <div className="space-y-6">
-      {/* Back Button */}
-      <div>
-        <Button onClick={handleBack} variant="ghost" size="sm">
-          <ArrowLeftIcon className="mr-2 size-4" />
-          Back to University
-        </Button>
-      </div>
-
-      {isSuperAdmin && (
-        <div className="flex justify-end">
-          <Button onClick={() => setIsAddDialogOpen(true)} size="lg">
-            <PlusIcon className="mr-2 size-4" />
-            Add Major
+    <>
+      <SEO
+        title={
+          faculty?.name
+            ? `${faculty.name} | ${t("seo.facultyDetail.title").replace("{{facultyName}}", faculty.name).replace("{{universityName}}", "")}`
+            : t("seo.universities.title")
+        }
+        description={t("seo.facultyDetail.description")}
+        noIndex={true}
+        hreflang={false}
+      />
+      <div className="space-y-6">
+        {/* Back Button */}
+        <div>
+          <Button onClick={handleBack} variant="ghost" size="sm">
+            <ArrowLeftIcon className="mr-2 size-4" />
+            Back to University
           </Button>
         </div>
-      )}
 
-      <SearchSection
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        onSearch={handleSearch}
-        onClearSearch={handleClearSearch}
-      />
+        {isSuperAdmin && (
+          <div className="flex justify-end">
+            <Button onClick={() => setIsAddDialogOpen(true)} size="lg">
+              <PlusIcon className="mr-2 size-4" />
+              Add Major
+            </Button>
+          </div>
+        )}
 
-      <MajorTable
-        majors={majors}
-        loading={loading}
-        searchTerm={searchTerm}
-        facultyName={faculty?.name}
-        onMajorClick={handleMajorClick}
-        onEditClick={handleEditClick}
-        onCurriculumClick={handleCurriculumClick}
-        onDeleteClick={undefined} // Disable delete functionality
-        onAddClick={() => setIsAddDialogOpen(true)}
-        showActions={isSuperAdmin}
-      />
-
-      {totalPages > 1 && (
-        <SmartPagination
-          pageNumber={currentPage}
-          totalPages={totalPages}
-          hasPreviousPage={paginationInfo.hasPreviousPage}
-          hasNextPage={paginationInfo.hasNextPage}
-          onPageChange={setCurrentPage}
+        <SearchSection
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+          onSearch={handleSearch}
+          onClearSearch={handleClearSearch}
         />
-      )}
 
-      <AddMajorDialog
-        isOpen={isAddDialogOpen}
-        onClose={() => setIsAddDialogOpen(false)}
-        onAdd={handleAddMajor}
-        facultyName={faculty?.name}
-      />
+        <MajorTable
+          majors={majors}
+          loading={loading}
+          searchTerm={searchTerm}
+          facultyName={faculty?.name}
+          onMajorClick={handleMajorClick}
+          onEditClick={handleEditClick}
+          onCurriculumClick={handleCurriculumClick}
+          onDeleteClick={undefined} // Disable delete functionality
+          onAddClick={() => setIsAddDialogOpen(true)}
+          showActions={isSuperAdmin}
+        />
 
-      <EditMajorDialog
-        isOpen={isEditDialogOpen}
-        onClose={() => {
-          setIsEditDialogOpen(false);
-          setEditingMajor(null);
-        }}
-        onEdit={handleEditMajor}
-        major={editingMajor}
-      />
+        {totalPages > 1 && (
+          <SmartPagination
+            pageNumber={currentPage}
+            totalPages={totalPages}
+            hasPreviousPage={paginationInfo.hasPreviousPage}
+            hasNextPage={paginationInfo.hasNextPage}
+            onPageChange={setCurrentPage}
+          />
+        )}
 
-      {/* Delete functionality disabled for now */}
-      {/* <DeleteMajorDialog
+        <AddMajorDialog
+          isOpen={isAddDialogOpen}
+          onClose={() => setIsAddDialogOpen(false)}
+          onAdd={handleAddMajor}
+          facultyName={faculty?.name}
+        />
+
+        <EditMajorDialog
+          isOpen={isEditDialogOpen}
+          onClose={() => {
+            setIsEditDialogOpen(false);
+            setEditingMajor(null);
+          }}
+          onEdit={handleEditMajor}
+          major={editingMajor}
+        />
+
+        {/* Delete functionality disabled for now */}
+        {/* <DeleteMajorDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => {
           setIsDeleteDialogOpen(false);
@@ -153,7 +167,8 @@ const FacultyDetailsPage = () => {
         onDelete={handleDeleteMajor}
         major={deletingMajor}
       /> */}
-    </div>
+      </div>
+    </>
   );
 };
 

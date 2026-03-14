@@ -6,6 +6,7 @@ import StatsSection from "@/features/home/components/StatsSection";
 import TestimonialsSection from "@/features/home/components/TestimonialsSection";
 import CTASection from "@/features/home/components/CTASection";
 import SEO from "@/shared/components/seo/SEO";
+import StructuredData from "@/shared/components/seo/StructuredData";
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -16,8 +17,11 @@ export default function HomePage() {
         title={t("seo.home.title")}
         description={t("seo.home.description")}
         keywords={t("seo.home.keywords")}
-        url="https://uni-hub.com/"
+        canonical="https://ecampusjo.com/"
       />
+      {/* JSON-LD structured data for Google */}
+      <StructuredData type="organization" />
+      <StructuredData type="website" />
       <div className="relative">
         <HeroSection />
         <Feature />

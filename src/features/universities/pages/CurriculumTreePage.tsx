@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import SEO from "@/shared/components/seo/SEO";
 import DataEditor from "../components/DataEditor";
 import { useUserRole } from "@/hooks/useUserRole";
 import { ModeToggle } from "@/shared/ui/modetoggle";
@@ -654,7 +655,7 @@ function CourseCard({
         fontWeight="800"
         fontFamily="'Noto Sans Arabic',sans-serif"
         style={{
-          fill: "#F1F5F9",
+          fill: "var(--foreground)",
           opacity: isDimmed ? 0.22 : 1,
           letterSpacing: "-0.2px",
         }}
@@ -669,7 +670,7 @@ function CourseCard({
         fontWeight="700"
         fontFamily="'Space Mono',monospace"
         style={{
-          fill: "#94A3B8",
+          fill: "var(--muted-foreground)",
           opacity: isDimmed ? 0.18 : 1,
         }}
       >
@@ -682,7 +683,7 @@ function CourseCard({
         fontSize={9.5}
         fontFamily="'Noto Sans Arabic',sans-serif"
         style={{
-          fill: "#94A3B8",
+          fill: "var(--muted-foreground)",
           opacity: isDimmed ? 0.18 : 1,
         }}
       >
@@ -1315,35 +1316,7 @@ export function CurriculumTree({
               تغيير الاتجاه
             </span>
           </button>
-          {isAdmin && onCreate && (
-            <button
-              className="ctrl-btn"
-              onClick={onCreate}
-              title="إنشاء خطة جديدة"
-              style={{
-                background: "rgba(16, 185, 129, 0.2)",
-                borderColor: "rgba(16, 185, 129, 0.4)",
-                color: "#10B981",
-              }}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              <span style={{ fontSize: "12px", marginRight: "4px" }}>
-                إنشاء
-              </span>
-            </button>
-          )}
+
           {isAdmin && (
             <button
               className="ctrl-btn"
@@ -2426,9 +2399,9 @@ export default function CurriculumTreePage({
 
   return (
     <>
+      <SEO title="الخطة الدراسية | eCampus" noIndex={true} hreflang={false} />
       <CurriculumTree
         onEdit={() => setEditorMode("edit")}
-        onCreate={() => setEditorMode("create")}
         CATEGORIES={CATEGORIES}
         TITLE={TITLE}
         COURSES={COURSES}

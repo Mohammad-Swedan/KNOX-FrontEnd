@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/shared/components/seo/SEO";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -209,396 +210,407 @@ const ManageLessonsPage = () => {
     : 0;
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        {/* Back */}
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 cursor-pointer"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </button>
+    <>
+      <SEO title="إدارة الدروس | eCampus" noIndex={true} hreflang={false} />
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
+          {/* Back */}
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 cursor-pointer"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
 
-        {/* Page header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <BookOpen className="h-5 w-5 text-primary" />
+          {/* Page header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <BookOpen className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold leading-tight">
+                  Manage Curriculum
+                </h1>
+                {course && (
+                  <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">
+                    {course.title}
+                  </p>
+                )}
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold leading-tight">
-                Manage Curriculum
-              </h1>
-              {course && (
-                <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">
-                  {course.title}
-                </p>
-              )}
-            </div>
+
+            {canManage && (
+              <Button
+                className="cursor-pointer gap-2 shrink-0"
+                onClick={() => setAddTopicOpen(true)}
+              >
+                <Plus className="h-4 w-4" />
+                Add Topic
+              </Button>
+            )}
           </div>
 
-          {canManage && (
-            <Button
-              className="cursor-pointer gap-2 shrink-0"
-              onClick={() => setAddTopicOpen(true)}
-            >
-              <Plus className="h-4 w-4" />
-              Add Topic
-            </Button>
+          {/* Status & actions bar */}
+          {canManage && course && (
+            <div className="flex items-center gap-2 mb-8 flex-wrap">
+              {/* Status badge */}
+              <span
+                className={[
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border",
+                  course.status === "Published"
+                    ? "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20"
+                    : course.status === "Draft"
+                      ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
+                      : course.status === "InReview"
+                        ? "bg-primary/10 text-primary dark:text-primary border-primary/20"
+                        : "bg-muted text-muted-foreground border-border",
+                ].join(" ")}
+              >
+                {course.status === "Published" ? (
+                  <Globe className="h-3 w-3" />
+                ) : (
+                  <EyeOff className="h-3 w-3" />
+                )}
+                {course.status}
+              </span>
+
+              {/* Toggle publish — not available for Archived */}
+              {course.status !== "Archived" && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="cursor-pointer gap-1.5 h-8 text-xs"
+                  onClick={handleTogglePublish}
+                  disabled={isTogglingPublish}
+                >
+                  {isTogglingPublish ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : course.status === "Published" ? (
+                    <EyeOff className="h-3.5 w-3.5" />
+                  ) : (
+                    <Globe className="h-3.5 w-3.5" />
+                  )}
+                  {course.status === "Published" ? "Unpublish" : "Publish"}
+                </Button>
+              )}
+
+              {/* Delete course */}
+              <Button
+                size="sm"
+                variant="ghost"
+                className="cursor-pointer gap-1.5 h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 ml-auto"
+                onClick={() => setShowDeleteCourseDialog(true)}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                Delete Course
+              </Button>
+            </div>
+          )}
+
+          {/* Content */}
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <Loader2 className="h-7 w-7 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Loading curriculum…
+              </p>
+            </div>
+          ) : !outline || outline.topics.length === 0 ? (
+            <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+              <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center">
+                  <FolderOpen className="h-7 w-7 text-muted-foreground/40" />
+                </div>
+                <div>
+                  <p className="text-base font-medium">No topics yet</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Start by adding a topic to organize your lessons.
+                  </p>
+                </div>
+                {canManage && (
+                  <Button
+                    className="cursor-pointer gap-2 mt-2"
+                    onClick={() => setAddTopicOpen(true)}
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add First Topic
+                  </Button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {/* Stats bar */}
+              <div className="flex items-center gap-4 mb-2 text-sm text-muted-foreground">
+                <span>
+                  {outline.topics.length} topic
+                  {outline.topics.length !== 1 ? "s" : ""}
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span>
+                  {totalLessons} lesson{totalLessons !== 1 ? "s" : ""}
+                </span>
+              </div>
+
+              {/* Topics */}
+              {outline.topics
+                .sort((a, b) => a.order - b.order)
+                .map((topic) => (
+                  <TopicSection
+                    key={topic.id}
+                    topic={topic}
+                    expanded={expandedTopics.has(topic.id)}
+                    onToggle={() => toggleTopic(topic.id)}
+                    onLessonClick={handleLessonClick}
+                    canManage={canManage}
+                    dashboardId={id!}
+                    onRefetch={refetch}
+                    onReupload={setReuploadLesson}
+                  />
+                ))}
+            </div>
           )}
         </div>
 
-        {/* Status & actions bar */}
-        {canManage && course && (
-          <div className="flex items-center gap-2 mb-8 flex-wrap">
-            {/* Status badge */}
-            <span
-              className={[
-                "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border",
-                course.status === "Published"
-                  ? "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20"
-                  : course.status === "Draft"
-                    ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20"
-                    : course.status === "InReview"
-                      ? "bg-primary/10 text-primary dark:text-primary border-primary/20"
-                      : "bg-muted text-muted-foreground border-border",
-              ].join(" ")}
-            >
-              {course.status === "Published" ? (
-                <Globe className="h-3 w-3" />
-              ) : (
-                <EyeOff className="h-3 w-3" />
-              )}
-              {course.status}
-            </span>
+        {reuploadLesson && (
+          <ReuploadVideoModal
+            open={reuploadLesson !== null}
+            onOpenChange={(open) => {
+              if (!open) setReuploadLesson(null);
+            }}
+            lessonId={reuploadLesson.id}
+            currentTitle={reuploadLesson.title}
+            onSuccess={() => {
+              setReuploadLesson(null);
+              refetch();
+            }}
+          />
+        )}
 
-            {/* Toggle publish — not available for Archived */}
-            {course.status !== "Archived" && (
+        {/* Add Topic Dialog */}
+        <Dialog open={addTopicOpen} onOpenChange={setAddTopicOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Add New Topic</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <div className="space-y-1.5">
+                <Label htmlFor="topicTitle" className="text-sm font-medium">
+                  Topic Title <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="topicTitle"
+                  value={topicTitle}
+                  onChange={(e) => setTopicTitle(e.target.value)}
+                  placeholder="e.g. Introduction to the Course"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleAddTopic();
+                  }}
+                />
+              </div>
+            </div>
+            <DialogFooter>
               <Button
-                size="sm"
                 variant="outline"
-                className="cursor-pointer gap-1.5 h-8 text-xs"
-                onClick={handleTogglePublish}
-                disabled={isTogglingPublish}
+                onClick={() => setAddTopicOpen(false)}
+                disabled={addingTopic}
+                className="cursor-pointer"
               >
-                {isTogglingPublish ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : course.status === "Published" ? (
-                  <EyeOff className="h-3.5 w-3.5" />
-                ) : (
-                  <Globe className="h-3.5 w-3.5" />
-                )}
-                {course.status === "Published" ? "Unpublish" : "Publish"}
+                Cancel
               </Button>
-            )}
+              <Button
+                onClick={handleAddTopic}
+                disabled={!topicTitle.trim() || addingTopic}
+                className="cursor-pointer"
+              >
+                {addingTopic ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Plus className="h-4 w-4 mr-2" />
+                )}
+                Add Topic
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
-            {/* Delete course */}
-            <Button
-              size="sm"
-              variant="ghost"
-              className="cursor-pointer gap-1.5 h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 ml-auto"
-              onClick={() => setShowDeleteCourseDialog(true)}
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              Delete Course
-            </Button>
-          </div>
-        )}
+        {/* Delete Course Alert */}
+        <AlertDialog
+          open={showDeleteCourseDialog}
+          onOpenChange={setShowDeleteCourseDialog}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete "{course?.title}"?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The course will be soft-deleted. It won't appear publicly but
+                all data is preserved.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isDeletingCourse}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteCourse}
+                disabled={isDeletingCourse}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {isDeletingCourse && (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                )}
+                Delete Course
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
-        {/* Content */}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <Loader2 className="h-7 w-7 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Loading curriculum…</p>
-          </div>
-        ) : !outline || outline.topics.length === 0 ? (
-          <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
-            <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center">
-                <FolderOpen className="h-7 w-7 text-muted-foreground/40" />
-              </div>
-              <div>
-                <p className="text-base font-medium">No topics yet</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Start by adding a topic to organize your lessons.
-                </p>
-              </div>
-              {canManage && (
-                <Button
-                  className="cursor-pointer gap-2 mt-2"
-                  onClick={() => setAddTopicOpen(true)}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add First Topic
-                </Button>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {/* Stats bar */}
-            <div className="flex items-center gap-4 mb-2 text-sm text-muted-foreground">
-              <span>
-                {outline.topics.length} topic
-                {outline.topics.length !== 1 ? "s" : ""}
-              </span>
-              <span className="h-3 w-px bg-border" />
-              <span>
-                {totalLessons} lesson{totalLessons !== 1 ? "s" : ""}
-              </span>
-            </div>
-
-            {/* Topics */}
-            {outline.topics
-              .sort((a, b) => a.order - b.order)
-              .map((topic) => (
-                <TopicSection
-                  key={topic.id}
-                  topic={topic}
-                  expanded={expandedTopics.has(topic.id)}
-                  onToggle={() => toggleTopic(topic.id)}
-                  onLessonClick={handleLessonClick}
-                  canManage={canManage}
-                  dashboardId={id!}
-                  onRefetch={refetch}
-                  onReupload={setReuploadLesson}
-                />
-              ))}
-          </div>
-        )}
-      </div>
-
-      {reuploadLesson && (
-        <ReuploadVideoModal
-          open={reuploadLesson !== null}
+        {/* ── Lesson Content Preview Dialog ─────────────────── */}
+        <Dialog
+          open={previewLesson !== null}
           onOpenChange={(open) => {
-            if (!open) setReuploadLesson(null);
+            if (!open) {
+              setPreviewLesson(null);
+              clearContent();
+            }
           }}
-          lessonId={reuploadLesson.id}
-          currentTitle={reuploadLesson.title}
-          onSuccess={() => {
-            setReuploadLesson(null);
-            refetch();
-          }}
-        />
-      )}
+        >
+          <DialogContent className="sm:max-w-3xl max-h-[90vh] flex flex-col gap-0 p-0 overflow-hidden">
+            {/* Header */}
+            <DialogHeader className="px-5 pt-5 pb-3 border-b shrink-0">
+              <DialogTitle className="flex items-center gap-2.5 text-base">
+                {previewLesson && (
+                  <div
+                    className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${LessonTypeBg({ type: previewLesson.type as string })}`}
+                  >
+                    <LessonTypeIcon type={previewLesson.type as string} />
+                  </div>
+                )}
+                <span className="flex-1 truncate text-left">
+                  {previewLesson?.title}
+                </span>
+                <span className="shrink-0 text-xs font-normal text-muted-foreground">
+                  {previewLesson?.type === "Video"
+                    ? "Video"
+                    : previewLesson?.type === "Quiz"
+                      ? "Quiz"
+                      : previewLesson?.type === "ExternalVideo"
+                        ? "External Video"
+                        : "Document"}
+                </span>
+              </DialogTitle>
+            </DialogHeader>
 
-      {/* Add Topic Dialog */}
-      <Dialog open={addTopicOpen} onOpenChange={setAddTopicOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Add New Topic</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3 py-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="topicTitle" className="text-sm font-medium">
-                Topic Title <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="topicTitle"
-                value={topicTitle}
-                onChange={(e) => setTopicTitle(e.target.value)}
-                placeholder="e.g. Introduction to the Course"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleAddTopic();
-                }}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setAddTopicOpen(false)}
-              disabled={addingTopic}
-              className="cursor-pointer"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAddTopic}
-              disabled={!topicTitle.trim() || addingTopic}
-              className="cursor-pointer"
-            >
-              {addingTopic ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Plus className="h-4 w-4 mr-2" />
-              )}
-              Add Topic
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Course Alert */}
-      <AlertDialog
-        open={showDeleteCourseDialog}
-        onOpenChange={setShowDeleteCourseDialog}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete "{course?.title}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              The course will be soft-deleted. It won't appear publicly but all
-              data is preserved.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeletingCourse}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteCourse}
-              disabled={isDeletingCourse}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isDeletingCourse && (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              )}
-              Delete Course
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* ── Lesson Content Preview Dialog ─────────────────── */}
-      <Dialog
-        open={previewLesson !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setPreviewLesson(null);
-            clearContent();
-          }
-        }}
-      >
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] flex flex-col gap-0 p-0 overflow-hidden">
-          {/* Header */}
-          <DialogHeader className="px-5 pt-5 pb-3 border-b shrink-0">
-            <DialogTitle className="flex items-center gap-2.5 text-base">
-              {previewLesson && (
-                <div
-                  className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${LessonTypeBg({ type: previewLesson.type as string })}`}
-                >
-                  <LessonTypeIcon type={previewLesson.type as string} />
-                </div>
-              )}
-              <span className="flex-1 truncate text-left">
-                {previewLesson?.title}
-              </span>
-              <span className="shrink-0 text-xs font-normal text-muted-foreground">
-                {previewLesson?.type === "Video"
-                  ? "Video"
-                  : previewLesson?.type === "Quiz"
-                    ? "Quiz"
-                    : previewLesson?.type === "ExternalVideo"
-                      ? "External Video"
-                      : "Document"}
-              </span>
-            </DialogTitle>
-          </DialogHeader>
-
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-5">
-            {/* Loading */}
-            {contentLoading && (
-              <div className="flex flex-col items-center justify-center py-16 gap-3">
-                <Loader2 className="h-7 w-7 animate-spin text-primary" />
-                <p className="text-sm text-muted-foreground">
-                  Loading lesson content…
-                </p>
-              </div>
-            )}
-
-            {/* Error */}
-            {contentError && !contentLoading && (
-              <div className="flex flex-col items-center justify-center py-16 gap-4">
-                <AlertCircle className="h-10 w-10 text-red-400" />
-                <div className="text-center space-y-1">
-                  <p className="font-medium">Could not load content</p>
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-5">
+              {/* Loading */}
+              {contentLoading && (
+                <div className="flex flex-col items-center justify-center py-16 gap-3">
+                  <Loader2 className="h-7 w-7 animate-spin text-primary" />
                   <p className="text-sm text-muted-foreground">
-                    {contentError}
+                    Loading lesson content…
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer gap-1.5"
-                  onClick={() =>
-                    previewLesson &&
-                    fetchContent(previewLesson.id, previewLesson.type as string)
-                  }
-                >
-                  <RefreshCw className="h-3.5 w-3.5" />
-                  Try Again
-                </Button>
-              </div>
-            )}
-
-            {/* Quiz */}
-            {!contentLoading &&
-              !contentError &&
-              lessonContent?.kind === "quiz" && (
-                <QuizLessonViewer quiz={lessonContent.data} />
               )}
 
-            {/* Video */}
-            {!contentLoading &&
-              !contentError &&
-              lessonContent?.kind === "video" && (
-                <VideoLessonViewer
-                  video={lessonContent.data}
-                  onRefresh={() =>
-                    previewLesson &&
-                    fetchContent(previewLesson.id, previewLesson.type as string)
-                  }
-                  onReupload={
-                    canManage
-                      ? () => {
-                          if (previewLesson) {
-                            setReuploadLesson(previewLesson);
+              {/* Error */}
+              {contentError && !contentLoading && (
+                <div className="flex flex-col items-center justify-center py-16 gap-4">
+                  <AlertCircle className="h-10 w-10 text-red-400" />
+                  <div className="text-center space-y-1">
+                    <p className="font-medium">Could not load content</p>
+                    <p className="text-sm text-muted-foreground">
+                      {contentError}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer gap-1.5"
+                    onClick={() =>
+                      previewLesson &&
+                      fetchContent(
+                        previewLesson.id,
+                        previewLesson.type as string,
+                      )
+                    }
+                  >
+                    <RefreshCw className="h-3.5 w-3.5" />
+                    Try Again
+                  </Button>
+                </div>
+              )}
+
+              {/* Quiz */}
+              {!contentLoading &&
+                !contentError &&
+                lessonContent?.kind === "quiz" && (
+                  <QuizLessonViewer quiz={lessonContent.data} />
+                )}
+
+              {/* Video */}
+              {!contentLoading &&
+                !contentError &&
+                lessonContent?.kind === "video" && (
+                  <VideoLessonViewer
+                    video={lessonContent.data}
+                    onRefresh={() =>
+                      previewLesson &&
+                      fetchContent(
+                        previewLesson.id,
+                        previewLesson.type as string,
+                      )
+                    }
+                    onReupload={
+                      canManage
+                        ? () => {
+                            if (previewLesson) {
+                              setReuploadLesson(previewLesson);
+                            }
                           }
-                        }
-                      : undefined
-                  }
-                />
-              )}
+                        : undefined
+                    }
+                  />
+                )}
 
-            {/* Document */}
-            {!contentLoading &&
-              !contentError &&
-              lessonContent?.kind === "material" && (
-                <MaterialLessonViewer material={lessonContent.data} />
-              )}
+              {/* Document */}
+              {!contentLoading &&
+                !contentError &&
+                lessonContent?.kind === "material" && (
+                  <MaterialLessonViewer material={lessonContent.data} />
+                )}
 
-            {/* External Video */}
-            {!contentLoading &&
-              previewLesson?.type === "ExternalVideo" &&
-              (previewLesson.directUrl ? (
-                <ExternalVideoViewer directUrl={previewLesson.directUrl} />
-              ) : (
-                <div className="flex flex-col items-center justify-center py-16 gap-2 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    No URL set for this external video lesson.
-                  </p>
-                </div>
-              ))}
+              {/* External Video */}
+              {!contentLoading &&
+                previewLesson?.type === "ExternalVideo" &&
+                (previewLesson.directUrl ? (
+                  <ExternalVideoViewer directUrl={previewLesson.directUrl} />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-16 gap-2 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      No URL set for this external video lesson.
+                    </p>
+                  </div>
+                ))}
 
-            {/* No content linked yet (non-ExternalVideo) */}
-            {!contentLoading &&
-              !contentError &&
-              !lessonContent &&
-              previewLesson?.type !== "ExternalVideo" && (
-                <div className="flex flex-col items-center justify-center py-16 gap-2 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    No content linked to this lesson yet.
-                  </p>
-                </div>
-              )}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+              {/* No content linked yet (non-ExternalVideo) */}
+              {!contentLoading &&
+                !contentError &&
+                !lessonContent &&
+                previewLesson?.type !== "ExternalVideo" && (
+                  <div className="flex flex-col items-center justify-center py-16 gap-2 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      No content linked to this lesson yet.
+                    </p>
+                  </div>
+                )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 };
 

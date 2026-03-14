@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  eCampus | منصة ايكامبس — Sitemap Index
+  Domain: https://ecampusjo.com
+  Generated: 2026-03-14
+-->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://ecampusjo.com/sitemap-static.xml</loc>
+    <lastmod>2026-03-14</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ecampusjo.com/sitemap-universities.xml</loc>
+    <lastmod>2026-03-14</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ecampusjo.com/sitemap-courses.xml</loc>
+    <lastmod>2026-03-14</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ecampusjo.com/sitemap-product-courses.xml</loc>
+    <lastmod>2026-03-14</lastmod>
+  </sitemap>
+</sitemapindex>

@@ -462,12 +462,28 @@ export const completeLesson = async (
 
 // ── Certificates ───────────────────────────────────────────
 
-/** Verify a certificate by certificate number */
+/** Verify a certificate by certificate number (public — no auth required) */
 export const verifyCertificate = async (
   certificateNumber: string,
 ): Promise<Certificate> => {
   const response = await apiClient.get<Certificate>(
     `/product-courses/certificates/verify/${certificateNumber}`,
+  );
+  return response.data;
+};
+
+/** Get all certificates earned by the currently authenticated student */
+export const getMyCertificates = async (): Promise<Certificate[]> => {
+  const response = await apiClient.get<Certificate[]>(
+    "/product-courses/certificates/my",
+  );
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+/** Get a single certificate by its ID (scoped to the requesting student) */
+export const getCertificateById = async (id: number): Promise<Certificate> => {
+  const response = await apiClient.get<Certificate>(
+    `/product-courses/certificates/${id}`,
   );
   return response.data;
 };

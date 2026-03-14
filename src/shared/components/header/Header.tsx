@@ -1,5 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { MenuIcon, LogOut, User, ShieldAlert, BookMarked } from "lucide-react";
+import {
+  MenuIcon,
+  LogOut,
+  User,
+  ShieldAlert,
+  BookMarked,
+  Award,
+} from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import {
@@ -206,6 +213,18 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     className="rounded-lg cursor-pointer"
                   >
                     <a
+                      href="/my-certificates"
+                      className="flex items-center gap-2 px-3 py-2"
+                    >
+                      <Award className="h-4 w-4 text-amber-500" />
+                      My Certificates
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="rounded-lg cursor-pointer"
+                  >
+                    <a
                       href="/profile"
                       className="flex items-center gap-2 px-3 py-2"
                     >
@@ -339,6 +358,18 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                     >
                       <BookMarked className="h-4 w-4 text-primary" />
                       My Courses
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="rounded-lg cursor-pointer"
+                  >
+                    <a
+                      href="/my-certificates"
+                      className="flex items-center gap-2 px-3 py-2"
+                    >
+                      <Award className="h-4 w-4 text-amber-500" />
+                      My Certificates
                     </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem

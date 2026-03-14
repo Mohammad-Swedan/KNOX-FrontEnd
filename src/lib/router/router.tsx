@@ -45,6 +45,8 @@ import PrepaidCodesPage from "@/features/product-courses/pages/PrepaidCodesPage"
 import ProductCourseCatalog from "@/features/product-courses/pages/ProductCourseCatalog";
 import MyEnrollmentsPage from "@/features/product-courses/pages/MyEnrollmentsPage";
 import MyCoursesPage from "@/features/product-courses/pages/MyCoursesPage";
+import MyCertificatesPage from "@/features/product-courses/pages/MyCertificatesPage";
+import CertificateDetailPage from "@/features/product-courses/pages/CertificateDetailPage";
 import CertificateVerifyPage from "@/features/product-courses/pages/CertificateVerifyPage";
 import CoursePlayerPage from "@/features/product-courses/pages/CoursePlayerPage";
 
@@ -94,6 +96,22 @@ export const router = createBrowserRouter([
       {
         path: "certificates/verify",
         element: <CertificateVerifyPage />,
+      },
+      {
+        path: "my-certificates",
+        element: (
+          <ProtectedRoute>
+            <MyCertificatesPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "certificates/:id",
+        element: (
+          <ProtectedRoute>
+            <CertificateDetailPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "product-courses/:id/learn",
