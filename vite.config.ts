@@ -26,9 +26,10 @@ export default defineConfig(async ({ command }) => {
     tailwindcss(),
   ];
 
-  // Only add the prerender plugin during build (not dev).
-  // Dynamic imports prevent the CommonJS-based plugin from breaking the dev server.
-  if (command === "build") {
+  // Only add the prerender plugin during build (not dev) and when not in Docker/CI.
+  // vite-plugin-prerender uses require() internally which conflicts with ESM in Node 22.
+  // Set SKIP_PRERENDER=true to skip (done automatically in the Dockerfile).
+  if (command === "build" && !process.env.SKIP_PRERENDER) {
     // @ts-ignore – vite-plugin-prerender may lack type definitions
     const { default: prerender } = await import("vite-plugin-prerender");
     // @ts-ignore – @prerenderer/renderer-puppeteer may lack type definitions

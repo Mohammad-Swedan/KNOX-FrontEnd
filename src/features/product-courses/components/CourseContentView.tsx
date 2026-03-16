@@ -178,7 +178,7 @@ export default function CourseContentView({
             <p className="text-xs text-muted-foreground">
               {Math.round(content.progressPercentage)}% complete
             </p>
-            {content.isCompleted && onShowCertificate && (
+            {content.progressPercentage >= 100 && onShowCertificate && (
               <Button
                 size="sm"
                 className="gap-1.5 bg-amber-500 hover:bg-amber-600 text-white shadow-sm cursor-pointer"

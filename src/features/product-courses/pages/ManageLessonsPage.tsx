@@ -119,6 +119,7 @@ const ManageLessonsPage = () => {
   const [isTogglingPublish, setIsTogglingPublish] = useState(false);
   const [showDeleteCourseDialog, setShowDeleteCourseDialog] = useState(false);
   const [isDeletingCourse, setIsDeletingCourse] = useState(false);
+  const [deleteNameInput, setDeleteNameInput] = useState("");
 
   const [previewLesson, setPreviewLesson] =
     useState<CourseContentLessonDto | null>(null);
@@ -439,14 +440,56 @@ const ManageLessonsPage = () => {
         {/* Delete Course Alert */}
         <AlertDialog
           open={showDeleteCourseDialog}
-          onOpenChange={setShowDeleteCourseDialog}
+          onOpenChange={(open) => {
+            setShowDeleteCourseDialog(open);
+            if (!open) setDeleteNameInput("");
+          }}
         >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Delete "{course?.title}"?</AlertDialogTitle>
-              <AlertDialogDescription>
-                The course will be soft-deleted. It won't appear publicly but
-                all data is preserved.
+              <AlertDialogDescription asChild>
+                <div className="space-y-3">
+                  <p>
+                    You are about to permanently delete{" "}
+                    <span className="font-semibold text-foreground">
+                      "{course?.title}"
+                    </span>
+                    .
+                  </p>
+                  <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive space-y-1">
+                    <p className="font-semibold">
+                      ⚠ Warning — this action cannot be undone:
+                    </p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>
+                        All enrolled users will lose their enrollment in this
+                        course.
+                      </li>
+                      <li>
+                        All earned certificates for this course will be revoked.
+                      </li>
+                      <li>
+                        All course content, lessons, and materials will be
+                        removed.
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-1.5 pt-1">
+                    <p className="text-sm text-foreground">
+                      Type{" "}
+                      <span className="font-semibold">{course?.title}</span> to
+                      confirm:
+                    </p>
+                    <Input
+                      value={deleteNameInput}
+                      onChange={(e) => setDeleteNameInput(e.target.value)}
+                      placeholder={course?.title}
+                      className="h-9"
+                      disabled={isDeletingCourse}
+                    />
+                  </div>
+                </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -455,7 +498,7 @@ const ManageLessonsPage = () => {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteCourse}
-                disabled={isDeletingCourse}
+                disabled={isDeletingCourse || deleteNameInput !== course?.title}
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               >
                 {isDeletingCourse && (

@@ -2,9 +2,11 @@ import axios from "axios";
 import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { getStoredToken, clearSession } from "@/hooks/authStorage";
 
-//export const BASE_URL = "https://knox.premiumasp.net/api";
-export const BASE_URL = "https://localhost:6001/api";
-//local host 5001 (http://localhost:5001/api)
+// Resolved at Vite build time from the VITE_API_URL environment variable.
+// Override via:  docker build --build-arg VITE_API_URL=http://<vps-ip>:5001/api .
+// Falls back to localhost for local development (npm run dev).
+export const BASE_URL =
+  import.meta.env.VITE_API_URL ?? "http://localhost:5001/api";
 
 /**
  * Configured axios instance for API requests

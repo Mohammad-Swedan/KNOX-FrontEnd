@@ -1,3 +1,9 @@
+export interface BackupFile {
+  fileName: string;
+  fileSizeBytes: number;
+  createdAt: string;
+}
+
 export interface AnalyticsData {
   totalUniversities: number;
   totalFaculties: number;

@@ -204,7 +204,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                       href="/profile"
                       className="flex items-center gap-2 px-3 py-2"
                     >
-                      <User className="h-4 w-4 animate-ping" />
+                      <User className="h-4 w-4 animate-pulse" />
                       {t("header.userMenu.profile")}
                     </a>
                   </DropdownMenuItem>

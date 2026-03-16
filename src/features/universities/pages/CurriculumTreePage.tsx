@@ -2179,7 +2179,7 @@ export default function CurriculumTreePage({
   isStandalone,
 }: { isStandalone?: boolean } = {}) {
   const { majorId } = useParams<{ majorId: string }>();
-  const { isAdmin } = useUserRole();
+  const { isSuperAdmin } = useUserRole();
   const [editorMode, setEditorMode] = useState<string | null>(null); // 'edit', 'create', or null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -2215,9 +2215,11 @@ export default function CurriculumTreePage({
           setTitle(appData.TITLE);
           setCourses(appData.COURSES as any);
           setMeta(appData._meta);
-        } else {
+        } else if (isSuperAdmin) {
+          // Only SuperAdmin can create a new curriculum
           setEditorMode("create");
         }
+        // For non-superadmins with no curriculum, meta stays null → shows "no content" UI
       } catch (err: any) {
         console.error("API unreachable.", err);
         if (!cancelled)
@@ -2371,6 +2373,45 @@ export default function CurriculumTreePage({
     );
   }
 
+  // No curriculum data and user is not an admin — show empty state
+  if (meta === null && !editorMode) {
+    return (
+      <div
+        className="bg-background flex items-center justify-center flex-col gap-5 p-6 box-border"
+        style={{
+          width: "100%",
+          height: isStandalone ? "100vh" : "calc(100vh - 120px)",
+          zIndex: 10,
+          fontFamily: "'Noto Sans Arabic',sans-serif",
+          direction: "rtl",
+        }}
+      >
+        <div style={{ fontSize: 48 }}>📚</div>
+        <div
+          style={{
+            color: "var(--foreground)",
+            fontSize: 20,
+            fontWeight: 800,
+            textAlign: "center",
+          }}
+        >
+          لا توجد خطة دراسية
+        </div>
+        <div
+          style={{
+            color: "var(--muted-foreground)",
+            fontSize: 13,
+            textAlign: "center",
+            maxWidth: 360,
+            lineHeight: 1.8,
+          }}
+        >
+          لم يتم إضافة خطة دراسية لهذا التخصص بعد.
+        </div>
+      </div>
+    );
+  }
+
   if (editorMode) {
     const isCreate = editorMode === "create";
     return (
@@ -2405,7 +2446,7 @@ export default function CurriculumTreePage({
         CATEGORIES={CATEGORIES}
         TITLE={TITLE}
         COURSES={COURSES}
-        isAdmin={isAdmin}
+        isAdmin={isSuperAdmin}
         isStandalone={isStandalone}
       />
     </>

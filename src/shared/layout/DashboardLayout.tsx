@@ -7,11 +7,17 @@ import {
   PenTool,
   FileText,
   HomeIcon,
+  Ticket,
+  HardDriveDownload,
 } from "lucide-react";
 import { useAuth } from "@/app/providers/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import Logo from "@/assets/logo";
 import { fetchMajorById } from "@/features/courses/api";
+import {
+  fetchUniversityById,
+  fetchFacultyById,
+} from "@/features/universities/api";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -51,6 +57,12 @@ const DashboardLayout = () => {
   const { user } = useAuth();
   const { isSuperAdmin, canManageContent, hasRole } = useUserRole();
   const [majorName, setMajorName] = useState<string | null>(null);
+  const [fetchedUniversityName, setFetchedUniversityName] = useState<
+    string | null
+  >(null);
+  const [fetchedFacultyName, setFetchedFacultyName] = useState<string | null>(
+    null,
+  );
   const { i18n } = useTranslation();
 
   // Determine sidebar side based on language direction
@@ -88,27 +100,80 @@ const DashboardLayout = () => {
 
   // Fetch major name from URL if present
   useEffect(() => {
-    const fetchMajorName = async () => {
-      const pathParts = location.pathname.split("/").filter(Boolean);
-      const majorIndex = pathParts.indexOf("majors");
+    let cancelled = false;
+    setMajorName(null); // Clear stale name immediately
 
-      if (majorIndex !== -1 && pathParts[majorIndex + 1]) {
-        const majorId = parseInt(pathParts[majorIndex + 1]);
-        if (!isNaN(majorId)) {
-          try {
-            const major = await fetchMajorById(majorId);
-            setMajorName(major.name);
-          } catch (error) {
-            console.error("Failed to fetch major name:", error);
-            setMajorName(null);
-          }
-        }
-      } else {
-        setMajorName(null);
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const majorIndex = pathParts.indexOf("majors");
+
+    if (majorIndex !== -1 && pathParts[majorIndex + 1]) {
+      const majorId = parseInt(pathParts[majorIndex + 1]);
+      if (!isNaN(majorId)) {
+        fetchMajorById(majorId)
+          .then((major) => {
+            if (!cancelled) setMajorName(major.name);
+          })
+          .catch(() => {
+            if (!cancelled) setMajorName(null);
+          });
       }
-    };
+    }
 
-    fetchMajorName();
+    return () => {
+      cancelled = true;
+    };
+  }, [location.pathname]);
+
+  // Fetch university name from URL if present
+  useEffect(() => {
+    let cancelled = false;
+    setFetchedUniversityName(null); // Clear stale name immediately
+
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const uniIndex = pathParts.indexOf("universities");
+
+    if (uniIndex !== -1 && pathParts[uniIndex + 1]) {
+      const uniId = parseInt(pathParts[uniIndex + 1]);
+      if (!isNaN(uniId)) {
+        fetchUniversityById(uniId)
+          .then((uni) => {
+            if (!cancelled) setFetchedUniversityName(uni.name);
+          })
+          .catch(() => {
+            if (!cancelled) setFetchedUniversityName(null);
+          });
+      }
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location.pathname]);
+
+  // Fetch faculty name from URL if present
+  useEffect(() => {
+    let cancelled = false;
+    setFetchedFacultyName(null); // Clear stale name immediately
+
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const facIndex = pathParts.indexOf("faculties");
+
+    if (facIndex !== -1 && pathParts[facIndex + 1]) {
+      const facId = parseInt(pathParts[facIndex + 1]);
+      if (!isNaN(facId)) {
+        fetchFacultyById(facId)
+          .then((fac) => {
+            if (!cancelled) setFetchedFacultyName(fac.name);
+          })
+          .catch(() => {
+            if (!cancelled) setFetchedFacultyName(null);
+          });
+      }
+    }
+
+    return () => {
+      cancelled = true;
+    };
   }, [location.pathname]);
 
   const getActivePage = () => {
@@ -122,6 +187,9 @@ const DashboardLayout = () => {
       return "writer-statistics";
     if (location.pathname.startsWith("/dashboard/writer-application"))
       return "writer-applications";
+    if (location.pathname.startsWith("/dashboard/prepaid-codes"))
+      return "prepaid-codes";
+    if (location.pathname.startsWith("/dashboard/backups")) return "backups";
     return "analytics";
   };
 
@@ -133,6 +201,8 @@ const DashboardLayout = () => {
       breadcrumbs.push({ label: "Platform Statistics" });
     } else if (path.startsWith("/dashboard/users")) {
       breadcrumbs.push({ label: "Manage Users" });
+    } else if (path.startsWith("/dashboard/backups")) {
+      breadcrumbs.push({ label: "Database Backups" });
     } else if (path.startsWith("/dashboard/writer-statistics")) {
       breadcrumbs.push({ label: "Writer Statistics" });
     } else if (path.startsWith("/dashboard/writer-applications")) {
@@ -176,7 +246,7 @@ const DashboardLayout = () => {
             href: "/dashboard/universities",
           });
         }
-        breadcrumbs.push({ label: user?.universityName || "University" });
+        breadcrumbs.push({ label: fetchedUniversityName || "University" });
       } else if (parts.length >= 5 && parts[3] === "faculties") {
         // /dashboard/universities/:id/faculties/:facultyId
         const universityId = parts[2];
@@ -186,14 +256,19 @@ const DashboardLayout = () => {
             href: "/dashboard/universities",
           });
           breadcrumbs.push({
-            label: user?.universityName || "University",
+            label: fetchedUniversityName || "University",
             href: `/dashboard/universities/${universityId}`,
           });
         } else {
           // For Writer/Admin, show their university name
-          breadcrumbs.push({ label: user?.universityName || "University" });
+          breadcrumbs.push({
+            label:
+              fetchedUniversityName || user?.universityName || "University",
+          });
         }
-        breadcrumbs.push({ label: user?.facultyName || "Faculty" });
+        breadcrumbs.push({
+          label: fetchedFacultyName || user?.facultyName || "Faculty",
+        });
 
         // Check if there's a major in the path
         if (parts.length >= 7 && parts[5] === "majors") {
@@ -215,7 +290,7 @@ const DashboardLayout = () => {
           <SidebarHeader className="border-b px-4 py-4">
             <div className="flex items-center gap-3">
               <Logo className="size-9" />
-              <span className="text-xl font-bold tracking-tight">KNOX</span>
+              <span className="text-xl font-bold tracking-tight">ECAMPUS</span>
             </div>
           </SidebarHeader>
 
@@ -294,6 +369,32 @@ const DashboardLayout = () => {
                       >
                         <FileText />
                         <span>Writers Application</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )}
+
+                  {/* Prepaid Codes - SuperAdmin only */}
+                  {isSuperAdmin && (
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        isActive={getActivePage() === "prepaid-codes"}
+                        onClick={() => navigate("/dashboard/prepaid-codes")}
+                      >
+                        <Ticket />
+                        <span>Prepaid Codes</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )}
+
+                  {/* Database Backups - SuperAdmin only */}
+                  {isSuperAdmin && (
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        isActive={getActivePage() === "backups"}
+                        onClick={() => navigate("/dashboard/backups")}
+                      >
+                        <HardDriveDownload />
+                        <span>Database Backups</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )}

@@ -27,10 +27,10 @@ export default function PrepaidCodeForm({
   const [value, setValue] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [scopeType, setScopeType] = useState<0 | 1 | 2>(
-    productCourseId ? 1 : 0
+    productCourseId ? 1 : 0,
   );
   const [scopeReferenceId, setScopeReferenceId] = useState<number | undefined>(
-    productCourseId
+    productCourseId,
   );
   const [isReusable, setIsReusable] = useState(false);
   const [expirationDate, setExpirationDate] = useState("");
@@ -40,7 +40,7 @@ export default function PrepaidCodeForm({
     e.preventDefault();
     setLoading(true);
     try {
-      const code = await createPrepaidCode({
+      const codes = await createPrepaidCode({
         value,
         quantity,
         scopeType,
@@ -48,8 +48,10 @@ export default function PrepaidCodeForm({
         isReusable,
         expirationDate: expirationDate || undefined,
       });
-      toast.success(`Prepaid code created: ${code.code}`);
-      onCreated?.(code);
+      toast.success(
+        `${codes.length} prepaid code${codes.length > 1 ? "s" : ""} created.`,
+      );
+      codes.forEach((code) => onCreated?.(code));
       // Reset
       setValue(0);
       setQuantity(1);
@@ -117,12 +119,10 @@ export default function PrepaidCodeForm({
             value={scopeReferenceId ?? ""}
             onChange={(e) =>
               setScopeReferenceId(
-                e.target.value ? parseInt(e.target.value) : undefined
+                e.target.value ? parseInt(e.target.value) : undefined,
               )
             }
-            placeholder={
-              scopeType === 1 ? "Product Course ID" : "Category ID"
-            }
+            placeholder={scopeType === 1 ? "Product Course ID" : "Category ID"}
           />
         </div>
       )}
@@ -148,7 +148,11 @@ export default function PrepaidCodeForm({
         </Label>
       </div>
 
-      <Button type="submit" disabled={loading} className="w-full cursor-pointer">
+      <Button
+        type="submit"
+        disabled={loading}
+        className="w-full cursor-pointer"
+      >
         {loading ? (
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />

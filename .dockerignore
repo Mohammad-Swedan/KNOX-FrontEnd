@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local env files (never bake secrets into the image)
+.env
+.env.*
+!.env.example
+
+# Editor / OS artefacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker files themselves
+Dockerfile
+.dockerignore
+docker-compose*.yml

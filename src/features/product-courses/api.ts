@@ -6,6 +6,7 @@ import axios from "axios";
 import * as tus from "tus-js-client";
 import { apiClient } from "@/lib/api/apiClient";
 import { BASE_URL } from "@/lib/api/apiClient";
+import { LessonType } from "./types";
 import { getPaginated } from "@/lib/api/pagination";
 import type { PaginatedResponse } from "@/lib/api/types";
 import type {
@@ -289,6 +290,33 @@ export const fetchEnrolledOutline = async (
   return response.data;
 };
 
+// Normalize lesson type: the public /content endpoint may return numeric enum values
+// (0=Video, 1=Quiz, 2=Document, 3=ExternalVideo) while the enrolled endpoint returns
+// string values. Map numbers to their string counterparts so UI comparisons work.
+const numericToLessonType: Record<number, LessonType> = {
+  0: LessonType.Video,
+  1: LessonType.Quiz,
+  2: LessonType.Document,
+  3: LessonType.ExternalVideo,
+};
+
+function normalizeCourseContent(data: CourseContentDto): CourseContentDto {
+  return {
+    ...data,
+    topics: data.topics.map((topic) => ({
+      ...topic,
+      lessons: topic.lessons.map((lesson) => ({
+        ...lesson,
+        type:
+          typeof (lesson.type as unknown) === "number"
+            ? (numericToLessonType[lesson.type as unknown as number] ??
+              LessonType.Document)
+            : lesson.type,
+      })),
+    })),
+  };
+}
+
 /** Get unified course content (topics + lessons, respects enrollment status) */
 export const fetchCourseContent = async (
   courseId: number,
@@ -296,7 +324,7 @@ export const fetchCourseContent = async (
   const response = await apiClient.get<CourseContentDto>(
     `/product-courses/${courseId}/content`,
   );
-  return response.data;
+  return normalizeCourseContent(response.data);
 };
 
 /** Get enrolled course content (topics + lessons with completion status) */
@@ -490,11 +518,11 @@ export const getCertificateById = async (id: number): Promise<Certificate> => {
 
 // ── Prepaid Codes ──────────────────────────────────────────
 
-/** Create a prepaid code */
+/** Create prepaid codes — returns an array of generated codes */
 export const createPrepaidCode = async (
   data: CreatePrepaidCodeRequest,
-): Promise<PrepaidCode> => {
-  const response = await apiClient.post<PrepaidCode>(
+): Promise<PrepaidCode[]> => {
+  const response = await apiClient.post<PrepaidCode[]>(
     "/product-courses/prepaid-codes",
     data,
   );

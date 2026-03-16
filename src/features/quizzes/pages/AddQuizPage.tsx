@@ -15,6 +15,7 @@ import { EmptyQuestionsState } from "../components/EmptyQuestionsState";
 import { QuestionCard } from "../components/QuestionCard";
 import { ErrorAlert } from "../components/ErrorAlert";
 import { QuizSubmitSection } from "../components/QuizSubmitSection";
+import { JsonQuizImporter } from "../components/JsonQuizImporter";
 
 const AddQuizPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -178,6 +179,22 @@ const AddQuizPage = () => {
             onTagInputChange={setTagInput}
             onAddTag={addTag}
             onRemoveTag={removeTag}
+          />
+
+          {/* JSON Import */}
+          <JsonQuizImporter
+            hasExistingQuestions={questions.length > 0}
+            onImport={({
+              questions: imported,
+              title: t,
+              description: d,
+              tags: tgs,
+            }) => {
+              setQuestions(imported);
+              if (t) setTitle(t);
+              if (d) setDescription(d);
+              if (tgs) setTags(tgs);
+            }}
           />
 
           {/* Product Course Fields */}

@@ -11,6 +11,7 @@ import { QuizDetailsForm } from "../components/QuizDetailsForm";
 import { QuestionCard } from "../components/QuestionCard";
 import { EmptyQuestionsState } from "../components/EmptyQuestionsState";
 import { ErrorAlert } from "../components/ErrorAlert";
+import { JsonQuizImporter } from "../components/JsonQuizImporter";
 import type {
   QuizDetails,
   QuizQuestion,
@@ -222,6 +223,22 @@ const EditQuizPage = () => {
               {error && (
                 <ErrorAlert error={error} onDismiss={() => setError(null)} />
               )}
+
+              {/* JSON Import */}
+              <JsonQuizImporter
+                hasExistingQuestions={questions.length > 0}
+                onImport={({
+                  questions: imported,
+                  title: t,
+                  description: d,
+                  tags: tgs,
+                }) => {
+                  setQuestions(imported);
+                  if (t) setTitle(t);
+                  if (d) setDescription(d);
+                  if (tgs) setTags(tgs);
+                }}
+              />
 
               {/* Quiz details (title, description, tags) */}
               <QuizDetailsForm

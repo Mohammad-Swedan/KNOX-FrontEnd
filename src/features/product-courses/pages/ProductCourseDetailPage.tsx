@@ -95,6 +95,11 @@ const ProductCourseDetailPage = () => {
       .toUpperCase()
       .slice(0, 2);
 
+  // Immediately mark the user as enrolled after a successful in-page enrollment,
+  // so the useCourseContent hook auto-refetches with the enrolled endpoint without
+  // waiting for the enrollments list to refetch.
+  const [justEnrolled, setJustEnrolled] = useState(false);
+
   // Check if user is already enrolled (from external sources first)
   const { items: enrollments, refetch: refetchEnrollments } = useMyEnrollments(
     isAuthenticated ? 1 : 0,
@@ -103,7 +108,8 @@ const ProductCourseDetailPage = () => {
   const enrolledFromList = courseId
     ? (enrollments ?? []).some((e) => e.productCourseId === courseId)
     : false;
-  const isEnrolled = enrolledFromList || !!courseSummary?.isEnrolled;
+  const isEnrolled =
+    enrolledFromList || !!courseSummary?.isEnrolled || justEnrolled;
 
   // Course content (fetched on demand — uses enrolled-content endpoint when enrolled)
   const [showContent, setShowContent] = useState(false);
@@ -159,7 +165,14 @@ const ProductCourseDetailPage = () => {
 
   // Auto-open the next incomplete lesson when enrolled content loads
   useEffect(() => {
-    if (!isEnrolledFinal || !courseContent || autoOpenDone) return;
+    // Guard: only run once enrolled content (not the public locked content) is available
+    if (
+      !isEnrolledFinal ||
+      !courseContent ||
+      !courseContent.isEnrolled ||
+      autoOpenDone
+    )
+      return;
 
     // Flatten all lessons in order
     const allLessons = [...courseContent.topics]
@@ -571,7 +584,7 @@ const ProductCourseDetailPage = () => {
                   onMarkCompleted={handleMarkCompleted}
                   markCompletedLoading={completeLessonLoading}
                   onShowCertificate={
-                    courseContent?.isCompleted
+                    (courseContent?.progressPercentage ?? 0) >= 100
                       ? () => setShowCongrats(true)
                       : undefined
                   }
@@ -655,11 +668,11 @@ const ProductCourseDetailPage = () => {
                           course={course}
                           isEnrolled={false}
                           onEnrolled={() => {
+                            setJustEnrolled(true);
                             refetchEnrollments();
-                            refetchContent();
                           }}
                         />
-                        <Button
+                        {/* <Button
                           variant="outline"
                           className="w-full cursor-pointer"
                           size="lg"
@@ -667,7 +680,7 @@ const ProductCourseDetailPage = () => {
                         >
                           <ListTree className="h-4 w-4 mr-2" />
                           Show Content
-                        </Button>
+                        </Button> */}
                       </div>
                     ) : (
                       <div className="space-y-2">
@@ -786,8 +799,8 @@ const ProductCourseDetailPage = () => {
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-xl">
-                <PartyPopper className="h-6 w-6 text-amber-500" />
-                Congratulations! 🎉
+                <PartyPopper className="h-6 w-6 text-amber-500 animate-caret-blink" />
+                Congratulations!
               </DialogTitle>
               <DialogDescription>
                 You've completed{" "}
@@ -846,9 +859,7 @@ const ProductCourseDetailPage = () => {
                 ) : (
                   <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 rounded-lg px-4 py-2.5 w-full justify-center">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="font-medium">
-                      PDF is being generated…
-                    </span>
+                    <span className="font-medium">PDF is being generated…</span>
                   </div>
                 );
               })()}
@@ -860,9 +871,7 @@ const ProductCourseDetailPage = () => {
                     variant="outline"
                     onClick={() => {
                       setShowCongrats(false);
-                      navigate(
-                        `/certificates/${courseContent.certificateId}`,
-                      );
+                      navigate(`/certificates/${courseContent.certificateId}`);
                     }}
                   >
                     <Download className="h-4 w-4" />

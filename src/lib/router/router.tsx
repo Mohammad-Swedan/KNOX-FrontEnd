@@ -28,6 +28,7 @@ import CurriculumTreePage from "@/features/universities/pages/CurriculumTreePage
 import StandaloneCurriculumPage from "@/features/universities/pages/StandaloneCurriculumPage";
 import ManageUsersPage from "@/features/users/pages/ManageUsersPage";
 import WriterStatisticsPage from "@/features/dashboard/pages/WriterStatisticsPage";
+import BackupPage from "@/features/dashboard/pages/BackupPage";
 import MajorCoursesPage from "@/features/courses/pages/MajorCoursesPage";
 import MaterialExplorerPage from "@/features/materials/pages/MaterialExplorerPage";
 import ManageResourcesPage from "@/features/courses/pages/ManageResourcesPage";
@@ -42,6 +43,7 @@ import AddVideoLessonPage from "@/features/product-courses/pages/AddVideoLessonP
 import AddQuizLessonPage from "@/features/product-courses/pages/AddQuizLessonPage";
 import AddMaterialLessonPage from "@/features/product-courses/pages/AddMaterialLessonPage";
 import PrepaidCodesPage from "@/features/product-courses/pages/PrepaidCodesPage";
+import ManagePrepaidCodesPage from "@/features/product-courses/pages/ManagePrepaidCodesPage";
 import ProductCourseCatalog from "@/features/product-courses/pages/ProductCourseCatalog";
 import MyEnrollmentsPage from "@/features/product-courses/pages/MyEnrollmentsPage";
 import MyCoursesPage from "@/features/product-courses/pages/MyCoursesPage";
@@ -352,6 +354,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "prepaid-codes",
+        element: (
+          <ProtectedRoute requiredRoles={["SuperAdmin"]}>
+            <ManagePrepaidCodesPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "users",
         element: (
           <ProtectedRoute requiredRoles={["SuperAdmin"]}>
@@ -360,6 +370,14 @@ export const router = createBrowserRouter([
         ),
       },
       { path: "writer-statistics", element: <WriterStatisticsPage /> },
+      {
+        path: "backups",
+        element: (
+          <ProtectedRoute requiredRoles={["SuperAdmin"]}>
+            <BackupPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
