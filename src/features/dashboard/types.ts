@@ -1,3 +1,30 @@
+// ─── Top Contributors ────────────────────────────────────────────────────────
+
+export interface TopContributor {
+  rank: number;
+  userId: number;
+  name: string;
+  profilePictureUrl: string | null;
+  majorName: string;
+  facultyName: string;
+  universityName: string;
+  materialsCount: number;
+  quizzesCount: number;
+  coursesCount: number;
+  totalCount: number;
+}
+
+export type ContributorScope = "global" | "university" | "faculty" | "major";
+
+export interface TopContributorsFilter {
+  topN?: number;
+  majorId?: number;
+  facultyId?: number;
+  universityId?: number;
+}
+
+// ─── Backup ───────────────────────────────────────────────────────────────────
+
 export interface BackupFile {
   fileName: string;
   fileSizeBytes: number;

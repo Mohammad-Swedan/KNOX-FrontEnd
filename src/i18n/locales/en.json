@@ -400,6 +400,12 @@
         "whatsappBtn": "Buy via WhatsApp"
       }
     },
+    "topContributorsPreview": {
+      "title": "Built by Students, for Students",
+      "subtitle": "eCampus is powered by a passionate community of students who share materials, create quizzes, and add courses to help each other succeed. Meet the ones making the biggest impact.",
+      "statLine": "Hundreds of students actively contributing knowledge",
+      "viewAll": "See Top Contributors"
+    },
     "about": {
       "hero": {
         "title": "Welcome to eCampus",
@@ -1491,5 +1497,24 @@
       "getCode": "Get one via WhatsApp",
       "whatsappMessage": "Hello! I'd like to enroll in: \"{{title}}\". Final price: {{price}}. Please send me a prepaid code 🎓"
     }
+  },
+  "topContributors": {
+    "title": "Top Contributors",
+    "subtitle": "Recognizing the most active members who share knowledge with the community.",
+    "podiumTitle": "Top 3 Contributors",
+    "rankingsTitle": "Rankings",
+    "filterLabel": "Show top contributors in:",
+    "scopeGlobal": "Global",
+    "scopeGlobalSub": "All universities",
+    "scopeUniversity": "University",
+    "scopeFaculty": "Faculty",
+    "scopeMajor": "Major",
+    "contributions": "contributions",
+    "materials": "Materials",
+    "quizzes": "Quizzes",
+    "courses": "Courses",
+    "total": "total",
+    "empty": "No contributors found for this scope yet.",
+    "error": "Failed to load contributors. Please try again later."
   }
 }

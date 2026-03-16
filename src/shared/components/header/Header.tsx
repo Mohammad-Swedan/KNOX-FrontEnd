@@ -74,12 +74,17 @@ const Header = ({ navigationData, className }: HeaderProps) => {
           {/* Logo */}
           <a
             href="/"
-            className="flex items-center space-x-2 transition-transform duration-200 hover:scale-105"
+            className="flex items-center gap-2 transition-transform duration-200 hover:scale-105"
             aria-label="Home"
             title="Home"
           >
             <Logo />
-            <span className="sr-only">Home</span>
+            {isAuthenticated && (
+              <span className="sm:hidden bg-linear-to-r from-primary to-primary/70 bg-clip-text text-[1.1rem] font-extrabold tracking-tight text-transparent">
+                eCampus
+              </span>
+            )}
+            <span className="sr-only max-sm:hidden">Home</span>
           </a>
 
           {/* Navigation - Centered */}
@@ -108,9 +113,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-10 w-10 rounded-full ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200"
+                    className="relative h-10 w-10 rounded-full ring-2 ring-primary/60 hover:ring-primary transition-all duration-200"
                   >
-                    <Avatar className="h-10 w-10 border-2 border-primary/10">
+                    <Avatar className="h-10 w-10 ring-2 ring-primary shadow-[0_0_0_2px] shadow-primary/20">
                       {user?.profilePictureUrl && (
                         <AvatarImage
                           src={user.profilePictureUrl}
@@ -259,9 +264,9 @@ const Header = ({ navigationData, className }: HeaderProps) => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-9 w-9 rounded-full ring-2 ring-transparent hover:ring-primary/20 transition-all duration-200"
+                    className="relative h-9 w-9 rounded-full ring-2 ring-primary/60 hover:ring-primary transition-all duration-200"
                   >
-                    <Avatar className="h-9 w-9 border-2 border-primary/10">
+                    <Avatar className="h-9 w-9 ring-2 ring-primary shadow-[0_0_0_2px] shadow-primary/20">
                       {user?.profilePictureUrl && (
                         <AvatarImage
                           src={user.profilePictureUrl}

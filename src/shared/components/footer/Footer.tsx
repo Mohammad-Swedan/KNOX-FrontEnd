@@ -27,6 +27,11 @@ const Footer = () => {
       { name: "Study Materials", href: "/courses", internal: true },
       { name: "About Us", href: "/about", internal: true },
       {
+        name: "Top Contributors",
+        href: "/top-contributors",
+        internal: true,
+      },
+      {
         name: "Verify Certificate",
         href: "/certificates/verify",
         internal: true,

@@ -32,6 +32,7 @@ import BackupPage from "@/features/dashboard/pages/BackupPage";
 import MajorCoursesPage from "@/features/courses/pages/MajorCoursesPage";
 import MaterialExplorerPage from "@/features/materials/pages/MaterialExplorerPage";
 import ManageResourcesPage from "@/features/courses/pages/ManageResourcesPage";
+import TopContributorsPage from "@/features/dashboard/pages/TopContributorsPage";
 
 // Product Courses
 import ProductCourseListPage from "@/features/product-courses/pages/ProductCourseListPage";
@@ -59,6 +60,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "about", element: <AboutPage /> },
+      { path: "top-contributors", element: <TopContributorsPage /> },
       { path: "*", element: <NotFoundPage /> },
       { path: "courses", element: <CoursesPage /> },
       { path: "courses/:courseId/info", element: <CourseInfoPage /> },

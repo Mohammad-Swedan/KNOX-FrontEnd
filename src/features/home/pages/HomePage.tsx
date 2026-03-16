@@ -5,6 +5,7 @@ import HowItWorksSection from "@/features/home/components/HowItWorksSection";
 import StatsSection from "@/features/home/components/StatsSection";
 import TestimonialsSection from "@/features/home/components/TestimonialsSection";
 import CTASection from "@/features/home/components/CTASection";
+import TopContributorsPreview from "@/features/home/components/TopContributorsPreview";
 import SEO from "@/shared/components/seo/SEO";
 import StructuredData from "@/shared/components/seo/StructuredData";
 
@@ -29,6 +30,7 @@ export default function HomePage() {
         <HowItWorksSection />
         <TestimonialsSection />
         <CTASection />
+        <TopContributorsPreview />
       </div>
     </>
   );

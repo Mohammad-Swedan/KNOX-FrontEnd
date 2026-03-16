@@ -67,6 +67,10 @@ export const PasswordInput = ({
               text="One lowercase letter (a-z)"
             />
             <ValidationItem
+              isValid={validation.hasNumber}
+              text="One number (0-9)"
+            />
+            <ValidationItem
               isValid={validation.hasSpecialChar}
               text="One special character (!@#$%^&*...)"
             />
